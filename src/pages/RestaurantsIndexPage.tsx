@@ -1,8 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table'
 import ReactTable from '../components/ReactTable'
-import { AdministratorCredentials } from '../types/administrator.types'
+import { UserList } from '../types/administrator.types'
 
-const users: AdministratorCredentials[] = [
+const users: UserList[] = [
     {
         isAdmin: true,
         name: "Tester",
@@ -23,7 +23,7 @@ const users: AdministratorCredentials[] = [
     }
 ]
 
-const columns: ColumnDef<AdministratorCredentials>[] = [
+const columns: ColumnDef<UserList>[] = [
 	{
 		accessorKey: "email",
 		header: "Email",
