@@ -3,8 +3,10 @@ import Image from 'react-bootstrap/Image'
 const NotFound = () => {
     return (
         <>
-            <h1>Not Found</h1>
-            <Image src='https://unsplash.com/photos/fnztlIb52gU' fluid />
+            <div className='text-center'>
+                <h1>Not Found</h1>
+                <Image src={`src/assets/images/thought-catalog-fnztlIb52gU-unsplash.jpg`} fluid />
+            </div>
         </>
     )
 }
