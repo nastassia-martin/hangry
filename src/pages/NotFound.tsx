@@ -1,8 +1,12 @@
 import React from 'react'
+import Image from 'react-bootstrap/Image'
 
 const NotFound = () => {
     return (
-        <div>NotFound</div>
+        <>
+            <h1>Not Found</h1>
+            <Image src='https://unsplash.com/photos/fnztlIb52gU' fluid />
+        </>
     )
 }
 
