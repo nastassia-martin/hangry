@@ -23,6 +23,24 @@ const SignUp = () => {
     const passwordRef = useRef("")
     passwordRef.current = watch('password')
 
+
+
+    const onSignup: SubmitHandler<SignUpCredentials> = async (data) => {
+        // Clear any previous error state
+
+
+        // Try to sign in
+        setLoading(true)
+        //await signup(data.email, data.password)
+
+        console.log(data.email, data.password)
+
+        // If successful, redirect to the home page
+        //navigate('/')
+
+
+    }
+
     return (
         <Container className='py-4 center-y'>
             <Row>
@@ -31,8 +49,8 @@ const SignUp = () => {
                         <Card.Title className='text-center mb-3'>Sign up</Card.Title>
                         {/**error message */}
 
-                        {/* <Form onSubmit={handleSubmit(onSignup)}> */}
-                        <Form>
+                        <Form onSubmit={handleSubmit(onSignup)}>
+                            {/* <Form> */}
                             <Form.Group controlId='email' className="mb-3">
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
@@ -62,7 +80,7 @@ const SignUp = () => {
                                 <Form.Text>Minimum 6 characters</Form.Text>
                             </Form.Group>
 
-                            <Form.Group controlId="confirmPassword" className="mb-3">
+                            <Form.Group controlId='confirmPassword' className="mb-3">
                                 <Form.Label>Confirm Password</Form.Label>
                                 <Form.Control
                                     type="password"

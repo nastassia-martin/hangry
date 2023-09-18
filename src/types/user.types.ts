@@ -4,6 +4,7 @@ export type LoginCredentials = {
 }
 
 export type SignUpCredentials = {
+    // name:
     email: string
     password: string
     passwordConfirm: string
