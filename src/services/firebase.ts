@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app"
-import { getFirestore } from "firebase/firestore"
+import {
+	getFirestore,
+	CollectionReference,
+	collection,
+	DocumentData,
+} from "firebase/firestore"
+import { Eatery } from "../types/restaurant.types"
 
 // Firebase config
 const firebaseConfig = {
@@ -16,5 +22,14 @@ const app = initializeApp(firebaseConfig)
 
 // Get Firestore instance
 export const db = getFirestore(app)
+
+// helper to add type to collection
+const createCollection = <T = DocumentData>(collectionName: string) => {
+	return collection(db, collectionName) as CollectionReference<T>
+}
+
+// Export collection references
+// restaurants
+export const restaurantsCol = createCollection<Eatery>("restaurants")
 
 export default app

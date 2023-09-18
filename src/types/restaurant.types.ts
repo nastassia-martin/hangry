@@ -3,7 +3,7 @@ export type Eatery = {
 	address: Address
 	restaurangDetails: Partial<RestaurantDetails>
 	category: Category
-	offering: Partial<Offering[]>
+	offering: Partial<Offering>[]
 	adminApproved: boolean
 }
 
@@ -30,3 +30,4 @@ type Offering = {
 	afterWork: string
 	dinner: string
 }
+export type Eateries = Eatery[]
