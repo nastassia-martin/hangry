@@ -94,8 +94,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
             reloadUser,
             userEmail,
 
-
-
         }}>
 
         </AuthContext.Provider>
