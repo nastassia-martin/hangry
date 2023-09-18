@@ -1,9 +1,9 @@
-import './App.css'
 
-const App = () => { 
+
+const App = () => {
   return (
-      <div id="App">
-     </div>
+    <div id="App">
+    </div>
   )
 }
 
