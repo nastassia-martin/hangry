@@ -1,6 +1,7 @@
 import { Timestamp } from "firebase/firestore";
 
 export type AdministratorCredentials = {
+	_id: string
 	isAdmin: boolean
 	name: string
 	password?: string

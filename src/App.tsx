@@ -1,14 +1,13 @@
-import './assets/scss/App.scss'
-import Navigation from './components/Navaigation'
-import { Routes, Route } from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import NotFound from './pages/NotFound'
-import Restaurant_tips from './pages/RestaurantsIndexPage'
+import "./assets/scss/App.scss"
+import Navigation from "./components/Navaigation"
+import { Routes, Route } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import NotFound from "./pages/NotFound"import Restaurant_tips from './pages/RestaurantsIndexPage'
 
 const App = () => {
-  return (
-    <div id="App">
-      <Navigation />
+	return (
+		<div id='App'>
+			<Navigation />
 
 		<Routes>
 			<Route path="*" element={<NotFound />} />
