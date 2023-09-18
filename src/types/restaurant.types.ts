@@ -1,11 +1,11 @@
 export type Eatery = {
+	_id: string
 	address: Address
-	restaurangdetaljer: Partial<RestaurantDetails>
+	restaurangDetails: Partial<RestaurantDetails>
 	category: Category
-	offering: Partial<Offering>
+	offering: Partial<Offering[]>
+	adminApproved: boolean
 }
-
-export type CreateEatery = {}
 
 type Address = {
 	restaurantName: string
