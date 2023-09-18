@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container"
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { SignUpCredentials } from '../types/user.types'
 import { useRef, useState } from 'react'
 import useAuth from '../hooks/useAuth'
@@ -26,7 +26,6 @@ const SignUp = () => {
     //watch the passwords
     const passwordRef = useRef("")
     passwordRef.current = watch('password')
-
 
 
     const onSignup: SubmitHandler<SignUpCredentials> = async (data) => {

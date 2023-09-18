@@ -20,11 +20,6 @@ type AuthContextType = {
     //logout: () => Promise<void>
     signup: (email: string, password: string) => Promise<UserCredential>
     reloadUser: () => Promise<boolean>
-    // resetPassword: (email: string) => Promise<void>
-    // setEmail: (email: string) => Promise<void>
-    // setDisplayName: (displayName: string) => Promise<void>
-    // setPassword: (password: string) => Promise<void>
-    // setPhotoUrl: (photoURL: string) => Promise<void>
     userEmail: string | null
     //userName: string | null
     //userPhotoUrl: string | null
@@ -45,8 +40,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     //user
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const [userEmail, setUserEmail] = useState<string | null>(null)
-    //const [userName, setUserName] = useState<string | null>(null)
-    //const [userPhotoUrl, setUserPhotoUrl] = useState<string | null>(null)
 
     //later admin
 
@@ -60,10 +53,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
         if (!auth.currentUser) {
             return false
         }
-
-        //setUserName(auth.currentUser.displayName)
         setUserEmail(auth.currentUser.email)
-        //setUserPhotoUrl(auth.currentUser.photoURL)
 
         return true
     }
