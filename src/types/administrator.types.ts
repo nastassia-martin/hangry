@@ -1,4 +1,5 @@
 export type AdministratorCredentials = {
+	_id: string
 	isAdmin: boolean
 	firstName: string
 	lastName: string

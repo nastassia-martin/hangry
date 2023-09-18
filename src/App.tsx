@@ -1,14 +1,14 @@
-import './assets/scss/App.scss'
-import Navigation from './components/Navaigation'
-import { Routes, Route } from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import NotFound from './pages/NotFound'
+import "./assets/scss/App.scss"
+import Navigation from "./components/Navaigation"
+import { Routes, Route } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import NotFound from "./pages/NotFound"
 import SignUp from './pages/SignUp'
 
 
 const App = () => {
   return (
-    <div id="App">
+    <div id='App'>
       <Navigation />
 
       <Routes>
