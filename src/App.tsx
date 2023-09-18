@@ -5,10 +5,10 @@ import HomePage from './pages/HomePage'
 import NotFound from './pages/NotFound'
 import Restaurant_tips from './pages/RestaurantsIndexPage'
 
-const App = () => { 
+const App = () => {
   return (
-      <div id="App">
-        <Navigation />
+    <div id="App">
+      <Navigation />
 
 		<Routes>
 			<Route path="*" element={<NotFound />} />
@@ -18,7 +18,7 @@ const App = () => {
 			<Route path="/tips" element={<Restaurant_tips />} />
 		</Routes>
 
-     </div>
+    </div>
   )
 }
 
