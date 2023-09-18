@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app"
+import { getAuth } from "firebase/auth"
 import {
 	getFirestore,
 	CollectionReference,
@@ -19,6 +20,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
+
+// Get Auth instance
+export const auth = getAuth(app)
 
 // Get Firestore instance
 export const db = getFirestore(app)
