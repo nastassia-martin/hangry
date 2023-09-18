@@ -1,10 +1,12 @@
+import { Timestamp } from "firebase/firestore";
+
 export type AdministratorCredentials = {
 	isAdmin: boolean
-	firstName: string
-	lastName: string
-	password: string
+	name: string
+	password?: string
 	email: string
-	//profilePicture: FileList
+	created_at: string | Timestamp
+	profilePicture?: FileList | string
 }
 
 export type LoginCredentials = {
