@@ -1,14 +1,14 @@
 import {
     UserCredential,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
+    // signInWithEmailAndPassword,
     onAuthStateChanged,
     User,
-    signOut,
-    sendPasswordResetEmail,
-    updateProfile,
-    updateEmail,
-    updatePassword,
+    // signOut,
+    // sendPasswordResetEmail,
+    // updateProfile,
+    // updateEmail,
+    // updatePassword,
 } from 'firebase/auth'
 
 import { createContext, useEffect, useState } from 'react'
@@ -79,6 +79,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
             } else {
                 setUserEmail(null)
             }
+            setLoading(false)
         })
 
         return unsubscribe
@@ -95,7 +96,11 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
             userEmail,
 
         }}>
-
+            {loading ? (
+                <p>loading</p>
+            ) : (
+                <>{children}</>
+            )}
         </AuthContext.Provider>
     )
 

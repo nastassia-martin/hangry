@@ -8,15 +8,19 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { SignUpCredentials } from '../types/user.types'
 import { useRef, useState } from 'react'
+import useAuth from '../hooks/useAuth'
+import { FirebaseError } from 'firebase/app'
+import Alert from 'react-bootstrap/Alert'
 
 
 
 const SignUp = () => {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     const { handleSubmit, register, watch, formState: { errors } } = useForm<SignUpCredentials>()
-    // const { signup } = useAuth() //our hook
+    const { signup } = useAuth() //our hook
 
 
     //watch the passwords
@@ -26,18 +30,29 @@ const SignUp = () => {
 
 
     const onSignup: SubmitHandler<SignUpCredentials> = async (data) => {
-        // Clear any previous error state
 
+        setErrorMessage(null)
 
-        // Try to sign in
-        setLoading(true)
-        //await signup(data.email, data.password)
+        try {
+            setLoading(true)
+            await signup(data.email, data.password)
 
-        console.log(data.email, data.password)
+            console.log(data.email, data.password)
 
-        // If successful, redirect to the home page
-        //navigate('/')
+            navigate('/')
 
+        } catch (error) {
+            if (error instanceof FirebaseError) {
+
+                setErrorMessage(error.message)
+
+            } else {
+
+                setErrorMessage("Something went wrong, we dont know what")
+
+            }
+            setLoading(false)
+        }
 
     }
 
@@ -48,6 +63,8 @@ const SignUp = () => {
                     <Card.Body>
                         <Card.Title className='text-center mb-3'>Sign up</Card.Title>
                         {/**error message */}
+                        {errorMessage && (<Alert variant="danger">{errorMessage}</Alert>)}
+
 
                         <Form onSubmit={handleSubmit(onSignup)}>
                             {/* <Form> */}
@@ -67,7 +84,7 @@ const SignUp = () => {
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control
                                     type="password"
-                                    // autoComplete="new-password"
+                                    autoComplete="new-password"
                                     {...register('password', {
                                         required: 'You need to enter a password',
                                         minLength: {
@@ -92,7 +109,7 @@ const SignUp = () => {
                                             message: "Please enter at least 6 characters"
                                         },
                                         validate: (value) => {
-                                            return value === passwordRef.current || 'The password doeas not match'
+                                            return value === passwordRef.current || 'The password does not match'
                                         }
                                     })}
                                 />
