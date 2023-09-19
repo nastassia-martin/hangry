@@ -8,26 +8,27 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Alert from 'react-bootstrap/Alert'
-import SignUpForm from '../components/SignupForm'
+import LoginForm from '../components/LoginForm'
 import { useNavigate } from 'react-router-dom'
-import { SignUpCredentials } from '../types/user.types'
 import useAuth from '../hooks/useAuth'
 import { FirebaseError } from 'firebase/app'
+import { LoginCredentials } from '../types/administrator.types'
 
-const SignUp = () => {
+const Login = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const { signup } = useAuth() // Our hook
+    const { login } = useAuth() // Our hook
 
 
-    const onSignup = async (data: SignUpCredentials) => {
+    const onLogin = async (data: LoginCredentials) => {
         setErrorMessage(null)
 
         try {
             setLoading(true)
-            await signup(data.email, data.password)
+            await login(data.email, data.password)
             console.log(data.email, data.password)
+            console.log('logged in user', data.email)
             navigate('/')
         } catch (error) {
             if (error instanceof FirebaseError) {
@@ -45,13 +46,12 @@ const SignUp = () => {
                 <Col md={{ span: 6, offset: 3 }}>
                     <Card.Body>
                         <Card.Header className='mb-3'>
-                            <Card.Title className='text-center mb-3'>Sign up</Card.Title>
-                            <Card.Subtitle>Do you want to become an admin?</Card.Subtitle>
+                            <Card.Title className='text-center mb-3'>Login</Card.Title>
                         </Card.Header>
                         {/* Error message */}
                         {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
                         {/* Form Component*/}
-                        <SignUpForm onSignup={onSignup} loading={loading} />
+                        <LoginForm onLogin={onLogin} loading={loading} />
                     </Card.Body>
                 </Col>
             </Row>
@@ -59,4 +59,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+export default Login
