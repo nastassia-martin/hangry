@@ -51,7 +51,7 @@ const SignUp = () => {
                         {/* Error message */}
                         {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
                         {/* Form Component*/}
-                        <SignUpForm onSignup={onSignup} loading={loading} /> {/**errors={errors}  */}
+                        <SignUpForm onSignup={onSignup} loading={loading} />
                     </Card.Body>
                 </Col>
             </Row>

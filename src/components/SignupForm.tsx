@@ -1,19 +1,15 @@
 import React, { useRef } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { SignUpCredentials } from '../types/user.types'
 
 interface IFormProps {
-    //onSignup: (data: SignUpCredentials) => void SubmitHandler<SignUpCredentials>
     onSignup: SubmitHandler<SignUpCredentials>
-    //errors: FieldErrors<SignUpCredentials>
     loading: boolean
 }
 
-
-const SignUpForm: React.FC<IFormProps> = ({ onSignup, loading }) => { // errors,
-    //const { handleSubmit, register, watch } = useForm<SignUpCredentials>()
+const SignUpForm: React.FC<IFormProps> = ({ onSignup, loading }) => {
     const { handleSubmit, register, watch, formState: { errors } } = useForm<SignUpCredentials>()
     const passwordRef = useRef('')
     passwordRef.current = watch('password')
