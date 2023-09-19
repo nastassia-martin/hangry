@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage"
 import NotFound from "./pages/NotFound"
 import Restaurant_tips from './pages/RestaurantsIndexPage'
 import SignUp from './pages/SignUp'
+import Login from "./pages/Login"
 
 
 const App = () => {
@@ -15,7 +16,7 @@ const App = () => {
       <Routes>
         <Route path='*' element={<NotFound />} />
         <Route path='/' element={<HomePage />} />
-        <Route path='/login' element={<NotFound />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path="/tips" element={<Restaurant_tips />} />
       </Routes>
