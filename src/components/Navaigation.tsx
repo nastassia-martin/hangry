@@ -4,7 +4,6 @@ import Nav from 'react-bootstrap/Nav'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import Button from 'react-bootstrap/Button'
-import LogoutConfirm from './LogoutModal'
 import { useState } from 'react'
 import LogoutModal from './LogoutModal'
 
@@ -50,7 +49,7 @@ const Navigation = () => {
 					{currentUser &&
 						<>
 							<Navbar.Text>
-								Signed in as: <span>{userName}</span>
+								Signed in as: <span>{userName || userEmail}</span>
 							</Navbar.Text>
 							<Button variant="outline-danger"
 								size='sm'
