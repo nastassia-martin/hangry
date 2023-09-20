@@ -7,6 +7,7 @@ import Restaurant_tips from './pages/RestaurantsIndexPage'
 import SignUp from './pages/SignUp'
 import Login from "./pages/Login"
 import { ToastContainer } from "react-toastify"
+import UpdateProfile from "./pages/UpdateProfile"
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/update-profile' element={<UpdateProfile />} />
         <Route path="/tips" element={<Restaurant_tips />} />
       </Routes>
 

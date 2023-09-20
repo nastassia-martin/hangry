@@ -18,8 +18,8 @@ export type LoginCredentials = {
 }
 
 export type UpdateProfileFormData = {
-	firstName: string
-	lastName: string
+	displayName: string
+	//lastName: string
 	email: string
 	password: string
 	passwordConfirm: string
