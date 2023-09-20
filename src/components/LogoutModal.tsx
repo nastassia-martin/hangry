@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
-import useAuth from '../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
 
 interface IProps {
     children: React.ReactNode
