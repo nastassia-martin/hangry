@@ -2,8 +2,8 @@ import React, { useRef } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { SignUpCredentials } from '../types/user.types'
 import { UpdateProfileFormData } from '../types/administrator.types'
+import useAuth from '../hooks/useAuth'
 
 interface IFormProps {
     onUpdateProfile: SubmitHandler<UpdateProfileFormData>
@@ -11,7 +11,13 @@ interface IFormProps {
 }
 
 const UpdateProfileForm: React.FC<IFormProps> = ({ onUpdateProfile, loading }) => {
-    const { handleSubmit, register, watch, formState: { errors } } = useForm<UpdateProfileFormData>()
+    const { currentUser } = useAuth()
+    const { handleSubmit, register, watch, formState: { errors } } = useForm<UpdateProfileFormData>({
+        defaultValues: {
+            email: currentUser?.email ?? "",
+            displayName: currentUser?.displayName ?? "",
+        }
+    })
     const passwordRef = useRef('')
     passwordRef.current = watch('password')
 
@@ -39,7 +45,10 @@ const UpdateProfileForm: React.FC<IFormProps> = ({ onUpdateProfile, loading }) =
                     placeholder='valid@email.com'
                     type='email'
                     {...register('email', {
-                        required: 'You have to enter an email',
+                        minLength: {
+                            value: 3,
+                            message: "Please enter a valid email"
+                        },
                     })}
                 />
                 {errors.email && <p>{errors.email.message ?? 'This is an invalid value'}</p>}
@@ -51,7 +60,6 @@ const UpdateProfileForm: React.FC<IFormProps> = ({ onUpdateProfile, loading }) =
                     type='password'
                     autoComplete='new-password'
                     {...register('password', {
-                        required: 'You need to enter a password',
                         minLength: {
                             value: 3,
                             message: 'Please enter at least 6 characters',
@@ -68,7 +76,6 @@ const UpdateProfileForm: React.FC<IFormProps> = ({ onUpdateProfile, loading }) =
                     type='password'
                     autoComplete='off'
                     {...register('passwordConfirm', {
-                        required: 'Fill in your password again',
                         minLength: {
                             value: 3,
                             message: 'Please enter at least 6 characters',
@@ -93,7 +100,7 @@ const UpdateProfileForm: React.FC<IFormProps> = ({ onUpdateProfile, loading }) =
             </Form.Group>
 
             <Button variant='secondary' type='submit' disabled={loading}>
-                {loading ? 'Signing Up' : 'Join us!'}
+                {loading ? 'Updating Profile' : 'Update'}
             </Button>
         </Form>
     )
