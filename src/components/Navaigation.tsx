@@ -13,7 +13,7 @@ const Navigation = () => {
 		currentUser,
 		userEmail,
 		userName,
-		userPhotoUrl,
+		//userPhotoUrl,
 	} = useAuth()
 
 	//to show the logout-modal
@@ -30,7 +30,7 @@ const Navigation = () => {
 
 	}
 	const openLogoutModal = () => {
-		setShowLogoutModal(true);
+		setShowLogoutModal(true)
 	}
 
 	return (
@@ -40,8 +40,12 @@ const Navigation = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto">
-						<Nav.Link as={NavLink} to="/signup">Signup</Nav.Link>
-						<Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+						{!currentUser &&
+							<>
+								<Nav.Link as={NavLink} to="/signup">Signup</Nav.Link>
+								<Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+							</>
+						}
 						<Nav.Link as={NavLink} to="/update-profile">Update Profile</Nav.Link>
 						<Nav.Link as={NavLink} to="/tips">Tips</Nav.Link>
 
