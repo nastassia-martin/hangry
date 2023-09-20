@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound"
 import Restaurant_tips from './pages/RestaurantsIndexPage'
 import SignUp from './pages/SignUp'
 import Login from "./pages/Login"
+import Sidebar from "./components/Sidebar"
 
 
 const App = () => {
