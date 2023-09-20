@@ -76,10 +76,10 @@ const UpdateProfile = () => {
                     await setPhotoUrl(photoUrl)
                 })
 
+                setLoading(false)
 
 
             }
-            //toast.success('Welcome!')
 
             await reloadUser()
 
