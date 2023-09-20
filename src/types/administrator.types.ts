@@ -16,3 +16,13 @@ export type LoginCredentials = {
 	email: string
 	password: string
 }
+
+export type UpdateProfileFormData = {
+	firstName: string
+	lastName: string
+	email: string
+	password: string
+	passwordConfirm: string
+	//photoFile: FileList
+
+}

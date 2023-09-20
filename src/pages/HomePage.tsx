@@ -1,12 +1,11 @@
-
+import MainMap from "../components/MainMap"
 
 const HomePage = () => {
-
-    return (
-        <>
-            <h1>Add map here</h1>
-        </>
-    )
+	return (
+		<>
+			<MainMap />
+		</>
+	)
 }
 
 export default HomePage
