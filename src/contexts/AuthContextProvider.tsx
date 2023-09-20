@@ -1,10 +1,9 @@
 import {
     UserCredential,
     createUserWithEmailAndPassword,
-    // signInWithEmailAndPassword,
+    signInWithEmailAndPassword,
     onAuthStateChanged,
     User,
-    signInWithEmailAndPassword,
     // signOut,
     // sendPasswordResetEmail,
     // updateProfile,

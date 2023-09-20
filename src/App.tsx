@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound"
 import Restaurant_tips from './pages/RestaurantsIndexPage'
 import SignUp from './pages/SignUp'
 import Login from "./pages/Login"
+import { ToastContainer } from "react-toastify"
 
 
 const App = () => {
@@ -20,6 +21,10 @@ const App = () => {
         <Route path='/signup' element={<SignUp />} />
         <Route path="/tips" element={<Restaurant_tips />} />
       </Routes>
+
+      <ToastContainer
+        theme='colored'
+      />
     </div>
   )
 }

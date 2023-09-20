@@ -23,6 +23,6 @@ export type UpdateProfileFormData = {
 	email: string
 	password: string
 	passwordConfirm: string
-	//photoFile: FileList
+	photoFile: FileList
 
 }
