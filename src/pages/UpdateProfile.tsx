@@ -12,7 +12,7 @@ import UpdateProfileForm from '../components/UpdateProfileForm'
 import useAuth from '../hooks/useAuth'
 import { FirebaseError } from 'firebase/app'
 import { toast } from 'react-toastify'
-import { UpdateProfileFormData } from '../types/administrator.types'
+import { UpdateAdminProfileFormData } from '../types/administrator.types'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { storage } from '../services/firebase'
 
@@ -35,7 +35,7 @@ const UpdateProfile = () => {
         return <p>Error modal later</p> //remember to add error modal!
     }
 
-    const onUpdateProfile = async (data: UpdateProfileFormData) => {
+    const onUpdateProfile = async (data: UpdateAdminProfileFormData) => {
         setErrorMessage(null)
 
         try {
@@ -103,7 +103,6 @@ const UpdateProfile = () => {
                     <Card.Body>
                         <Card.Header className='mb-3'>
                             <Card.Title className='text-center mb-3'>Update your profile</Card.Title>
-                            {/* <Card.Subtitle>Do you want to become an admin?</Card.Subtitle> */}
                         </Card.Header>
                         {/* Error message */}
                         {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}

@@ -2,17 +2,17 @@ import React, { useRef } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { UpdateProfileFormData } from '../types/administrator.types'
+import { UpdateAdminProfileFormData } from '../types/administrator.types'
 import useAuth from '../hooks/useAuth'
 
 interface IFormProps {
-    onUpdateProfile: SubmitHandler<UpdateProfileFormData>
+    onUpdateProfile: SubmitHandler<UpdateAdminProfileFormData>
     loading: boolean
 }
 
 const UpdateProfileForm: React.FC<IFormProps> = ({ onUpdateProfile, loading }) => {
     const { currentUser } = useAuth()
-    const { handleSubmit, register, watch, formState: { errors } } = useForm<UpdateProfileFormData>({
+    const { handleSubmit, register, watch, formState: { errors } } = useForm<UpdateAdminProfileFormData>({
         defaultValues: {
             email: currentUser?.email ?? "",
             displayName: currentUser?.displayName ?? "",

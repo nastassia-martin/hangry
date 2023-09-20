@@ -17,9 +17,8 @@ export type LoginCredentials = {
 	password: string
 }
 
-export type UpdateProfileFormData = {
+export type UpdateAdminProfileFormData = {
 	displayName: string
-	//lastName: string
 	email: string
 	password: string
 	passwordConfirm: string
