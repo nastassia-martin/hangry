@@ -11,6 +11,7 @@ export type Eatery = {
 	created_at: Timestamp
 	updated_at: Timestamp
 	loc: GeoPoint
+	description: string
 }
 
 type Address = {
