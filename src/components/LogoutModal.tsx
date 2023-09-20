@@ -37,31 +37,4 @@ const LogoutModal: React.FC<IProps> = ({
     )
 }
 
-
-const LogoutConfirm = () => {
-
-    const [showConfirmLogout, setConfirmLogout] = useState(false)
-
-    const navigate = useNavigate()
-    const { logout } = useAuth()
-
-    const onLogout = async () => {
-        await logout()
-        navigate('/login') //change this later?
-
-    }
-
-    return (
-        <LogoutModal
-            show={showConfirmLogout}
-            onCancel={() => setConfirmLogout(false)}
-            onConfirm={onLogout}
-        >
-            Are you sure?
-        </LogoutModal>
-    )
-
-
-}
-//export default LogoutModal
-export default LogoutConfirm
+export default LogoutModal
