@@ -29,7 +29,7 @@ type RestaurantDetails = {
 	Facebook: string
 	Instagram: string
 }
-type Location = {
+export type Location = {
 	lat: number
 	lng: number
 }

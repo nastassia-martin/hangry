@@ -6,12 +6,12 @@ import {
 } from "@react-google-maps/api"
 import useGetEateries from "../hooks/useGetEateries"
 import { useState } from "react"
+import { Eatery } from "../types/restaurant.types"
 
 const MainMap = () => {
 	const { data } = useGetEateries()
 	// marker will receive either coordinates or null
-	const [selectedMarker, setSelectedMarker] =
-		useState<google.maps.LatLngLiteral | null>(null)
+	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
 
 	//load GoogleMapsAPI script
 	const { isLoaded } = useLoadScript({
@@ -20,6 +20,11 @@ const MainMap = () => {
 	// if it has not loaded show loading screen
 	if (!isLoaded) {
 		return <p>Loading... </p>
+	}
+
+	// handle actions for clicking on marker
+	const handleMarkerClick = (restaurant: Eatery) => {
+		setSelectedMarker(restaurant)
 	}
 
 	return (
@@ -33,22 +38,25 @@ const MainMap = () => {
 				position={{ lat: 55.5918001, lng: 13.0167039 }}
 				icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
 			/>
+			{/**render out  */}
 			{data &&
-				data.map((d) => (
+				data.map((restaurant) => (
 					<MarkerF
-						key={d._id}
-						position={d.location}
-						onClick={() => setSelectedMarker(d.location)}
+						key={restaurant._id}
+						position={restaurant.location}
+						onClick={() => handleMarkerClick(restaurant)}
 					>
-						{selectedMarker && (
+						{restaurant._id === selectedMarker?._id ? (
 							<InfoWindowF
 								onCloseClick={() => {
 									setSelectedMarker(null)
 								}}
-								position={d.location}
+								position={restaurant.location}
 							>
-								<p>{d.address.restaurantName}</p>
+								<p>{restaurant.address.restaurantName}</p>
 							</InfoWindowF>
+						) : (
+							<p>no markers were clicked on</p>
 						)}
 					</MarkerF>
 				))}
