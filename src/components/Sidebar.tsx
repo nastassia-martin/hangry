@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
 import SidebarMenu, { SidebarMenuHeader, 
                       SidebarMenuBrand,
                       SidebarMenuCollapse, 
@@ -16,90 +15,91 @@ import SidebarMenu, { SidebarMenuHeader,
 import { Eatery, Eateries } from '../types/restaurant.types'
 import useGetEateries from '../hooks/useGetEateries'
 
+interface SidebarProps {
+    DATA: Eateries
+    HIDDEN: boolean
+}
 
-const Sidebar = () => {
-    const { data } = useGetEateries()
+const Sidebar:React.FC<SidebarProps> = ({
+    HIDDEN
+}) => {
+    const { data:datadata } = useGetEateries() 
+    {/*remove when implemented in navbar?*/}
+
     return (
         <>
-            <SidebarMenu bg='dark' style={{width: '20%'}} variant='dark' className='d-flex flex-column' exclusiveExpand={true}>
+            <SidebarMenu 
+                bg='dark'
+                variant='dark' 
+                style={{height:'90vh', 
+                        width:'20%', 
+                        zIndex:'2', 
+                        position:'sticky', 
+                        top:'0px', 
+                        overflow:'scroll', 
+                        margin:'0px'}} 
+                exclusiveExpand={true}
+                hide={HIDDEN}> {/* for toggling sidebar*/}
                 <SidebarMenuHeader style={{display:'block'}}>
                     <SidebarMenuBrand>
                         🍋Places to eat!
                     </SidebarMenuBrand>
                 </SidebarMenuHeader>
-                <SidebarMenuBody>
-                    <SidebarMenuNav style={{width: '100%'}}>
-                        {data?.map((place:Eatery) => ( 
-                            <SidebarMenuSub key={place._id}>
-                                <SidebarMenuSub.Toggle label={place.address.restaurantName}>
-                                    <SidebarMenuNavIcon>
-                                    </SidebarMenuNavIcon>
-                                    <SidebarMenuNavTitle>
-                                        <p style={{textTransform: 'capitalize'}}>
-                                            {place.address.restaurantName}
-                                        </p>
-                                    </SidebarMenuNavTitle>
-                                </SidebarMenuSub.Toggle>
-                                <SidebarMenuSub.Collapse>
-                                    <SidebarMenuNav>
-                                        {place.address && (
-                                            <SidebarMenuNavItem>
-                                        <SidebarMenuNavIcon>
-                                            🏨
-                                        </SidebarMenuNavIcon>
-                                        <SidebarMenuNavTitle>
-                                        </SidebarMenuNavTitle>
-                                            <SidebarMenuNavItem>
-                                                <SidebarMenu.Text>
+                    <SidebarMenuBody>
+                        <SidebarMenuNav>
+                            {datadata?.map((place:Eatery) => ( 
+                                <SidebarMenu.Sub key={place._id}>
+                                    <SidebarMenuSub.Toggle label={place.address.restaurantName}>
+                                        <SidebarMenuNavIcon/>
+                                                {place.address.restaurantName}
+                                    </SidebarMenuSub.Toggle>
+                                    <SidebarMenuSub.Collapse>
+                                        <SidebarMenuNav>
+                                            {place.address && (
+                                                <SidebarMenuNavItem>
+                                                <SidebarMenuNavItem>
+                                                    <SidebarMenu.Text>
+                                                        <div style={{height:'100px', margin:'5px', padding:'5px'}}>
+                                                            <p style={{textTransform: 'capitalize'}}>
+                                                                {place.address.street} {place.address.addressNumber}<br/>
+                                                                {place.address.city} {place.address.postcode}
+                                                            </p>
+                                                        </div>
+                                                    </SidebarMenu.Text>
+                                                </SidebarMenuNavItem>
+                                            </SidebarMenuNavItem>)}
+                                            {place.restaurangDetails && (
+                                                <SidebarMenuNavItem>
                                                     <div>
                                                         <p>
-                                                            {place.address.street} {place.address.addressNumber}
+                                                            📞{place.restaurangDetails.telephone}
+                                                        </p>
                                                         <p>
+                                                            📧{place.restaurangDetails.email}
                                                         </p>
-                                                            {place.address.city} {place.address.postcode}
-                                                        </p>
+                                                        <SidebarMenuNavLink href={place.restaurangDetails.Facebook}>
+                                                            🤹Facebook
+                                                        </SidebarMenuNavLink>
+                                                        <SidebarMenuNavLink href={place.restaurangDetails.Instagram}>
+                                                            🦄Instagram
+                                                        </SidebarMenuNavLink>
+                                                        <SidebarMenuNavLink href={place.restaurangDetails.website}>
+                                                            Click here for virus 🦠
+                                                        </SidebarMenuNavLink>
                                                     </div>
-                                                </SidebarMenu.Text>
-                                            </SidebarMenuNavItem>
-                                        </SidebarMenuNavItem>)}
-                                        {place.restaurangDetails && (
-                                            <SidebarMenuNavItem>
-                                                <div>
-                                                    <p>
-                                                        📞{place.restaurangDetails.telephone}
-                                                    <p>
-                                                    </p>
-                                                        📧{place.restaurangDetails.email}
-                                                    <p>
-                                                    </p>
-                                                    <SidebarMenuNavLink href={place.restaurangDetails.Facebook}>
-                                                    🤹Facebook
-                                                </SidebarMenuNavLink>
-                                                    <p>
-                                                    </p>
-                                                <SidebarMenuNavLink href={place.restaurangDetails.Instagram}>
-                                                    🦄Instagram
-                                                </SidebarMenuNavLink>
-                                                    <p>
-                                                    </p>
-                                                <SidebarMenuNavLink href={place.restaurangDetails.website}>
-                                                    Click here for virus 🦠
-                                                </SidebarMenuNavLink>
-                                                    </p>
-                                                </div>
-                                            </SidebarMenuNavItem>
-                                        )}
-                                    </SidebarMenuNav>
-                                </SidebarMenuSub.Collapse>
-                            </SidebarMenuSub>  
-                        ))}
-                    </SidebarMenuNav>
-                </SidebarMenuBody>
-                <SidebarMenuFooter>
-                    <SidebarMenu.Text>
-                        Copyright LLMN Inc.
-                    </SidebarMenu.Text>
-                </SidebarMenuFooter>
+                                                </SidebarMenuNavItem>
+                                            )}
+                                        </SidebarMenuNav>
+                                    </SidebarMenuSub.Collapse>
+                                </SidebarMenu.Sub>  
+                            ))}
+                        </SidebarMenuNav>
+                        <SidebarMenuFooter>
+                            <SidebarMenu.Text>
+                                Copyright LLMN Inc.
+                            </SidebarMenu.Text>
+                        </SidebarMenuFooter>
+                    </SidebarMenuBody>
             </SidebarMenu>
         </>
   )

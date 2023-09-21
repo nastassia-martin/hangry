@@ -13,7 +13,9 @@ const App = () => {
   return (
     <div id='App'>
       <Navigation />
-
+      <Sidebar 
+        HIDDEN={false}
+        />
       <Routes>
         <Route path='*' element={<NotFound />} />
         <Route path='/' element={<HomePage />} />
