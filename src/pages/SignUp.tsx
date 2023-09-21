@@ -19,7 +19,7 @@ const SignUp = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const { signup } = useAuth() // Our hook
+    const { signup, setIsAdmin, isAdmin } = useAuth() // Our hook
 
 
     const onSignup = async (data: SignUpCredentials) => {
@@ -29,6 +29,8 @@ const SignUp = () => {
             setLoading(true)
             await signup(data.email, data.password)
             console.log(data.email, data.password)
+
+            setIsAdmin(false)
 
             toast.success('Welcome!')
             navigate('/')
@@ -40,6 +42,15 @@ const SignUp = () => {
             }
             setLoading(false)
         }
+
+        if (isAdmin === false) {
+            toast.warning('are you not admin?')
+        }
+
+        if (isAdmin === true) {
+            toast.success('you are admin?')
+        }
+
     }
 
     return (

@@ -4,8 +4,8 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
     User,
-    // signOut,
     // sendPasswordResetEmail,
+    //getIdToken,
     updateProfile,
     updateEmail,
     updatePassword,
@@ -28,7 +28,8 @@ type AuthContextType = {
     userEmail: string | null
     userName: string | null
     userPhotoUrl: string | null
-    // isAdmin: boolean 
+    isAdmin: boolean
+    setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 //creating the context + initial values
@@ -49,6 +50,8 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     const [userName, setUserName] = useState<string | null>(null)
 
     //later admin
+    const [isAdmin, setIsAdmin] = useState(false)
+
 
     //signup
     const signup = (email: string, password: string) => {
@@ -137,7 +140,8 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
             setEmail,
             setPassword,
             setPhotoUrl,
-
+            isAdmin,
+            setIsAdmin
 
         }}>
             {loading ? (
