@@ -1,5 +1,5 @@
 /**
- * Signup Page
+ * Admin Signup Page
  */
 
 import { useState } from 'react'
@@ -14,15 +14,33 @@ import { SignUpCredentials } from '../types/user.types'
 import useAuth from '../hooks/useAuth'
 import { FirebaseError } from 'firebase/app'
 import { toast } from 'react-toastify'
+import { doc, setDoc } from 'firebase/firestore'
+import { newAdmin } from '../services/firebase'
 
 const SignUp = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const { signup, setIsAdmin, isAdmin } = useAuth() // Our hook
+    const { signup, currentUser, setIsAdmin, isAdmin } = useAuth() // Our hook
 
+    const createAdmin = async () => {
+        //add a new document to create admin
+        if (!currentUser) {
+            return
+        }
+        const docRef = doc(newAdmin)
 
-    const onSignup = async (data: SignUpCredentials) => {
+        //set the admin info
+        await setDoc(docRef, {
+            _id: currentUser.uid,
+            isAdmin: true
+        })
+
+        console.log('hej create')
+
+    }
+
+    const onSignupAdmin = async (data: SignUpCredentials) => {
         setErrorMessage(null)
 
         try {
@@ -30,9 +48,12 @@ const SignUp = () => {
             await signup(data.email, data.password)
             console.log(data.email, data.password)
 
-            setIsAdmin(false)
+            //setIsAdmin(false)
+            //await setDoc()
+            //await createAdmin()
 
-            toast.success('Welcome!')
+            toast.success('Welcome admin!')
+            console.log('hej')
             navigate('/')
         } catch (error) {
             if (error instanceof FirebaseError) {
@@ -43,6 +64,7 @@ const SignUp = () => {
             setLoading(false)
         }
 
+        await createAdmin()
 
 
     }
@@ -59,7 +81,7 @@ const SignUp = () => {
                         {/* Error message */}
                         {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
                         {/* Form Component*/}
-                        <SignUpForm onSignup={onSignup} loading={loading} />
+                        <SignUpForm onSignup={onSignupAdmin} loading={loading} />
                     </Card.Body>
                 </Col>
             </Row>
