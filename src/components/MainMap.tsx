@@ -44,7 +44,6 @@ const MainMap = () => {
 			}
 		)
 	}, [])
-	console.log(faPerson)
 	// show loading spinner
 	if (!isLoaded) {
 		return <p>Loading... </p>
