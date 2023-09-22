@@ -17,12 +17,11 @@ export type LoginCredentials = {
 	password: string
 }
 
-export type UpdateProfileFormData = {
-	firstName: string
-	lastName: string
+export type UpdateAdminProfileFormData = {
+	displayName: string
 	email: string
 	password: string
 	passwordConfirm: string
-	//photoFile: FileList
+	photoFile: FileList
 
 }

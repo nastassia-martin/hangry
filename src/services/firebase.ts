@@ -7,6 +7,7 @@ import {
 	DocumentData,
 } from "firebase/firestore"
 import { Eatery } from "../types/restaurant.types"
+import { getStorage } from "firebase/storage"
 
 // Firebase config
 const firebaseConfig = {
@@ -26,6 +27,9 @@ export const auth = getAuth(app)
 
 // Get Firestore instance
 export const db = getFirestore(app)
+
+// Get Storage instance
+export const storage = getStorage(app)
 
 // helper to add type to collection
 const createCollection = <T = DocumentData>(collectionName: string) => {
