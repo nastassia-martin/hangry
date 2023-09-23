@@ -8,10 +8,10 @@ import Col from 'react-bootstrap/Col'
 
 interface IProps {
 	onAddTip: (data: Eatery) => Promise<void>
-
+	onSubmit: () => void
 }
 
-const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
+const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 	const { handleSubmit, register, formState: { isSubmitSuccessful }, reset } = useForm<Eatery>()
 
 	const onFormSubmit: SubmitHandler<Eatery> = async (data: Eatery) => {
@@ -54,7 +54,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
 						type="text"
 						placeholder='42'
 						defaultValue="42"
-						{...register('address.street', {
+						{...register('address.addressNumber', {
 							required: "This field cant be left empty.",
 						})}
 					/>
@@ -97,17 +97,20 @@ const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
 					<option>Restaurant</option>
 				</Form.Select>
 			</Form.Group>
-			<Form.Group className="mb-3" controlId='offers' id="Offers">
+			<Form.Group className="mb-3" controlId='offers'>
 				<Form.Check inline type="checkbox" label="Lunch" {...register('offering.lunch')} />
 				<Form.Check inline type="checkbox" label="After Work" {...register('offering.afterWork')} />
 				<Form.Check inline type="checkbox" label="Dinner" {...register('offering.dinner')} />
+				<Form.Check inline type="checkbox" label="Dinner" {...register('offering.dinner')} />
+				<Form.Check inline type="checkbox" label="Vegan" {...register('offering.vegan')} />
+				<Form.Check inline type="checkbox" label="Vegetarian" {...register('offering.vegetarian')} />
 			</Form.Group>
 			<Form.Group className="mb-3" controlId="description">
 				<Form.Label>Description (optional)</Form.Label>
-				<Form.Control as="textarea" rows={3} />
+				<Form.Control as="textarea" rows={3} {...register('description')}/>
 			</Form.Group>
 
-			<Button className="mt-3" variant="dark" type="submit">
+			<Button className="mt-3" variant="dark" type="submit" onClick={onSubmit}>
 				Send in tip
 			</Button>
 

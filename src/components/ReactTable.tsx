@@ -8,13 +8,15 @@ import {
 	SortingState,
 	useReactTable,
 } from "@tanstack/react-table"
+import { Eatery } from "../types/restaurant.types"
 
 interface IProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
+	row: Eatery
 }
 
-const TanstackSortableTable = <TData, TValue>({
+const ReactTable = <TData, TValue>({
 	columns,
 	data,
 }: IProps<TData, TValue>) => {
@@ -86,4 +88,4 @@ const TanstackSortableTable = <TData, TValue>({
 	)
 }
 
-export default TanstackSortableTable
+export default ReactTable
