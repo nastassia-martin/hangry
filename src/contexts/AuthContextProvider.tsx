@@ -13,7 +13,8 @@ import {
 } from 'firebase/auth'
 
 import { createContext, useEffect, useState } from 'react'
-import { auth } from '../services/firebase'
+import { auth, newUser } from '../services/firebase'
+import { doc, setDoc } from 'firebase/firestore'
 
 type AuthContextType = {
     currentUser: User | null
@@ -52,11 +53,32 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     //later admin
     const [isAdmin, setIsAdmin] = useState(false)
 
+    const signup = async (email: string, password: string) => {
+        try {
+            // Create a user account 
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
 
-    //signup
-    const signup = (email: string, password: string) => {
-        return createUserWithEmailAndPassword(auth, email, password)
+            // Check if the user creation was successful
+            if (userCredential.user) {
+                const docRef = doc(newUser)
+
+                // Set the user info for the new user
+                await setDoc(docRef, {
+                    _id: userCredential.user.uid,
+                    isAdmin: false,
+                    name: userCredential.user.displayName || 'no name',
+                    email: userCredential.user.email! // Because all users have an email
+                })
+            }
+
+            return userCredential
+        } catch (error) {
+            // Handle errors
+            console.error('Error during signup:', error)
+            throw error
+        }
     }
+
 
     //login
     const login = (email: string, password: string) => {
