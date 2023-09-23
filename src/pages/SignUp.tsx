@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { SignUpCredentials } from '../types/user.types'
 import useAuth from '../hooks/useAuth'
 import { FirebaseError } from 'firebase/app'
+import { toast } from 'react-toastify'
 
 const SignUp = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -28,6 +29,8 @@ const SignUp = () => {
             setLoading(true)
             await signup(data.email, data.password)
             console.log(data.email, data.password)
+
+            toast.success('Welcome!')
             navigate('/')
         } catch (error) {
             if (error instanceof FirebaseError) {
