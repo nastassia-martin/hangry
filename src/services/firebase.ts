@@ -45,5 +45,9 @@ export const restaurantsCol = createCollection<Eatery>("restaurants")
 export const adminsCol = createCollection<AdministratorCredentials>("admins")
 export const newAdmin = createCollection<AdministratorCredentials>("admin")
 
+//users
+export const newUser = createCollection<AdministratorCredentials>("users")
+
+
 
 export default app

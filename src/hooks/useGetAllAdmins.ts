@@ -1,17 +1,15 @@
-/**
- * is the current user is admin
- */
+
 import { adminsCol } from "../services/firebase"
 import useStreamCollection from "./useGetStreamColleciton"
 import { AdministratorCredentials } from "../types/administrator.types"
 import { where } from "firebase/firestore"
 
-const useGetAdmin = (uid = '') => {
+const useGetAllAdmins = () => {
 	return useStreamCollection<AdministratorCredentials>(
 		adminsCol,
-		where('id', '==', uid),
+		where('isAdmin', '==', true),
 
 	)
 }
 
-export default useGetAdmin
+export default useGetAllAdmins

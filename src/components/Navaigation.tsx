@@ -55,6 +55,9 @@ const Navigation = () => {
 							</>
 						}
 						<Nav.Link as={NavLink} to="/update-profile">Update Profile</Nav.Link>
+
+						<Nav.Link as={NavLink} to="/users">Users & Admins</Nav.Link>
+
 						<Nav.Link as={NavLink} to="/tips">Tips</Nav.Link>
 
 					</Nav>
