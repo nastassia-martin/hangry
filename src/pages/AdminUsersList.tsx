@@ -20,8 +20,8 @@ const columns: ColumnDef<UserList>[] = [
         header: "Admin",
     },
     {
-        accessorKey: "created_at",
-        header: "Created",
+        accessorKey: "photoUrl",
+        header: "Photo",
     },
 ]
 

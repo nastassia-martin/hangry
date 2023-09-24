@@ -10,6 +10,8 @@ export type AdministratorCredentials = {
 	email: string
 	created_at?: string | Timestamp
 	//profilePicture?: FileList //| string
+	//photoFile?: FileList
+	photoUrl?: string
 
 }
 

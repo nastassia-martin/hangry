@@ -28,6 +28,7 @@ const UpdateProfile = () => {
         setEmail,
         setPassword,
         setPhotoUrl,
+        userPhotoUrl,
         //userPhotoUrl,
         reloadUser
     } = useAuth()
@@ -88,11 +89,12 @@ const UpdateProfile = () => {
             const docRef = doc(newUser, currentUser.uid);
             const { password, passwordConfirm, photoFile, ...updatedData } = data;
 
+
             // Map the updatedData to AdministratorCredentials
             const updatedCredentials = {
                 //_id: currentUser.uid,
-                isAdmin: false,
                 name: updatedData.displayName,
+                photoUrl: userPhotoUrl,
                 ...updatedData,
             };
 
