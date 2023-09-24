@@ -4,10 +4,13 @@ export type AdministratorCredentials = {
 	_id: string
 	isAdmin: boolean
 	name?: string
+	//displayName?: string
+
 	//password: string
 	email: string
 	created_at?: string | Timestamp
-	//profilePicture?: FileList | string
+	//profilePicture?: FileList //| string
+
 }
 
 export type UserList = Omit<AdministratorCredentials, 'password' | '_id'>;
@@ -25,3 +28,4 @@ export type UpdateAdminProfileFormData = {
 	photoFile: FileList
 
 }
+
