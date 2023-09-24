@@ -17,9 +17,20 @@ const Navigation = () => {
 		//userPhotoUrl,
 	} = useAuth()
 
-	const { data: admin } = useGetAdmin(currentUser?.uid)
+	if (currentUser) {
+		console.log('current', currentUser.email)
+		//const { data: admin } = useGetAdmin(currentUser?.uid)
 
-	if (admin) {
+
+	}
+	//const { data: admin } = useGetAdmin(currentUser?.uid)
+	//const { data } = useGetAdmin(currentUser?.uid)
+
+	//const admin = useGetAdmin(currentUser?.uid)
+	const admin = useGetAdmin(currentUser?.uid)
+
+
+	if (currentUser && admin) {
 		console.log('adminID', admin, 'currentUser', currentUser?.uid)
 	}
 
