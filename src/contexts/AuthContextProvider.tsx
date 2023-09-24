@@ -60,8 +60,8 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
 
             // Check if the user creation was successful
             if (userCredential.user) {
-                const docRef = doc(newUser)
-
+                //const docRef = doc(newUser)
+                const docRef = doc(newUser, userCredential.user.uid)
                 // Set the user info for the new user
                 await setDoc(docRef, {
                     _id: userCredential.user.uid,
