@@ -10,6 +10,8 @@ import { ToastContainer } from "react-toastify"
 import UpdateProfile from "./pages/UpdateProfile"
 import AdminSignUp from "./pages/AdminSignUp"
 import AdminUsersList from "./pages/AdminUsersList"
+import RequireAuth from "./components/RequireAuth"
+import RequireAdminAuth from "./components/RequireAdmin"
 
 
 const App = () => {
@@ -26,7 +28,13 @@ const App = () => {
 
         <Route path='/admin-signup' element={<AdminSignUp />} />
         <Route path='/update-profile' element={<UpdateProfile />} />
-        <Route path="/users" element={<AdminUsersList />} />
+
+        <Route path="/users" element={
+          <RequireAdminAuth>
+            <AdminUsersList />
+          </RequireAdminAuth>
+        } />
+
         <Route path="/tips" element={<Restaurant_tips />} />
       </Routes>
 
