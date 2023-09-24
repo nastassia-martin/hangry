@@ -8,15 +8,15 @@ import Col from 'react-bootstrap/Col'
 
 interface IProps {
     onAddTip: (data: Eatery) => Promise<void>
-    // onDeleteTip: (data: Eatery) => Promise<void>
+    onDelete: () => void
     initialValues?: Eatery | null
 }
 
-const AdminTipForm: React.FC<IProps> = ({ onAddTip, initialValues }) => {
+const AdminTipForm: React.FC<IProps> = ({ onAddTip, onDelete, initialValues }) => {
     const { handleSubmit, register } = useForm<Eatery>({
         defaultValues: {
-        ...initialValues,
-    }
+            ...initialValues,
+        }
     },)
 
     const onFormSubmit: SubmitHandler<Eatery> = async (data: Eatery) => {
@@ -112,9 +112,7 @@ const AdminTipForm: React.FC<IProps> = ({ onAddTip, initialValues }) => {
                     <Form.Control
                         type="text"
                         placeholder='133742'
-                        {...register('location.lat', {
-                            required: "This field cant be left empty.",
-                        })}
+                        {...register('location.lat')}
                     />
                 </Form.Group>
                 <Form.Group as={Col} controlId='longitude'>
@@ -122,9 +120,7 @@ const AdminTipForm: React.FC<IProps> = ({ onAddTip, initialValues }) => {
                     <Form.Control
                         type="text"
                         placeholder='1337'
-                        {...register('location.lng', {
-                            required: "This field cant be left empty.",
-                        })}
+                        {...register('location.lng')}
                     />
                 </Form.Group>
                 <Form.Group as={Col} controlId='geopoint'>
@@ -132,9 +128,7 @@ const AdminTipForm: React.FC<IProps> = ({ onAddTip, initialValues }) => {
                     <Form.Control
                         type="text"
                         placeholder='[-90,90]'
-                        {...register('loc.latitude', {
-                            required: "This field cant be left empty.",
-                        })}
+                        {...register('loc.latitude')}
                     />
                 </Form.Group>
                 <Form.Group as={Col} controlId='geopoint'>
@@ -142,11 +136,56 @@ const AdminTipForm: React.FC<IProps> = ({ onAddTip, initialValues }) => {
                     <Form.Control
                         type="text"
                         placeholder='[-180,180]'
-                        {...register('loc.longitude', {
-                            required: "This field cant be left empty.",
-                        })}
+                        {...register('loc.longitude')}
                     />
                 </Form.Group>
+            </Row>
+
+            <Form.Group controlId='email'>
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                    type="text"
+                    placeholder='eatery@thismail.com'
+                    {...register('restaurangDetails.email')}
+                />
+            </Form.Group>
+
+            <Row>
+                <Form.Group as={Col} controlId='telephone'>
+                    <Form.Label>Phone Nr</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder='0701337420'
+                        {...register('restaurangDetails.telephone')}
+                    />
+                </Form.Group>
+                <Form.Group as={Col} controlId='website'>
+                    <Form.Label>Website</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder='eathere.com'
+                        {...register('restaurangDetails.website')}
+                    />
+                </Form.Group>
+                </Row>
+                <Row>
+                <Form.Group as={Col} controlId='facebook'>
+                    <Form.Label>Facebook</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder='facebook.com/eathere'
+                        {...register('restaurangDetails.Facebook')}
+                    />
+                </Form.Group>
+                <Form.Group as={Col} controlId='instagram'>
+                    <Form.Label>Instagram</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder='instagram.com/eathere'
+                        {...register('restaurangDetails.Instagram')}
+                    />
+                </Form.Group>
+                </Row>
 
                 <Form.Group controlId='isAdminApproved'>
                     <Form.Check
@@ -156,12 +195,15 @@ const AdminTipForm: React.FC<IProps> = ({ onAddTip, initialValues }) => {
                         {...register('adminApproved')}
                     />
                 </Form.Group>
-            </Row>
+            
             <div className='d-flex justify-content-between'>
-            <Button className="mt-3" variant="success" type="submit">
-                Save
-            </Button>      
-            </div>     
+                <Button className="mt-3" variant="success" type="submit">
+                    Save
+                </Button>
+                <Button className="mt-3" variant="danger" onClick={onDelete}>
+                    Delete
+                </Button>
+            </div>
         </Form>
 
     )
