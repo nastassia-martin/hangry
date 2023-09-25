@@ -1,16 +1,18 @@
 import {
 	GoogleMap,
-	useJsApiLoader,
+	// useJsApiLoader,
 	MarkerF,
 	InfoWindowF,
-	Autocomplete,
+	useLoadScript,
+	Libraries,
 } from "@react-google-maps/api"
-
+const libraries: Libraries = ["places"]
 import useGetEateries from "../hooks/useGetEateries"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Eatery } from "../types/restaurant.types"
 import RestaurantCard from "./RestaurantCard"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
+import AutoCompletePlaces from "./AutoCompletePlaces"
 
 const MainMap = () => {
 	const { data } = useGetEateries()
@@ -33,11 +35,10 @@ const MainMap = () => {
 		}),
 		[]
 	)
-
 	//load GoogleMapsAPI script
-	const { isLoaded, loadError } = useJsApiLoader({
+	const { isLoaded, loadError } = useLoadScript({
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
-		libraries: ["places"],
+		libraries: libraries,
 	})
 	useEffect(() => {
 		// run this once to get the users position
@@ -72,11 +73,12 @@ const MainMap = () => {
 
 	return (
 		<>
-			<Autocomplete>
+			{/* <Autocomplete>
 				<div>
 					<input type="text" />
 				</div>
-			</Autocomplete>
+			</Autocomplete> */}
+			<AutoCompletePlaces />
 			<GoogleMap
 				onLoad={onMapLoad}
 				zoom={12} // set zoom over map
