@@ -1,5 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
-import ReactTable from '../components/ReactTable'
+import UsersReactTable from '../components/UsersReactTable'
+
 import { UserList } from '../types/administrator.types'
 import useGetAllAdmins from '../hooks/useGetAllAdmins'
 
@@ -24,16 +25,17 @@ const columns: ColumnDef<UserList>[] = [
         header: "Photo",
     },
 ]
-
+console.log()
 const AdminUsersList = () => {
 
     const {
         data: admins
     } = useGetAllAdmins()
 
+
     return (
         <>
-            {admins && <ReactTable columns={columns} data={admins} />}
+            {admins && <UsersReactTable columns={columns} data={admins} />}
         </>
     )
 }
