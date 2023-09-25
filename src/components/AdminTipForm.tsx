@@ -7,12 +7,12 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 interface IProps {
-    onAddTip: (data: Eatery) => Promise<void>
+    onEditTip: (data: Eatery) => Promise<void>
     onDelete: () => void
     initialValues?: Eatery | null
 }
 
-const AdminTipForm: React.FC<IProps> = ({ onAddTip, onDelete, initialValues }) => {
+const AdminTipForm: React.FC<IProps> = ({ onEditTip, onDelete, initialValues }) => {
     const { handleSubmit, register } = useForm<Eatery>({
         defaultValues: {
             ...initialValues,
@@ -20,7 +20,7 @@ const AdminTipForm: React.FC<IProps> = ({ onAddTip, onDelete, initialValues }) =
     },)
 
     const onFormSubmit: SubmitHandler<Eatery> = async (data: Eatery) => {
-        await onAddTip(data)
+        await onEditTip(data)
     }
 
     return (

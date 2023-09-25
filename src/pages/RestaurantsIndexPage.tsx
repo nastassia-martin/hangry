@@ -5,14 +5,23 @@ import useGetEateries from '../hooks/useGetEateries'
 import AdminTipForm from '../components/AdminTipForm'
 import { useState } from 'react'
 import { firebaseTimestampToString } from '../helpers/time'
-import { doc, serverTimestamp, updateDoc, deleteDoc, Timestamp } from 'firebase/firestore'
+import { doc, serverTimestamp, updateDoc, deleteDoc, Timestamp, setDoc } from 'firebase/firestore'
 import { restaurantsCol } from '../services/firebase'
 import TipModal from '../components/TipModal'
-
+import Button from 'react-bootstrap/esm/Button'
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal'
+import RestaurantModal from '../components/RestaurantDetailsModal'
+import TipsForm from '../components/TipsForm'
+import useGetAddress from '../hooks/useGetAddress'
+import {GeolocationResponse} from '../types/restaurant.types'
+import axios from 'axios'
+import {get} from '../services/googleAPI' 
 
 
 const Restaurant_tips = () => {
+
+    //to try add tip before we put it on the map page
+    const [isTipModalOpen, setIsTipModalOpen] = useState(false)
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
@@ -141,20 +150,21 @@ const Restaurant_tips = () => {
         setOpenConfirmDelete(false)
     }
 
+    const {data: Address} = useGetAddress("malmo")
+
+    console.log("is this address?", Address)
+
+    const addTip = async (data: Eatery) => {
+        const docRef = doc(restaurantsCol)
+
+        await setDoc(docRef, {
+            ...data,
+            created_at: serverTimestamp(),
+        })
+
+    }
 
 
-
-    // to use the form to create a new eatery
-    // const addTip = async (data: Eatery) => {
-
-    //     const docRef = doc(restaurantsCol)
-
-    //     await setDoc(docRef, {
-    //         ...data,
-    //         created_at: serverTimestamp(),
-    //     })
-
-    // }
     return (
         <>
             {loading && (
@@ -164,11 +174,18 @@ const Restaurant_tips = () => {
             <div className="d-flex align-items-center flex-column justfiy-center">
                 <h2>Restaurant Index</h2>
             </div>
+            
+            <div>
+                <Button onClick={() => setIsTipModalOpen(true)}>Add tip</Button>
+                <TipModal isOpen={isTipModalOpen} onClose={() => setIsTipModalOpen(false)}>
+                    <TipsForm onAddTip={addTip} onSubmit={() => setIsTipModalOpen(false)}></TipsForm>
+                </TipModal>
+            </div>
 
             <div>
-                <TipModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <AdminTipForm onAddTip={editRestaurant} initialValues={isSingleData} onDelete={() => setOpenConfirmDelete(true)} />
-                </TipModal>
+                <RestaurantModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                    <AdminTipForm onEditTip={editRestaurant} initialValues={isSingleData} onDelete={() => setOpenConfirmDelete(true)} />
+                </RestaurantModal>
             </div>
 
             <DeleteConfirmationModal
@@ -179,7 +196,7 @@ const Restaurant_tips = () => {
                 Are you sure you want to delete this data?
             </DeleteConfirmationModal>
 
-
+            
 
 
             {data &&
