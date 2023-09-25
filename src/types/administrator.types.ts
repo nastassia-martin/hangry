@@ -15,7 +15,7 @@ export type AdministratorCredentials = {
 
 }
 
-export type UserList = Omit<AdministratorCredentials, 'password' | '_id'>;
+export type UserList = Omit<AdministratorCredentials, 'password'>; //| '_id'
 
 export type LoginCredentials = {
 	email: string
