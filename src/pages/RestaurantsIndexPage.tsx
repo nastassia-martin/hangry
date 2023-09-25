@@ -13,9 +13,9 @@ import DeleteConfirmationModal from '../components/DeleteConfirmationModal'
 import RestaurantModal from '../components/RestaurantDetailsModal'
 import TipsForm from '../components/TipsForm'
 import useGetAddress from '../hooks/useGetAddress'
-import {GeolocationResponse} from '../types/restaurant.types'
+import { GeolocationResponse } from '../types/restaurant.types'
 import axios from 'axios'
-import {get} from '../services/googleAPI' 
+import { get } from '../services/googleAPI'
 
 
 const Restaurant_tips = () => {
@@ -27,6 +27,8 @@ const Restaurant_tips = () => {
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
     const [isSingleData, setIsSingleData] = useState<Eatery>()
     const { data, loading } = useGetEateries()
+
+    
 
     const columnHelper = createColumnHelper<Eatery>()
     const columns = [
@@ -150,18 +152,24 @@ const Restaurant_tips = () => {
         setOpenConfirmDelete(false)
     }
 
-    const {data: Address} = useGetAddress("malmo")
 
-    console.log("is this address?", Address)
+
 
     const addTip = async (data: Eatery) => {
+        const street = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
+        const streetToAdd = await get(street)
+        console.log("got them streets?",street)
+        console.log("got them locations yo!", streetToAdd?.results[0].geometry.location)
         const docRef = doc(restaurantsCol)
 
+        console.log("whats up doc",docRef)
+        
         await setDoc(docRef, {
             ...data,
+            location: streetToAdd?.results[0].geometry.location,
             created_at: serverTimestamp(),
         })
-
+        console.log("will the real doc please stand up",docRef)
     }
 
 
@@ -174,7 +182,7 @@ const Restaurant_tips = () => {
             <div className="d-flex align-items-center flex-column justfiy-center">
                 <h2>Restaurant Index</h2>
             </div>
-            
+
             <div>
                 <Button onClick={() => setIsTipModalOpen(true)}>Add tip</Button>
                 <TipModal isOpen={isTipModalOpen} onClose={() => setIsTipModalOpen(false)}>
@@ -196,7 +204,7 @@ const Restaurant_tips = () => {
                 Are you sure you want to delete this data?
             </DeleteConfirmationModal>
 
-            
+
 
 
             {data &&

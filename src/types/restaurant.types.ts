@@ -7,7 +7,7 @@ export type Eatery = {
 	category: Category
 	offering: Partial<Offering>
 	adminApproved?: boolean
-	location?: Location
+	location?: Location | null
 	created_at: Timestamp
 	updated_at?: Timestamp
 	loc?: GeoPoint

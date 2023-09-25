@@ -123,22 +123,6 @@ const AdminTipForm: React.FC<IProps> = ({ onEditTip, onDelete, initialValues }) 
                         {...register('location.lng')}
                     />
                 </Form.Group>
-                <Form.Group as={Col} controlId='geopoint'>
-                    <Form.Label>lat</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder='[-90,90]'
-                        {...register('loc.latitude')}
-                    />
-                </Form.Group>
-                <Form.Group as={Col} controlId='geopoint'>
-                    <Form.Label>lng</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder='[-180,180]'
-                        {...register('loc.longitude')}
-                    />
-                </Form.Group>
             </Row>
 
             <Form.Group controlId='email'>
