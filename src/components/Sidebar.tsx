@@ -1,4 +1,3 @@
-import React from 'react'
 import SidebarMenu, { SidebarMenuHeader, 
                       SidebarMenuBrand,
                       SidebarMenuCollapse, 
@@ -12,26 +11,16 @@ import SidebarMenu, { SidebarMenuHeader,
                       SidebarMenuSubContext, 
                       SidebarMenuNavLink, 
                       SidebarMenuNavTitle } from 'react-bootstrap-sidebar-menu'
-import { Eatery, Eateries } from '../types/restaurant.types'
-import useGetEateries from '../hooks/useGetEateries'
-import { Transition } from 'react-transition-group'
-import { useState } from 'react'
+import { Eateries, Eatery } from '../types/restaurant.types'
 
-interface SidebarProps {
-    DATA: Eateries
-    HIDDEN: boolean
+interface IProps {
+    data: Eatery[] | null
 }
 
-const Sidebar:React.FC<SidebarProps> = ({
-    HIDDEN
-}) => {
-    const [isOpen, toggleIsOpen] = useState(false)
-    const { data:datadata } = useGetEateries() 
-    {/*remove when implemented in navbar?*/}
+const Sidebar:React.FC<IProps> = ({data}) => {
 
     return (
         <>
-            <Transition in={isOpen} timeout={250}>
                 <SidebarMenu 
                     bg='dark'
                     variant='dark' 
@@ -42,8 +31,7 @@ const Sidebar:React.FC<SidebarProps> = ({
                             top:'0px', 
                             overflow:'scroll', 
                             margin:'0px'}} 
-                    exclusiveExpand={true}
-                    hide={HIDDEN}> {/* for toggling sidebar*/}
+                    exclusiveExpand={true}>
                     <SidebarMenuHeader style={{display:'block'}}>
                         <SidebarMenuBrand>
                             🍋Places to eat!
@@ -51,7 +39,7 @@ const Sidebar:React.FC<SidebarProps> = ({
                     </SidebarMenuHeader>
                         <SidebarMenuBody>
                             <SidebarMenuNav>
-                                {datadata?.map((place:Eatery) => ( 
+                                {data && data.map((place:Eatery) => ( 
                                     <SidebarMenu.Sub key={place._id}>
                                         <SidebarMenuSub.Toggle label={place.address.restaurantName}>
                                             <SidebarMenuNavIcon/>
@@ -109,7 +97,6 @@ const Sidebar:React.FC<SidebarProps> = ({
                             </SidebarMenuFooter>
                         </SidebarMenuBody>
                 </SidebarMenu>
-            </Transition>
         </>
   )
 }
