@@ -12,7 +12,7 @@ import UpdateProfileForm from '../components/UpdateProfileForm'
 import useAuth from '../hooks/useAuth'
 import { FirebaseError } from 'firebase/app'
 import { toast } from 'react-toastify'
-import { AdministratorCredentials, UpdateAdminProfileFormData } from '../types/administrator.types'
+import { UpdateAdminProfileFormData } from '../types/administrator.types'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { newUser, storage } from '../services/firebase'
 import { doc, updateDoc } from 'firebase/firestore'
@@ -20,7 +20,6 @@ import { doc, updateDoc } from 'firebase/firestore'
 const UpdateProfile = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
-    //const navigate = useNavigate()
 
     const {
         currentUser,
@@ -80,26 +79,23 @@ const UpdateProfile = () => {
 
                 setLoading(false)
 
-
             }
 
             await reloadUser()
 
             //update document
-            const docRef = doc(newUser, currentUser.uid);
-            const { password, passwordConfirm, photoFile, ...updatedData } = data;
+            const docRef = doc(newUser, currentUser.uid)
+            const { password, passwordConfirm, photoFile, ...updatedData } = data
 
 
             // Map the updatedData to AdministratorCredentials
             const updatedCredentials = {
-                //_id: currentUser.uid,
                 name: updatedData.displayName,
                 photoUrl: userPhotoUrl,
                 ...updatedData,
-            };
+            }
 
             await updateDoc(docRef, updatedCredentials)
-
 
             setLoading(false)
             toast.success('profile updated')
