@@ -1,18 +1,20 @@
 import { Timestamp, GeoPoint } from "firebase/firestore"
 
 export type Eatery = {
-	_id: string
+	_id?: string
 	address: Address
 	restaurangDetails: Partial<RestaurantDetails>
 	category: Category
-	offering: Partial<Offering>[]
-	adminApproved: boolean
-	location: Location
+	offering: Partial<Offering>
+	adminApproved?: boolean
+	location?: Location
 	created_at: Timestamp
-	updated_at: Timestamp
-	loc: GeoPoint
+	updated_at?: Timestamp
+	loc?: GeoPoint
 	description: string
 }
+
+export type CreateEatery = {}
 
 type Address = {
 	restaurantName: string
@@ -29,7 +31,7 @@ type RestaurantDetails = {
 	Facebook: string
 	Instagram: string
 }
-type Location = {
+export type Location = {
 	lat: number
 	lng: number
 }
@@ -47,4 +49,3 @@ type Offering = {
 	vegetarian: string
 	vegan: string
 }
-export type Eateries = Eatery[]
