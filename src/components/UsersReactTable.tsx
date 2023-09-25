@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import BTable from 'react-bootstrap/Table'
 import {
     ColumnDef,
+    SortingState,
     flexRender,
     getCoreRowModel,
+    getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
 
@@ -12,10 +15,17 @@ interface IProps<TData, TValue> {
 }
 
 const UsersReactTable = <TData, TValue>({ columns, data }: IProps<TData, TValue>) => {
+    const [sorting, setSorting] = useState<SortingState>([])
+
     const table = useReactTable({
         data,
         columns,
-        getCoreRowModel: getCoreRowModel()
+        state: {
+            sorting,
+        },
+        onSortingChange: setSorting,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
     })
 
     return (
@@ -25,12 +35,30 @@ const UsersReactTable = <TData, TValue>({ columns, data }: IProps<TData, TValue>
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map(header => (
                             <th key={header.id} colSpan={header.colSpan}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                    )}
+                                {header.isPlaceholder ? null : (
+                                    <div
+                                        className={`cursor-pointer select-none ${header.column.getCanSort() && header.column.id !== 'photoUrl'
+                                            ? 'sortable'
+                                            : ''
+                                            }`}
+                                        onClick={
+                                            header.column.getCanSort() && header.column.id !== 'photoUrl'
+                                                ? header.column.getToggleSortingHandler()
+                                                : undefined
+                                        }
+                                    >
+                                        {flexRender(header.column.columnDef.header, header.getContext())}
+                                        {header.column.id !== 'photoUrl' &&
+                                            header.column.getIsSorted() === 'asc' ? (
+                                            ' ▲'
+                                        ) : header.column.id !== 'photoUrl' &&
+                                            header.column.getIsSorted() === 'desc' ? (
+                                            ' ▼'
+                                        ) : (
+                                            ''
+                                        )}
+                                    </div>
+                                )}
                             </th>
                         ))}
                     </tr>
@@ -43,29 +71,23 @@ const UsersReactTable = <TData, TValue>({ columns, data }: IProps<TData, TValue>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
                                 {cell.column.id === 'photoUrl' ? (
-                                    // Check if the column is the 'photo' column
-                                    <img src={
-                                        cell.getValue() !== 'undefined' && cell.getValue() !== undefined
-                                            ? String(cell.getValue())
-                                            : 'https://via.placeholder.com/225'
-                                    }
+                                    <img
+                                        src={
+                                            cell.getValue() !== 'undefined' && cell.getValue() !== undefined
+                                                ? String(cell.getValue())
+                                                : 'https://via.placeholder.com/225'
+                                        }
                                         alt="User Photo"
                                         style={{ maxWidth: '100px' }}
-
                                     />
                                 ) : (
-                                    // Render other columns as usual
-                                    flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext()
-                                    )
+                                    flexRender(cell.column.columnDef.cell, cell.getContext())
                                 )}
                             </td>
                         ))}
                     </tr>
                 ))}
             </tbody>
-
         </BTable>
     )
 }
