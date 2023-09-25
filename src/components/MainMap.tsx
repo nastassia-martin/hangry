@@ -71,10 +71,10 @@ const MainMap = () => {
 			center={{ lat: 55.5918001, lng: 13.0167039 }} // where map should be centered
 			mapContainerClassName="main-map" // container size of where map will be rendered
 		>
-		<Transition in={isOpen} timeout={250}>
+		{/* <Transition in={isOpen} timeout={250}>
 		<Sidebar
 			data={data}/>
-		</Transition>
+		</Transition> */}
 			{/*this marker should be the user position */}
 			{userPosition && (
 				<MarkerF
