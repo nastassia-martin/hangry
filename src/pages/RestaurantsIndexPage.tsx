@@ -1,9 +1,9 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import ReactTable from '../components/ReactTable'
-import { Eatery } from '../types/restaurant.types'
+import { Eatery, Location } from '../types/restaurant.types'
 import useGetEateries from '../hooks/useGetEateries'
 import AdminTipForm from '../components/AdminTipForm'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { firebaseTimestampToString } from '../helpers/time'
 import { doc, serverTimestamp, updateDoc, deleteDoc, Timestamp, setDoc } from 'firebase/firestore'
 import { restaurantsCol } from '../services/firebase'
@@ -20,15 +20,20 @@ import { get } from '../services/googleAPI'
 
 const Restaurant_tips = () => {
 
-    //to try add tip before we put it on the map page
-    const [isTipModalOpen, setIsTipModalOpen] = useState(false)
+
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
     const [isSingleData, setIsSingleData] = useState<Eatery>()
+    
+
     const { data, loading } = useGetEateries()
 
-    
+    //to try add tip before we put it on the map page
+    const [isTipModalOpen, setIsTipModalOpen] = useState(false)
+    const {data: Location, } = useGetAddress<Location>("null")
+
+
 
     const columnHelper = createColumnHelper<Eatery>()
     const columns = [
@@ -156,17 +161,17 @@ const Restaurant_tips = () => {
 
 
     const addTip = async (data: Eatery) => {
+
         const street = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
-        const streetToAdd = await get(street)
-        console.log("got them streets?",street)
-        console.log("got them locations yo!", streetToAdd?.results[0].geometry.location)
+        useGetAddress(street)
+
         const docRef = doc(restaurantsCol)
 
         console.log("whats up doc",docRef)
         
         await setDoc(docRef, {
             ...data,
-            location: streetToAdd?.results[0].geometry.location,
+            location: Location,
             created_at: serverTimestamp(),
         })
         console.log("will the real doc please stand up",docRef)
