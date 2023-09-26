@@ -6,6 +6,8 @@ import {
 	useLoadScript,
 	Libraries,
 } from "@react-google-maps/api"
+import { getLatLng } from "use-places-autocomplete"
+
 const libraries: Libraries = ["places"]
 import useGetEateries from "../hooks/useGetEateries"
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -21,6 +23,9 @@ const MainMap = () => {
 	const [userPosition, setUserPosition] = useState<
 		google.maps.LatLngLiteral | undefined
 	>(undefined)
+	const [position, setPosition] = useState<
+		google.maps.LatLngLiteral | undefined
+	>({ lat: 55.5918001, lng: 13.0167039 })
 
 	//handle map instance on load
 	const onMapLoad = useCallback((map: google.maps.Map) => {
@@ -70,6 +75,13 @@ const MainMap = () => {
 		//pan to the restaurtant's location instead of the centered position of the map
 		map?.panTo(restaurant.location)
 	}
+	const handleSelect = (results: google.maps.GeocoderResult) => {
+		console.log(results)
+
+		const { lat, lng } = getLatLng(results)
+
+		setPosition({ lat, lng })
+	}
 
 	return (
 		<>
@@ -78,11 +90,11 @@ const MainMap = () => {
 					<input type="text" />
 				</div>
 			</Autocomplete> */}
-			<AutoCompletePlaces />
+			<AutoCompletePlaces resFunc={handleSelect} />
 			<GoogleMap
 				onLoad={onMapLoad}
 				zoom={12} // set zoom over map
-				center={{ lat: 55.5918001, lng: 13.0167039 }} // where map should be centered
+				center={position} // where map should be centered
 				mapContainerClassName="main-map" // container size of where map will be rendered
 				options={options}
 			>
@@ -109,6 +121,7 @@ const MainMap = () => {
 				)}
 
 				{/**render restaurant markers */}
+				{/**render restaurant if they match the city that is the searched city */}
 				{data &&
 					data.map((restaurant) => (
 						<MarkerF
