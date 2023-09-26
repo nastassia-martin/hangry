@@ -11,13 +11,16 @@ interface IFormProps {
 }
 
 const UpdateProfileForm: React.FC<IFormProps> = ({ onUpdateProfile, loading }) => {
+
     const { currentUser } = useAuth()
+
     const { handleSubmit, register, watch, formState: { errors } } = useForm<UpdateAdminProfileFormData>({
         defaultValues: {
             email: currentUser?.email ?? "",
             displayName: currentUser?.displayName ?? "",
         }
     })
+
     const passwordRef = useRef('')
     passwordRef.current = watch('password')
 

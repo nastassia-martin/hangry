@@ -1,7 +1,6 @@
 /**
  * Update Profile Page
  */
-
 import { useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
@@ -18,6 +17,7 @@ import { newUser, storage } from '../services/firebase'
 import { doc, updateDoc } from 'firebase/firestore'
 
 const UpdateProfile = () => {
+
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
 
@@ -28,7 +28,6 @@ const UpdateProfile = () => {
         setPassword,
         setPhotoUrl,
         userPhotoUrl,
-        //userPhotoUrl,
         reloadUser
     } = useAuth()
 
@@ -37,10 +36,12 @@ const UpdateProfile = () => {
     }
 
     const onUpdateProfile = async (data: UpdateAdminProfileFormData) => {
+
         setErrorMessage(null)
 
         try {
             setLoading(true)
+
             if (data.displayName !== (currentUser.displayName ?? '')) {
                 await setDisplayName(data.displayName)
                 console.log('name', data.displayName)
@@ -87,8 +88,7 @@ const UpdateProfile = () => {
             const docRef = doc(newUser, currentUser.uid)
             const { password, passwordConfirm, photoFile, ...updatedData } = data
 
-
-            // Map the updatedData to AdministratorCredentials
+            // updatedData to match AdministratorCredentials
             const updatedCredentials = {
                 name: updatedData.displayName,
                 photoUrl: userPhotoUrl,
@@ -101,6 +101,7 @@ const UpdateProfile = () => {
             toast.success('profile updated')
 
         } catch (error) {
+
             if (error instanceof FirebaseError) {
                 setErrorMessage(error.message)
             } else {

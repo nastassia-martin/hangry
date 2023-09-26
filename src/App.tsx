@@ -8,7 +8,6 @@ import SignUp from './pages/SignUp'
 import Login from "./pages/Login"
 import { ToastContainer } from "react-toastify"
 import UpdateProfile from "./pages/UpdateProfile"
-import AdminSignUp from "./pages/AdminSignUp"
 import AdminUsersList from "./pages/AdminUsersList"
 import RequireAuth from "./components/RequireAuth"
 import RequireAdminAuth from "./components/RequireAdmin"
@@ -24,10 +23,12 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
-        {/* <Route path='/signup' element={<AdminSignUp />} /> */}
 
-        <Route path='/admin-signup' element={<AdminSignUp />} />
-        <Route path='/update-profile' element={<UpdateProfile />} />
+        <Route path='/update-profile' element={
+          <RequireAuth>
+            <UpdateProfile />
+          </RequireAuth>
+        } />
 
         <Route path="/users" element={
           <RequireAdminAuth>

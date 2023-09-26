@@ -19,9 +19,6 @@ const Navigation = () => {
 
 	if (currentUser) {
 		console.log('current', currentUser.email)
-		//const { data: admin } = useGetAdmin(currentUser?.uid)
-
-
 	}
 	//const { data: admin } = useGetAdmin(currentUser?.uid)
 	//const { data } = useGetAdmin(currentUser?.uid)
@@ -65,12 +62,14 @@ const Navigation = () => {
 								<Nav.Link as={NavLink} to="/login">Login</Nav.Link>
 							</>
 						}
-						<Nav.Link as={NavLink} to="/update-profile">Update Profile</Nav.Link>
-
-						<Nav.Link as={NavLink} to="/users">Users & Admins</Nav.Link>
-
 						<Nav.Link as={NavLink} to="/tips">Tips</Nav.Link>
+						{currentUser && admin && (
+							<Nav.Link as={NavLink} to="/users">Manage users</Nav.Link>
 
+						)}
+						{currentUser && (
+							<Nav.Link as={NavLink} to="/update-profile">Update Profile</Nav.Link>
+						)}
 					</Nav>
 					{currentUser &&
 						<>

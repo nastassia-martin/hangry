@@ -42,10 +42,10 @@ const createCollection = <T = DocumentData>(collectionName: string) => {
 export const restaurantsCol = createCollection<Eatery>("restaurants")
 
 //admin
-export const adminsCol = createCollection<AdministratorCredentials>("admins")
-export const newAdmin = createCollection<AdministratorCredentials>("admin")
+//export const adminsCol = createCollection<AdministratorCredentials>("admins")
+//export const newAdmin = createCollection<AdministratorCredentials>("admin")
 
-//users
+//users & admin in the same collection
 export const newUser = createCollection<AdministratorCredentials>("users")
 
 
