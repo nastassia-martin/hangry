@@ -1,4 +1,7 @@
 import usePlacesAutocomplete, { getGeocode } from "use-places-autocomplete"
+import Container from "react-bootstrap/Container"
+import ListGroup from "react-bootstrap/ListGroup"
+
 type Prop = {
 	result: (results: google.maps.GeocoderResult) => void
 }
@@ -9,7 +12,7 @@ const AutoCompletePlaces: React.FC<Prop> = ({ result }) => {
 		setValue,
 		suggestions: { status, data },
 		clearSuggestions,
-	} = usePlacesAutocomplete({ requestOptions: { types: ["locality"] } })
+	} = usePlacesAutocomplete()
 
 	const handleSelect =
 		({ description }: google.maps.places.AutocompletePrediction) =>
@@ -24,31 +27,41 @@ const AutoCompletePlaces: React.FC<Prop> = ({ result }) => {
 			result(results[0])
 		}
 
-	const renderSuggestions = () =>
-		data.map((suggestion) => {
-			const {
-				place_id,
-				structured_formatting: { main_text, secondary_text },
-			} = suggestion
-
-			return (
-				<li key={place_id} onClick={handleSelect(suggestion)}>
-					<strong>{main_text}</strong> <small>{secondary_text}</small>
-				</li>
-			)
-		})
-
 	return (
-		<div>
+		<Container className="auto-complete-container">
 			<input
+				className="autocomplete-input"
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
 				disabled={!ready}
 				placeholder="Where are you going?"
 			/>
 			{/* We can use the "status" to decide whether we should display the dropdown or not */}
-			{status === "OK" && <ul>{renderSuggestions()}</ul>}
-		</div>
+			{status === "OK" && (
+				<ListGroup className="autocomplete-list">
+					{data.map((suggestion) => {
+						const {
+							place_id,
+							structured_formatting: { main_text, secondary_text },
+						} = suggestion
+						return (
+							<ListGroup.Item
+								key={place_id}
+								onClick={handleSelect(suggestion)}
+								className={place_id}
+							>
+								<strong>{main_text}</strong> <small>{secondary_text}</small>
+							</ListGroup.Item>
+						)
+					})}
+				</ListGroup>
+			)}
+			{status === "ZERO_RESULTS" && (
+				<p className="autocomplete-error">
+					Are you too hangry to type? Try again pal
+				</p>
+			)}
+		</Container>
 	)
 }
 export default AutoCompletePlaces
