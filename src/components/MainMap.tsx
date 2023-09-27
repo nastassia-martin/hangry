@@ -14,10 +14,17 @@ import { Eatery } from "../types/restaurant.types"
 import RestaurantCard from "./RestaurantCard"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
 import AutoCompletePlaces from "./AutoCompletePlaces"
+import { useSearchParams } from 'react-router-dom'
+
+
 
 const MainMap = () => {
+	const [searchParams, setSearchParams] = useSearchParams({
+		city: '',
+		latlng: ''
+	})
 	const { data } = useGetEateries()
-	const [city, setCity] = useState<string | undefined>("")
+	//const [city, setCity] = useState<string | undefined>("")
 	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
 	const [map, setMap] = useState<google.maps.Map | null>(null)
 	const [userPosition, setUserPosition] = useState<
@@ -57,6 +64,14 @@ const MainMap = () => {
 			}
 		)
 	}, [])
+	//console.log('city outside ', city)
+
+	useEffect(() => {
+		const selectedCity = searchParams.get("city");
+		//setCity(selectedCity || "");
+		//console.log('inside', city)
+	}, [searchParams])
+
 	// show loading spinner
 	if (!isLoaded) {
 		return <p>Loading... </p>
@@ -65,6 +80,9 @@ const MainMap = () => {
 	if (loadError) {
 		return <p>epic fail</p>
 	}
+
+	// get "city=" from URL Search Params
+	const selectedCity = searchParams.get("city")
 
 	// handle actions for clicking on marker
 	const handleMarkerClick = (restaurant: Eatery) => {
@@ -75,12 +93,23 @@ const MainMap = () => {
 	const handleSelect = (result: google.maps.GeocoderResult) => {
 		//extract the locality from the result
 		const locality = result.address_components[0].long_name
-		setCity(locality)
+		//setCity(locality)
+		//setCity(selectedCity || '')
 
+		console.log('city inside ', locality)
 		// extract the lat & lng from the result
 		const { lat, lng } = getLatLng(result)
 		setPosition({ lat, lng })
+
+		// set input value as city in searchParams
+		// setSearchParams({ city: city || '' })
+		setSearchParams({ city: locality || '' })
+
 	}
+
+
+
+
 	return (
 		<>
 			<AutoCompletePlaces result={handleSelect} />
@@ -115,7 +144,7 @@ const MainMap = () => {
 				{/**render restaurants marker if they match the city that is the searched city */}
 				{data &&
 					data
-						.filter((restaurant) => restaurant.address.city === city)
+						.filter((restaurant) => restaurant.address.city === selectedCity)
 						.map((restaurant) => (
 							<MarkerF
 								key={restaurant._id}
