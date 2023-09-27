@@ -1,10 +1,9 @@
 import Card from "react-bootstrap/Card"
 
-import { Eatery, Location } from "../types/restaurant.types"
+import { Eatery } from "../types/restaurant.types"
 
 interface IProps {
 	data: Eatery
-	startingPoint: Location
 }
 
 const RestaurantCard: React.FC<IProps> = ({ data }) => {
