@@ -1,15 +1,14 @@
 import { Eatery } from "../types/restaurant.types"
 import { restaurantsCol } from "../services/firebase"
 import useStreamCollection from "./useGetStreamColleciton"
-import { where } from "firebase/firestore"
+import { orderBy, where } from "firebase/firestore"
 
-const useGetEateries = (city = "malmö") => {
+const useGetEateries = (city = "") => {
 	console.log(city)
 	return useStreamCollection<Eatery>(
-		restaurantsCol,
-		where("address.city", "==", city)
-
-		// orderBy("distance"),
+		restaurantsCol
+		// where("address.city", "==", city)
+		// orderBy("address.restaurantName")
 	)
 }
 
