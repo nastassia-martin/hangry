@@ -6,6 +6,7 @@ import useAuth from '../hooks/useAuth'
 import Button from 'react-bootstrap/Button'
 import { useState } from 'react'
 import LogoutModal from './LogoutModal'
+import useGetAdmin from '../hooks/useGetAdmin'
 
 const Navigation = () => {
 
@@ -15,6 +16,17 @@ const Navigation = () => {
 		userName,
 		//userPhotoUrl,
 	} = useAuth()
+
+	if (currentUser) {
+		console.log('current', currentUser.email)
+	}
+
+	const admin = useGetAdmin(currentUser?.uid)
+	console.log('admin', admin)
+
+	if (currentUser && admin) {
+		console.log('adminID', admin, 'currentUser', currentUser?.uid)
+	}
 
 	//to show the logout-modal
 	const navigate = useNavigate()
@@ -46,9 +58,14 @@ const Navigation = () => {
 								<Nav.Link as={NavLink} to="/login">Login</Nav.Link>
 							</>
 						}
-						<Nav.Link as={NavLink} to="/update-profile">Update Profile</Nav.Link>
 						<Nav.Link as={NavLink} to="/tips">Tips</Nav.Link>
+						{currentUser && admin && (
+							<Nav.Link as={NavLink} to="/users">Manage users</Nav.Link>
 
+						)}
+						{currentUser && (
+							<Nav.Link as={NavLink} to="/update-profile">Update Profile</Nav.Link>
+						)}
 					</Nav>
 					{currentUser &&
 						<>

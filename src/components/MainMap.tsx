@@ -14,6 +14,8 @@ import { Eatery } from "../types/restaurant.types"
 import RestaurantCard from "./RestaurantCard"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
 import AutoCompletePlaces from "./AutoCompletePlaces"
+import { Transition } from 'react-transition-group'
+import Sidebar from "./Sidebar"
 
 const MainMap = () => {
 	const { data } = useGetEateries()
@@ -42,8 +44,9 @@ const MainMap = () => {
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
 		libraries: libraries,
 	})
+	const [isOpen, toggleIsOpen] = useState(true)
 	useEffect(() => {
-		// run this once to get the users position
+	// run this once to get the users position
 		navigator.geolocation.getCurrentPosition(
 			// on success
 			(position) => {
