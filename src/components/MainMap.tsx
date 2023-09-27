@@ -9,7 +9,6 @@ import { useCallback, useEffect, useState } from "react"
 import { Eatery } from "../types/restaurant.types"
 import RestaurantCard from "./RestaurantCard"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
-import { Transition } from 'react-transition-group'
 import Sidebar from "./Sidebar"
 
 const MainMap = () => {
@@ -64,17 +63,14 @@ const MainMap = () => {
 	}
 
 	return (
-		
 		<GoogleMap
-			onLoad={onMapLoad}
-			zoom={12} // set zoom over map
-			center={{ lat: 55.5918001, lng: 13.0167039 }} // where map should be centered
-			mapContainerClassName="main-map" // container size of where map will be rendered
+		onLoad={onMapLoad}
+		zoom={12} // set zoom over map
+		center={{ lat: 55.5918001, lng: 13.0167039 }} // where map should be centered
+		mapContainerClassName="main-map" // container size of where map will be rendered
 		>
-		<Transition in={isOpen} timeout={250}>
 		<Sidebar
 			data={data}/>
-		</Transition>
 			{/*this marker should be the user position */}
 			{userPosition && (
 				<MarkerF
