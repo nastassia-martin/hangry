@@ -76,7 +76,6 @@ const MainMap = () => {
 		//extract the locality from the result
 		const locality = result.address_components[0].long_name
 		setCity(locality)
-
 		// extract the lat & lng from the result
 		const { lat, lng } = getLatLng(result)
 		setPosition({ lat, lng })

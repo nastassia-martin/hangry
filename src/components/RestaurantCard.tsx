@@ -1,9 +1,10 @@
 import Card from "react-bootstrap/Card"
 
-import { Eatery } from "../types/restaurant.types"
+import { Eatery, Location } from "../types/restaurant.types"
 
 interface IProps {
 	data: Eatery
+	startingPoint: Location
 }
 
 const RestaurantCard: React.FC<IProps> = ({ data }) => {
@@ -12,6 +13,7 @@ const RestaurantCard: React.FC<IProps> = ({ data }) => {
 			<Card.Title>{data.address.restaurantName}</Card.Title>
 			<Card.Body className="restaurant-card-body">
 				<Card.Text>{data.description}</Card.Text>
+				<Card.Link href={`https://www.google.com/maps?q=${data.address.addressNumber}+${data.address.street}+${data.address.city}`}>Directions</Card.Link>
 			</Card.Body>
 		</Card>
 	)
