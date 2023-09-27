@@ -29,7 +29,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 				<Form.Control
 					type="text"
 					placeholder='Yum tum 420 bar'
-					defaultValue="Yum tum 420 bar"
+					defaultValue="Systembolagets KorvKiosk"
 					{...register('address.restaurantName', {
 						required: "This field cant be left empty.",
 					})}
@@ -42,7 +42,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 					<Form.Control
 						type="text"
 						placeholder='tasty street'
-						defaultValue="tasty street"
+						defaultValue="Malmborgsgatan"
 						{...register('address.street', {
 							required: "This field cant be left empty.",
 						})}
@@ -53,7 +53,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 					<Form.Control
 						type="text"
 						placeholder='42'
-						defaultValue="42"
+						defaultValue="6"
 						{...register('address.addressNumber', {
 							required: "This field cant be left empty.",
 						})}
@@ -66,7 +66,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 					<Form.Control
 						type="text"
 						placeholder='133742'
-						defaultValue="133742"
+						defaultValue="21138"
 						{...register('address.postcode', {
 							required: "This field cant be left empty.",
 						})}
@@ -77,7 +77,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 					<Form.Control
 						type="text"
 						placeholder='Flavour-town'
-						defaultValue="Flavour-town"
+						defaultValue="Malmö"
 						{...register('address.city', {
 							required: "This field cant be left empty.",
 						})}
@@ -107,8 +107,14 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 			</Form.Group>
 			<Form.Group className="mb-3" controlId="description">
 				<Form.Label>Description (optional)</Form.Label>
-				<Form.Control as="textarea" rows={3} {...register('description')}/>
+				<Form.Control as="textarea" rows={3} {...register('description')} />
 			</Form.Group>
+
+			<input
+				type="hidden"
+				defaultValue="false"
+				{...register('adminApproved')}
+			/>
 
 			<Button className="mt-3" variant="dark" type="submit" onClick={onSubmit}>
 				Send in tip

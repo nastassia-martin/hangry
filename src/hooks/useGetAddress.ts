@@ -10,7 +10,7 @@ const useGetAddress = <T = Location>(endpoint: string) => {
     const [isLoading, setIsLoading] = useState(false)
     const [address, setAddress] = useState<string>(endpoint)
     
-    useEffect(() => {
+    
 
         const getData = async(endpoint: string) => {
             setAddress(endpoint)
@@ -30,9 +30,12 @@ const useGetAddress = <T = Location>(endpoint: string) => {
             setIsLoading(false)
         }
 
-        if(!address){
-            return
-        }
+        
+
+        useEffect(() => {
+            if(!address){
+                return
+            }
             getData(address)
         }, [])
 
@@ -42,6 +45,7 @@ const useGetAddress = <T = Location>(endpoint: string) => {
         error,
         isError,
         isLoading,
+        getData,
     }
 }
 

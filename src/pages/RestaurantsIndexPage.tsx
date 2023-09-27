@@ -25,13 +25,14 @@ const Restaurant_tips = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
     const [isSingleData, setIsSingleData] = useState<Eatery>()
-    
+
 
     const { data, loading } = useGetEateries()
 
     //to try add tip before we put it on the map page
+    // const [street, setStreet] = useState("")
     const [isTipModalOpen, setIsTipModalOpen] = useState(false)
-    const {data: Location, } = useGetAddress<Location>("null")
+    // const { getData, data: geoLoc } = useGetAddress<Location>("")
 
 
 
@@ -161,19 +162,25 @@ const Restaurant_tips = () => {
 
     const addTip = async (data: Eatery) => {
 
-        const street = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
-        useGetAddress(street)
+        const streetAddress = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
+
+        // setStreet(streetAddress)
+
+        const geoLocation = await get(streetAddress)
+        
+        console.log("get a load of this", geoLocation)
 
         const docRef = doc(restaurantsCol)
 
-        console.log("whats up doc",docRef)
-        
+
+
+
         await setDoc(docRef, {
             ...data,
-            location: Location,
+            location: geoLocation?.results[0].geometry.location,
             created_at: serverTimestamp(),
         })
-        console.log("will the real doc please stand up",docRef)
+        console.log("will the real doc please stand up", docRef)
     }
 
 

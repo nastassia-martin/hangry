@@ -41,7 +41,7 @@ const AdminTipForm: React.FC<IProps> = ({ onEditTip, onDelete, initialValues }) 
                     <Form.Label>Address</Form.Label>
                     <Form.Control
                         type="text"
-                        placeholder='tasty street'
+                        placeholder='Malmborgsgatan'
                         {...register('address.street', {
                             required: "This field cant be left empty.",
                         })}
@@ -51,7 +51,7 @@ const AdminTipForm: React.FC<IProps> = ({ onEditTip, onDelete, initialValues }) 
                     <Form.Label>Street Number</Form.Label>
                     <Form.Control
                         type="text"
-                        placeholder='42'
+                        placeholder='6'
                         {...register('address.addressNumber', {
                             required: "This field cant be left empty.",
                         })}
@@ -63,7 +63,7 @@ const AdminTipForm: React.FC<IProps> = ({ onEditTip, onDelete, initialValues }) 
                     <Form.Label>Postcode</Form.Label>
                     <Form.Control
                         type="text"
-                        placeholder='133742'
+                        placeholder='21138'
 
                         {...register('address.postcode', {
                             required: "This field cant be left empty.",
@@ -74,7 +74,7 @@ const AdminTipForm: React.FC<IProps> = ({ onEditTip, onDelete, initialValues }) 
                     <Form.Label>City</Form.Label>
                     <Form.Control
                         type="text"
-                        placeholder='Flavour-town'
+                        placeholder='Malmö'
                         {...register('address.city', {
                             required: "This field cant be left empty.",
                         })}
