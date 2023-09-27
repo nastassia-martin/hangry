@@ -31,7 +31,7 @@ const MainMap = () => {
 		google.maps.LatLngLiteral | undefined
 	>(undefined)
 	const [position, setPosition] = useState<
-		google.maps.LatLngLiteral | undefined
+		google.maps.LatLngLiteral
 	>({ lat: 55.5918001, lng: 13.0167039 })
 	//handle map instance on load
 	const onMapLoad = useCallback((map: google.maps.Map) => {
@@ -49,6 +49,7 @@ const MainMap = () => {
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
 		libraries: libraries,
 	})
+
 	useEffect(() => {
 		// run this once to get the users position
 		navigator.geolocation.getCurrentPosition(
@@ -103,7 +104,9 @@ const MainMap = () => {
 	const handleMarkerClick = (restaurant: Eatery) => {
 		setSelectedMarker(restaurant)
 		//pan to the restaurtant's location instead of the centered position of the map
+
 		map?.panTo(restaurant.location)
+
 	}
 	const handleSelect = (result: google.maps.GeocoderResult) => {
 		//extract the locality from the result

@@ -19,7 +19,7 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const { login } = useAuth() // Our hook
+    const { login, reloadUser } = useAuth() // Our hook
 
 
     const onLogin = async (data: LoginCredentials) => {
@@ -30,7 +30,7 @@ const Login = () => {
             await login(data.email, data.password)
             console.log(data.email, data.password)
             console.log('logged in user', data.email)
-
+            reloadUser()
             toast.success('Welcome back!')
             navigate('/')
         } catch (error) {
