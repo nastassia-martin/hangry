@@ -21,18 +21,20 @@ const SignUp = () => {
     const navigate = useNavigate()
     const { signup } = useAuth() // Our hook
 
-
     const onSignup = async (data: SignUpCredentials) => {
         setErrorMessage(null)
 
         try {
+
             setLoading(true)
             await signup(data.email, data.password)
             console.log(data.email, data.password)
 
             toast.success('Welcome!')
             navigate('/')
+
         } catch (error) {
+
             if (error instanceof FirebaseError) {
                 setErrorMessage(error.message)
             } else {
@@ -40,6 +42,7 @@ const SignUp = () => {
             }
             setLoading(false)
         }
+
     }
 
     return (
@@ -49,7 +52,7 @@ const SignUp = () => {
                     <Card.Body>
                         <Card.Header className='mb-3'>
                             <Card.Title className='text-center mb-3'>Sign up</Card.Title>
-                            <Card.Subtitle>Do you want to become an admin?</Card.Subtitle>
+                            <Card.Subtitle>Join us!</Card.Subtitle>
                         </Card.Header>
                         {/* Error message */}
                         {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}

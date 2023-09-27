@@ -47,11 +47,8 @@ const Restaurant_tips = () => {
                         <p style={{ width: "10rem" }}>{props.getValue()}</p>
                     )
                 }),
-                columnHelper.accessor('address.street', {
-                    header: "Street"
-                }),
-                columnHelper.accessor('address.addressNumber', {
-                    header: "Street Nr"
+                columnHelper.accessor(row => `${row.address.street} ${row.address.addressNumber}`, {
+                    id: "Address"
                 }),
                 columnHelper.accessor('address.postcode', {
                     header: "Postcode"
@@ -112,6 +109,7 @@ const Restaurant_tips = () => {
             header: "Approved"
         }),
         columnHelper.accessor('_id', {
+            header: "Edit",
             cell: (props) => {
                 const id = props.getValue()
                 const findData = data?.find(data => data._id === id)
@@ -153,6 +151,7 @@ const Restaurant_tips = () => {
         const docRef = doc(restaurantsCol, isSingleData?._id)
 
         await deleteDoc(docRef)
+
         setIsModalOpen(false)
         setOpenConfirmDelete(false)
     }

@@ -1,7 +1,6 @@
 /**
  * Update Profile Page
  */
-
 import { useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
@@ -14,12 +13,13 @@ import { FirebaseError } from 'firebase/app'
 import { toast } from 'react-toastify'
 import { UpdateAdminProfileFormData } from '../types/administrator.types'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
-import { storage } from '../services/firebase'
+import { newUser, storage } from '../services/firebase'
+import { doc, updateDoc } from 'firebase/firestore'
 
 const UpdateProfile = () => {
+
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
-    //const navigate = useNavigate()
 
     const {
         currentUser,
@@ -27,7 +27,7 @@ const UpdateProfile = () => {
         setEmail,
         setPassword,
         setPhotoUrl,
-        //userPhotoUrl,
+        userPhotoUrl,
         reloadUser
     } = useAuth()
 
@@ -36,10 +36,12 @@ const UpdateProfile = () => {
     }
 
     const onUpdateProfile = async (data: UpdateAdminProfileFormData) => {
+
         setErrorMessage(null)
 
         try {
             setLoading(true)
+
             if (data.displayName !== (currentUser.displayName ?? '')) {
                 await setDisplayName(data.displayName)
                 console.log('name', data.displayName)
@@ -78,15 +80,28 @@ const UpdateProfile = () => {
 
                 setLoading(false)
 
-
             }
 
             await reloadUser()
+
+            //update document
+            const docRef = doc(newUser, currentUser.uid)
+            const { password, passwordConfirm, photoFile, ...updatedData } = data
+
+            // updatedData to match AdministratorCredentials
+            const updatedCredentials = {
+                name: updatedData.displayName,
+                photoUrl: userPhotoUrl,
+                ...updatedData,
+            }
+
+            await updateDoc(docRef, updatedCredentials)
 
             setLoading(false)
             toast.success('profile updated')
 
         } catch (error) {
+
             if (error instanceof FirebaseError) {
                 setErrorMessage(error.message)
             } else {

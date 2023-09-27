@@ -4,8 +4,8 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
     User,
-    // signOut,
     // sendPasswordResetEmail,
+    //getIdToken,
     updateProfile,
     updateEmail,
     updatePassword,
@@ -13,7 +13,8 @@ import {
 } from 'firebase/auth'
 
 import { createContext, useEffect, useState } from 'react'
-import { auth } from '../services/firebase'
+import { auth, newUser } from '../services/firebase'
+import { doc, setDoc } from 'firebase/firestore'
 
 type AuthContextType = {
     currentUser: User | null
@@ -28,7 +29,8 @@ type AuthContextType = {
     userEmail: string | null
     userName: string | null
     userPhotoUrl: string | null
-    // isAdmin: boolean 
+    isAdmin: boolean
+    setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 //creating the context + initial values
@@ -49,11 +51,34 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     const [userName, setUserName] = useState<string | null>(null)
 
     //later admin
+    const [isAdmin, setIsAdmin] = useState(false)
 
-    //signup
-    const signup = (email: string, password: string) => {
-        return createUserWithEmailAndPassword(auth, email, password)
+    const signup = async (email: string, password: string) => {
+        try {
+            // Create a user account 
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+
+            // Check if the user creation was successful
+            if (userCredential.user) {
+                //const docRef = doc(newUser)
+                const docRef = doc(newUser, userCredential.user.uid)
+                // Set the user info for the new user
+                await setDoc(docRef, {
+                    _id: userCredential.user.uid,
+                    isAdmin: false,
+                    name: userCredential.user.displayName || 'no name',
+                    email: userCredential.user.email! // Because all users have an email
+                })
+            }
+
+            return userCredential
+        } catch (error) {
+            // Handle errors
+            console.error('Error during signup:', error)
+            throw error
+        }
     }
+
 
     //login
     const login = (email: string, password: string) => {
@@ -137,7 +162,8 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
             setEmail,
             setPassword,
             setPhotoUrl,
-
+            isAdmin,
+            setIsAdmin
 
         }}>
             {loading ? (
