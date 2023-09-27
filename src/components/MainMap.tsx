@@ -14,9 +14,11 @@ import { Eatery } from "../types/restaurant.types"
 import RestaurantCard from "./RestaurantCard"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
 import AutoCompletePlaces from "./AutoCompletePlaces"
+import LoadingSpinner from "./LoadingSpinner"
+import ErrorAlert from "./ErrorAlert"
 
 const MainMap = () => {
-	const { data } = useGetEateries()
+	const { data, loading } = useGetEateries()
 	const [city, setCity] = useState<string | undefined>("")
 	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
 	const [map, setMap] = useState<google.maps.Map | null>(null)
@@ -59,12 +61,13 @@ const MainMap = () => {
 	}, [])
 	// show loading spinner
 	if (!isLoaded) {
-		return <p>Loading... </p>
+		return <LoadingSpinner />
 	}
 	// on error show error
 	if (loadError) {
-		return <p>epic fail</p>
+		return <ErrorAlert error={"There was a problem loading the map"} />
 	}
+	loading && <LoadingSpinner />
 
 	// handle actions for clicking on marker
 	const handleMarkerClick = (restaurant: Eatery) => {
