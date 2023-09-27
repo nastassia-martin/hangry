@@ -1,4 +1,4 @@
-import { Timestamp, GeoPoint } from "firebase/firestore"
+import { Timestamp } from "firebase/firestore"
 
 export type Eatery = {
 	_id: string
@@ -10,7 +10,6 @@ export type Eatery = {
 	location: Location
 	created_at: Timestamp
 	updated_at: Timestamp
-	loc: GeoPoint
 	description: string
 }
 

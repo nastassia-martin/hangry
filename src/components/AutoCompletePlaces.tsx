@@ -23,6 +23,7 @@ const AutoCompletePlaces: React.FC<Prop> = ({ resFunc }) => {
 
 			// Get address of searched place
 			const results = await getGeocode({ address: description })
+			console.log("results : ", results)
 			resFunc(results[0])
 		}
 
