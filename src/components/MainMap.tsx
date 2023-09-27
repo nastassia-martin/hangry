@@ -21,10 +21,10 @@ import { useSearchParams } from 'react-router-dom'
 const MainMap = () => {
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: '',
-		latlng: ''
+		lat: '',
+		lng: ''
 	})
 	const { data } = useGetEateries()
-	//const [city, setCity] = useState<string | undefined>("")
 	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
 	const [map, setMap] = useState<google.maps.Map | null>(null)
 	const [userPosition, setUserPosition] = useState<
@@ -64,12 +64,28 @@ const MainMap = () => {
 			}
 		)
 	}, [])
-	//console.log('city outside ', city)
 
+	//To be able to get the map to pan to correct location after reload
 	useEffect(() => {
-		const selectedCity = searchParams.get("city");
-		//setCity(selectedCity || "");
-		//console.log('inside', city)
+		//const selectedCity = searchParams.get("city")
+		const selectedLat = searchParams.get("lat")
+		const selectedLng = searchParams.get("lng")
+
+		if (selectedLat !== null && selectedLng !== null) {
+			// Use selectedLat and selectedLng directly in the setPosition function
+			//to be able to pan the map on back/forward
+			setPosition({
+				lat: parseFloat(selectedLat) || 55.5918001, // extra default to a fallback value if not provided or cannot be parsed
+				lng: parseFloat(selectedLng) || 13.0167039,
+			})
+		} else {
+			//if we havnt selected anything, go to default lat/lng
+			setPosition({
+				lat: 55.5918001,
+				lng: 13.0167039,
+			})
+		}
+
 	}, [searchParams])
 
 	// show loading spinner
@@ -93,8 +109,6 @@ const MainMap = () => {
 	const handleSelect = (result: google.maps.GeocoderResult) => {
 		//extract the locality from the result
 		const locality = result.address_components[0].long_name
-		//setCity(locality)
-		//setCity(selectedCity || '')
 
 		console.log('city inside ', locality)
 		// extract the lat & lng from the result
@@ -102,12 +116,9 @@ const MainMap = () => {
 		setPosition({ lat, lng })
 
 		// set input value as city in searchParams
-		// setSearchParams({ city: city || '' })
-		setSearchParams({ city: locality || '' })
+		setSearchParams({ city: locality || '', lat: String(lat), lng: String(lng) })
 
 	}
-
-
 
 
 	return (
