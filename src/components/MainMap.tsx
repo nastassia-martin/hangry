@@ -16,8 +16,8 @@ import { faPerson } from "@fortawesome/free-solid-svg-icons"
 import AutoCompletePlaces from "./AutoCompletePlaces"
 
 const MainMap = () => {
+	const { data } = useGetEateries()
 	const [city, setCity] = useState<string | undefined>("")
-	const { data } = useGetEateries(city)
 	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
 	const [map, setMap] = useState<google.maps.Map | null>(null)
 	const [userPosition, setUserPosition] = useState<
@@ -29,8 +29,6 @@ const MainMap = () => {
 	//handle map instance on load
 	const onMapLoad = useCallback((map: google.maps.Map) => {
 		setMap(map)
-
-		// do stuff with map
 	}, [])
 	const options = useMemo(
 		() => ({
@@ -75,18 +73,17 @@ const MainMap = () => {
 		map?.panTo(restaurant.location)
 	}
 	const handleSelect = (result: google.maps.GeocoderResult) => {
-		console.log("result: ", result)
-		const res = result.address_components[0].long_name
-		setCity(res)
-		console.log("longname: ", res)
+		//extract the locality from the result
+		const locality = result.address_components[0].long_name
+		setCity(locality)
+
+		// extract the lat & lng from the result
 		const { lat, lng } = getLatLng(result)
 		setPosition({ lat, lng })
 	}
-	console.log(city)
-
 	return (
 		<>
-			<AutoCompletePlaces resFunc={handleSelect} />
+			<AutoCompletePlaces result={handleSelect} />
 			<GoogleMap
 				onLoad={onMapLoad}
 				zoom={12} // set zoom over map

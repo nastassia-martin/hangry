@@ -22,7 +22,6 @@ const useStreamCollection = <T>(
 		const unsubscribe = onSnapshot(queryRef, (snapshot) => {
 			// loop over all docs
 			const data: T[] = snapshot.docs.map((doc) => {
-				console.log(doc.data())
 				return {
 					...doc.data(),
 					_id: doc.id,
