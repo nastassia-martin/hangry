@@ -56,7 +56,6 @@ const MainMap = () => {
 			(position) => {
 				const { latitude, longitude } = position.coords
 				setUserPosition({ lat: latitude, lng: longitude })
-				//console.log(userPosition)
 			},
 			// on error
 			(error) => {
@@ -110,7 +109,6 @@ const MainMap = () => {
 		//extract the locality from the result
 		const locality = result.address_components[0].long_name
 
-		console.log('city inside ', locality)
 		// extract the lat & lng from the result
 		const { lat, lng } = getLatLng(result)
 		setPosition({ lat, lng })
