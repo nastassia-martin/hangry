@@ -92,14 +92,13 @@ const MainMap = () => {
 	if (!isLoaded) {
 		return <LoadingSpinner />
 	}
+	loading && <LoadingSpinner />
 	// on error show error
 	if (loadError) {
 		return <ErrorAlert error={"There was a problem loading the map"} />
 	}
-
 	// get "city=" from URL Search Params
 	const selectedCity = searchParams.get("city")
-	loading && <LoadingSpinner />
 
 	// handle actions for clicking on marker
 	const handleMarkerClick = (restaurant: Eatery) => {
