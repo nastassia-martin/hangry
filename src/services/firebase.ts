@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore"
 import { Eatery } from "../types/restaurant.types"
 import { getStorage } from "firebase/storage"
+import { AdministratorCredentials } from "../types/administrator.types"
 
 // Firebase config
 const firebaseConfig = {
@@ -39,5 +40,14 @@ const createCollection = <T = DocumentData>(collectionName: string) => {
 // Export collection references
 // restaurants
 export const restaurantsCol = createCollection<Eatery>("restaurants")
+
+//admin
+//export const adminsCol = createCollection<AdministratorCredentials>("admins")
+//export const newAdmin = createCollection<AdministratorCredentials>("admin")
+
+//users & admin in the same collection
+export const newUser = createCollection<AdministratorCredentials>("users")
+
+
 
 export default app
