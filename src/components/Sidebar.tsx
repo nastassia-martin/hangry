@@ -15,9 +15,9 @@ interface IProps {
 const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
 
     const [value, setValue] = useState('options')
-    const [isFiltered, setFiltered] = useState(false)
-    const [isFilteredData, setFilteredData] = useState<Eatery[] | null>()
-    //const [isChecked, setChecked] = useState(false)
+    //const [isFiltered, setFiltered] = useState(false)
+    //const [isFilteredData, setFilteredData] = useState<Eatery[] | null>()
+    const [isChecked, setChecked] = useState(false)
     const [checkedValues, setCheckedValues] = useState<string[]>([])
     const [isFilteredData, setFilteredData] = useState<Eatery[] | null>(null)
 
