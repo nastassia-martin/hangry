@@ -11,9 +11,8 @@ import TipModal from '../components/TipModal'
 import { toast } from 'react-toastify'
 import { get } from '../services/googleAPI'
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal'
-import { Button } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap'
 import TipsForm from '../components/TipsForm'
-
 
 const Restaurant_tips = () => {
 
@@ -35,7 +34,7 @@ const Restaurant_tips = () => {
                 columnHelper.accessor(`address.restaurantName`, {
                     header: "Name",
                     cell: props => (
-                        <p style={{ width: "10rem" }}>{props.getValue()}</p>
+                        <p style={{ width: "8rem" }}>{props.getValue()}</p>
                     )
                 }),
                 columnHelper.accessor(row => `${row.address.street} ${row.address.addressNumber}`, {
@@ -185,9 +184,11 @@ const Restaurant_tips = () => {
 
 
             {data &&
-                <div className='m-3'>
-                    <ReactTable columns={columns} data={data} />
-                </div>
+                <Container className='mx-auto'>
+                    <div className='m-3'>
+                        <ReactTable columns={columns} data={data} />
+                    </div>
+                </Container>
             }
         </>
     )

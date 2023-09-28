@@ -12,7 +12,7 @@ import { Eatery } from "../types/restaurant.types"
 
 interface IProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
-	data: TData[]
+	data: TData[]	
 	row: Eatery
 }
 
@@ -34,7 +34,7 @@ const ReactTable = <TData, TValue>({
 	})
 
 	return (
-		<BTable striped bordered hover variant="light">
+		<BTable striped bordered hover responsive variant="light">
 			<thead>
 				{table.getHeaderGroups().map((headerGroup) => (
 					<tr key={headerGroup.id}>

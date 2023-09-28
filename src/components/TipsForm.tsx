@@ -5,6 +5,8 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Eatery } from '../types/restaurant.types'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import useAuth from '../hooks/useAuth'
+import useGetAdmin from '../hooks/useGetAdmin'
 
 interface IProps {
 	onAddTip: (data: Eatery) => Promise<void>
@@ -12,6 +14,11 @@ interface IProps {
 }
 
 const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
+
+	const { currentUser } = useAuth()
+
+	const admin = useGetAdmin(currentUser?.uid)
+
 	const { handleSubmit, register, formState: { isSubmitSuccessful }, reset } = useForm<Eatery>()
 
 	const onFormSubmit: SubmitHandler<Eatery> = async (data: Eatery) => {
@@ -110,12 +117,22 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 				<Form.Control as="textarea" rows={3} {...register('description')} />
 			</Form.Group>
 
-			<input
-				type="checkbox"
-				style={{ display: 'none' }}
-				defaultChecked={false} 
-				{...register('adminApproved')}
-			/>
+			{currentUser && admin ? (
+				<input
+					type="checkbox"
+					style={{ display: 'none' }}
+					defaultChecked={true}
+					{...register('adminApproved')}
+				/>
+			) : (
+				<input
+					type="checkbox"
+					style={{ display: 'none' }}
+					defaultChecked={false}
+					{...register('adminApproved')}
+				/>
+			)}
+
 
 			<Button className="mt-3" variant="dark" type="submit" onClick={onSubmit}>
 				Send in tip
