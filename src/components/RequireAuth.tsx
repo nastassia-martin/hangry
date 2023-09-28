@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
-import useGetAdmin from '../hooks/useGetAdmin'
+
 
 interface IRequireAuthProps {
     children: React.ReactNode
@@ -13,8 +13,6 @@ const RequireAuth: React.FC<IRequireAuthProps> = ({
     redirectTo = "/login",
 }) => {
     const { currentUser } = useAuth()
-    //const admin = useGetAdmin(currentUser?.uid)
-
 
     return (
         currentUser

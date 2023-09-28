@@ -1,11 +1,11 @@
-import { Eatery, Category } from '../types/restaurant.types'
+import { Eatery } from '../types/restaurant.types'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { useState, useEffect } from 'react'
-import CloseButton from 'react-bootstrap/esm/CloseButton'
+
 import RestaurantSidebar from './RestaurantSidebar'
 import Form from 'react-bootstrap/Form'
-import { useForm, SubmitHandler } from 'react-hook-form'
+
 
 
 interface IProps {
@@ -19,7 +19,7 @@ const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
     const [value, setValue] = useState('options')
     const [isFiltered, setFiltered] = useState(false)
     const [isFilteredData, setFilteredData] = useState<Eatery[] | null>()
-    const [isChecked, setChecked] = useState(false)
+    //const [isChecked, setChecked] = useState(false)
     const [checkedValues, setCheckedValues] = useState<string[]>([])
     const [savedResults, setSavedResults] = useState<Eatery[]>([])
     const [isLunches, setLunch] = useState<Eatery[]>([])
@@ -128,117 +128,117 @@ const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
     // }
 
     return (
-            <Modal show={isOpen} onHide={onClose}>
-                <Modal.Header
-                    closeButton
-                    onHide={onClose}
-                >
-                    <Modal.Title>Restaurants</Modal.Title>
-                </Modal.Header>
+        <Modal show={isOpen} onHide={onClose}>
+            <Modal.Header
+                closeButton
+                onHide={onClose}
+            >
+                <Modal.Title>Restaurants</Modal.Title>
+            </Modal.Header>
 
-                <Modal.Body>
-                    <div className='d-flex flex-column'>
-                        <div>
-                            <label>What kind of place are you looking for? </label>
-                            <select
-                                value={value}
-                                onChange={handleOptions}>
-                                <option
-                                    value="Options..."
-                                    onClick={() => handleCategory(data, value)}
-                                >
-                                    Options...
-                                </option>
-                                <option
-                                    onClick={() => handleCategory(data, value)}
-                                    value="Café"
-                                >
-                                    Café
-                                </option>
-                                <option
-                                    onClick={() => handleCategory(data, value)}
-                                    value="Restaurant"
-                                >
-                                    Restaurant
-                                </option>
-                                <option
-                                    onClick={() => handleCategory(data, value)}
-                                    value="Kiosk/grill"
-                                >
-                                    Kiosk/Grill
-                                </option>
-                                <option
-                                    onClick={() => handleCategory(data, value)}
-                                    value="Foodtruck"
-                                >
-                                    Foodtruck
-                                </option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>What should they offer? </label>
-                            <Form.Group className="mb-3" controlId='offers'>
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="Lunch"
-                                    value={"Lunch"}
-                                    onChange={() => handleCheckToggle("Lunch")}
-                                />
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="After Work"
-                                    value={"After Work"}
-                                    onChange={() => handleCheckToggle("After Work")}
-                                />
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="Dinner"
-                                    value={"Dinner"}
-                                    onChange={() => handleCheckToggle("Dinner")}
-                                />
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="Vegan"
-                                    value={"Vegan"}
-                                    onChange={() => handleCheckToggle("Vegan")}
-                                />
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="Vegetarian"
-                                    value={"Vegetarian"}
-                                    onChange={() => handleCheckToggle("Vegetarian")}
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    {data && !isFiltered &&
-                        <RestaurantSidebar
-                            data={data}
-                        />
-                    }
-                    {isFiltered && isFilteredData &&
-                        <RestaurantSidebar
-                            data={isFilteredData}
-                        />
-                    }
-                </Modal.Body>
-                <Modal.Footer>
+            <Modal.Body>
+                <div className='d-flex flex-column'>
                     <div>
-                        Copyright LLMN Inc.
+                        <label>What kind of place are you looking for? </label>
+                        <select
+                            value={value}
+                            onChange={handleOptions}>
+                            <option
+                                value="Options..."
+                                onClick={() => handleCategory(data, value)}
+                            >
+                                Options...
+                            </option>
+                            <option
+                                onClick={() => handleCategory(data, value)}
+                                value="Café"
+                            >
+                                Café
+                            </option>
+                            <option
+                                onClick={() => handleCategory(data, value)}
+                                value="Restaurant"
+                            >
+                                Restaurant
+                            </option>
+                            <option
+                                onClick={() => handleCategory(data, value)}
+                                value="Kiosk/grill"
+                            >
+                                Kiosk/Grill
+                            </option>
+                            <option
+                                onClick={() => handleCategory(data, value)}
+                                value="Foodtruck"
+                            >
+                                Foodtruck
+                            </option>
+                        </select>
                     </div>
-                    <Button variant="secondary" onClick={onClose}>Close</Button>
-                </Modal.Footer>
-            </Modal>
+                    <div>
+                        <label>What should they offer? </label>
+                        <Form.Group className="mb-3" controlId='offers'>
+                            <Form.Check
+                                inline
+                                onClick={() => filterCheckToggle(data)}
+                                type="checkbox"
+                                label="Lunch"
+                                value={"Lunch"}
+                                onChange={() => handleCheckToggle("Lunch")}
+                            />
+                            <Form.Check
+                                inline
+                                onClick={() => filterCheckToggle(data)}
+                                type="checkbox"
+                                label="After Work"
+                                value={"After Work"}
+                                onChange={() => handleCheckToggle("After Work")}
+                            />
+                            <Form.Check
+                                inline
+                                onClick={() => filterCheckToggle(data)}
+                                type="checkbox"
+                                label="Dinner"
+                                value={"Dinner"}
+                                onChange={() => handleCheckToggle("Dinner")}
+                            />
+                            <Form.Check
+                                inline
+                                onClick={() => filterCheckToggle(data)}
+                                type="checkbox"
+                                label="Vegan"
+                                value={"Vegan"}
+                                onChange={() => handleCheckToggle("Vegan")}
+                            />
+                            <Form.Check
+                                inline
+                                onClick={() => filterCheckToggle(data)}
+                                type="checkbox"
+                                label="Vegetarian"
+                                value={"Vegetarian"}
+                                onChange={() => handleCheckToggle("Vegetarian")}
+                            />
+                        </Form.Group>
+                    </div>
+                </div>
+                {data && !isFiltered &&
+                    <RestaurantSidebar
+                        data={data}
+                    />
+                }
+                {isFiltered && isFilteredData &&
+                    <RestaurantSidebar
+                        data={isFilteredData}
+                    />
+                }
+            </Modal.Body>
+            <Modal.Footer>
+                <div>
+                    Copyright LLMN Inc.
+                </div>
+                <Button variant="secondary" onClick={onClose}>Close</Button>
+            </Modal.Footer>
+        </Modal>
     )
 }
 
