@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useMemo, useState } from "react"
 import {
 	GoogleMap,
 	useJsApiLoader,
@@ -5,20 +6,21 @@ import {
 	InfoWindowF,
 	Libraries,
 } from "@react-google-maps/api"
-import { getLatLng } from "use-places-autocomplete"
-
 const libraries: Libraries = ["places"]
+import { getLatLng } from "use-places-autocomplete"
+import { useSearchParams } from "react-router-dom"
+
 import useGetEateries from "../hooks/useGetEateries"
-import { useCallback, useEffect, useMemo, useState } from "react"
 import { Eatery } from "../types/restaurant.types"
+
 import RestaurantCard from "./RestaurantCard"
-import { faPerson } from "@fortawesome/free-solid-svg-icons"
 import AutoCompletePlaces from "./AutoCompletePlaces"
 import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
-import { useSearchParams } from "react-router-dom"
 import Sidebar from "./Sidebar"
-import Button from "@restart/ui/Button"
+import Button from "react-bootstrap/Button"
+import Container from "react-bootstrap/Container"
+import { faPerson } from "@fortawesome/free-solid-svg-icons"
 
 const MainMap = () => {
 	//Sidebar stuff
@@ -133,11 +135,12 @@ const MainMap = () => {
 				<AutoCompletePlaces result={handleSelect} />
 				<Button
 					id="sidebarburger"
-					className="btn btn-light btn-sm m-1"
+					className="btn btn-light btn-sm"
 					onClick={() => setIsSidebarOpen(!false)}
 				>
-					Slap this burger 🍔
+					The list 🍔
 				</Button>
+
 				<GoogleMap
 					onLoad={onMapLoad}
 					zoom={12} // set zoom over map
