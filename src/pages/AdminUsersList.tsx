@@ -23,7 +23,7 @@ const columns: ColumnDef<UserList>[] = [
         header: "Email",
     },
     {
-        accessorKey: "name",
+        accessorKey: "displayName",
         header: "Name",
     },
     {

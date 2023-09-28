@@ -3,19 +3,13 @@ import { Timestamp } from "firebase/firestore";
 export type AdministratorCredentials = {
 	_id: string
 	isAdmin: boolean
-	name?: string
-	//displayName?: string
-
-	//password: string
+	displayName?: string
 	email: string
 	created_at?: string | Timestamp
-	//profilePicture?: FileList //| string
-	//photoFile?: FileList
 	photoUrl?: string
-
 }
 
-export type UserList = Omit<AdministratorCredentials, 'password'>; //| '_id'
+export type UserList = Omit<AdministratorCredentials, 'password'>
 
 export type LoginCredentials = {
 	email: string

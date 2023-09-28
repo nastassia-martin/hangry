@@ -7,6 +7,7 @@ import { SignUpCredentials } from '../types/user.types'
 interface IFormProps {
     onSignup: SubmitHandler<SignUpCredentials>
     loading: boolean
+    //displayName: string
 }
 
 const SignUpForm: React.FC<IFormProps> = ({ onSignup, loading }) => {
@@ -16,6 +17,23 @@ const SignUpForm: React.FC<IFormProps> = ({ onSignup, loading }) => {
 
     return (
         <Form onSubmit={handleSubmit(onSignup)}>
+
+            <Form.Group controlId='name' className='mb-3'>
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                    placeholder='Y/N'
+                    type='text'
+                    {...register('displayName', {
+                        required: 'You must have a name??',
+                        minLength: {
+                            value: 2,
+                            message: 'Please enter at least 2 characters',
+                        },
+                    })}
+                />
+                {errors.email && <p>{errors.email.message ?? 'This is an invalid value'}</p>}
+            </Form.Group>
+
             <Form.Group controlId='email' className='mb-3'>
                 <Form.Label>Email</Form.Label>
                 <Form.Control
