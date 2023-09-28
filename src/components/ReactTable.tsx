@@ -8,12 +8,10 @@ import {
 	SortingState,
 	useReactTable,
 } from "@tanstack/react-table"
-import { Eatery } from "../types/restaurant.types"
 
 interface IProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
-	data: TData[]	
-	row: Eatery
+	data: TData[]
 }
 
 const ReactTable = <TData, TValue>({
@@ -25,6 +23,7 @@ const ReactTable = <TData, TValue>({
 	const table = useReactTable({
 		data,
 		columns,
+
 		state: {
 			sorting,
 		},
@@ -43,12 +42,10 @@ const ReactTable = <TData, TValue>({
 								{header.isPlaceholder ? null : (
 									<div
 										{...{
-											className:
-												header.column.getCanSort()
-													? "cursor-pointer select-none"
-													: "",
-											onClick:
-												header.column.getToggleSortingHandler(),
+											className: header.column.getCanSort()
+												? "cursor-pointer select-none"
+												: "",
+											onClick: header.column.getToggleSortingHandler(),
 										}}
 									>
 										{flexRender(
@@ -59,9 +56,7 @@ const ReactTable = <TData, TValue>({
 										{{
 											asc: " >",
 											desc: " <",
-										}[
-											header.column.getIsSorted() as string
-										] ?? null}
+										}[header.column.getIsSorted() as string] ?? null}
 									</div>
 								)}
 							</th>
@@ -75,10 +70,7 @@ const ReactTable = <TData, TValue>({
 					<tr key={row.id}>
 						{row.getVisibleCells().map((cell) => (
 							<td key={cell.id}>
-								{flexRender(
-									cell.column.columnDef.cell,
-									cell.getContext()
-								)}
+								{flexRender(cell.column.columnDef.cell, cell.getContext())}
 							</td>
 						))}
 					</tr>

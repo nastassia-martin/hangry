@@ -19,7 +19,6 @@ import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
 import Sidebar from "./Sidebar"
 import Button from "react-bootstrap/Button"
-import Container from "react-bootstrap/Container"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
 
 const MainMap = () => {

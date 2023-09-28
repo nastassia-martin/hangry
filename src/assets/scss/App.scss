@@ -7,6 +7,12 @@
 	flex-direction: column;
 	min-height: 100vh;
 }
+#App {
+	font-family: "Roboto", sans-serif;
+}
+.nav-bar {
+	background-color: black;
+}
 .loading-container {
 	padding: 3rem;
 	display: flex;
