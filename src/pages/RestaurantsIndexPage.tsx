@@ -27,6 +27,7 @@ const Restaurant_tips = () => {
 	const [isSingleData, setIsSingleData] = useState<Eatery>()
 	const { data, loading } = useGetOrderedByEateries()
 	console.log(data)
+
 	const [isTipModalOpen, setIsTipModalOpen] = useState(false)
 
 	const columnHelper = createColumnHelper<Eatery>()
@@ -130,7 +131,6 @@ const Restaurant_tips = () => {
 			const docRef = doc(restaurantsCol)
 
 			const geoLocation = await get(streetAddress)
-			console.log("get a load of this", geoLocation)
 
 			await setDoc(docRef, {
 				...data,
@@ -138,11 +138,13 @@ const Restaurant_tips = () => {
 				created_at: serverTimestamp(),
 				updated_at: serverTimestamp(),
 			})
+
 			toast.success("Your tip has been sent.")
-			console.log("will the real doc please stand up", docRef)
+
 		} catch (error) {
 			toast.error("INVALID ADDRESS")
 		}
+		setIsTipModalOpen(false)
 	}
 
 	return (
@@ -157,7 +159,6 @@ const Restaurant_tips = () => {
 				>
 					<TipsForm
 						onAddTip={addTip}
-						onSubmit={() => setIsTipModalOpen(false)}
 					></TipsForm>
 				</TipModal>
 			</div>
