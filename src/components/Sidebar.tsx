@@ -21,7 +21,6 @@ const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
     const [isFilteredData, setFilteredData] = useState<Eatery[] | null>()
     //const [isChecked, setChecked] = useState(false)
     const [checkedValues, setCheckedValues] = useState<string[]>([])
-    const [savedResults, setSavedResults] = useState<Eatery[]>([])
     const [isLunches, setLunch] = useState<Eatery[]>([])
     const [isDinners, setDinner] = useState<Eatery[]>([])
     const [isAfterwork, setAfterWork] = useState<Eatery[]>([])
@@ -103,7 +102,7 @@ const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
                 console.log("Yay! Vegetarian!", isVegetarian)
             }
 
-            console.log("all results", savedResults)
+
             // setSavedResults(finalValue)
             console.log("lunch", isLunches)
             console.log("dinner", isDinners)
