@@ -14,25 +14,26 @@ import { Eatery } from "../types/restaurant.types"
 import RestaurantCard from "./RestaurantCard"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
 import AutoCompletePlaces from "./AutoCompletePlaces"
-import { useSearchParams } from 'react-router-dom'
-
-
+import LoadingSpinner from "./LoadingSpinner"
+import ErrorAlert from "./ErrorAlert"
+import { useSearchParams } from "react-router-dom"
 
 const MainMap = () => {
 	const [searchParams, setSearchParams] = useSearchParams({
-		city: '',
-		lat: '',
-		lng: ''
+		city: "",
+		lat: "",
+		lng: "",
 	})
-	const { data } = useGetEateries()
+	const { data, loading } = useGetEateries()
 	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
 	const [map, setMap] = useState<google.maps.Map | null>(null)
 	const [userPosition, setUserPosition] = useState<
 		google.maps.LatLngLiteral | undefined
 	>(undefined)
-	const [position, setPosition] = useState<
-		google.maps.LatLngLiteral
-	>({ lat: 55.5918001, lng: 13.0167039 })
+	const [position, setPosition] = useState<google.maps.LatLngLiteral>({
+		lat: 55.5918001,
+		lng: 13.0167039,
+	})
 	//handle map instance on load
 	const onMapLoad = useCallback((map: google.maps.Map) => {
 		setMap(map)
@@ -84,18 +85,17 @@ const MainMap = () => {
 				lng: 13.0167039,
 			})
 		}
-
 	}, [searchParams])
 
 	// show loading spinner
 	if (!isLoaded) {
-		return <p>Loading... </p>
+		return <LoadingSpinner />
 	}
+	loading && <LoadingSpinner />
 	// on error show error
 	if (loadError) {
-		return <p>epic fail</p>
+		return <ErrorAlert error={"There was a problem loading the map"} />
 	}
-
 	// get "city=" from URL Search Params
 	const selectedCity = searchParams.get("city")
 
@@ -105,7 +105,6 @@ const MainMap = () => {
 		//pan to the restaurtant's location instead of the centered position of the map
 
 		map?.panTo(restaurant.location)
-
 	}
 	const handleSelect = (result: google.maps.GeocoderResult) => {
 		//extract the locality from the result
@@ -116,74 +115,82 @@ const MainMap = () => {
 		setPosition({ lat, lng })
 
 		// set input value as city in searchParams
-		setSearchParams({ city: locality || '', lat: String(lat), lng: String(lng) })
-
+		setSearchParams({
+			city: locality || "",
+			lat: String(lat),
+			lng: String(lng),
+		})
 	}
-
 
 	return (
 		<>
-			<AutoCompletePlaces result={handleSelect} />
-			<GoogleMap
-				onLoad={onMapLoad}
-				zoom={12} // set zoom over map
-				center={position} // where map should be centered
-				mapContainerClassName="main-map" // container size of where map will be rendered
-				options={options}
-			>
-				{/*this marker should be the user position */}
-				{userPosition && (
-					<MarkerF
-						position={userPosition}
-						icon={{
-							path: faPerson.icon[4] as string, // path to icon
-							anchor: new google.maps.Point(
-								faPerson.icon[0] / 2, // width
-								faPerson.icon[1] // height
-							),
-							scale: 0.075,
-							fillColor: "#004d65",
-							fillOpacity: 1,
-						}}
-						// make marker accessible
-						options={{
-							optimized: false,
-						}}
-						title="you are here"
-					/>
-				)}
-				{/**render restaurants marker if they match the city that is the searched city */}
-				{data &&
-					data
-						.filter((restaurant) => restaurant.address.city === selectedCity)
-						.map((restaurant) => (
-							<MarkerF
-								key={restaurant._id}
-								position={restaurant.location}
-								onClick={() => handleMarkerClick(restaurant)}
-								// make marker accessible
-								options={{
-									optimized: false,
-									title: `${restaurant.address.restaurantName}`,
-								}}
-							>
-								{restaurant._id === selectedMarker?._id ? (
-									<InfoWindowF
-										onCloseClick={() => {
-											setSelectedMarker(null)
-										}}
-										options={{
-											ariaLabel: `${restaurant.address.restaurantName}`,
-											minWidth: 150,
-										}}
-										position={restaurant.location}
-									>
-										<RestaurantCard data={restaurant} />
-									</InfoWindowF>
-								) : null}
-							</MarkerF>
-						))}
-			</GoogleMap>
+			<div className="map-container">
+				<AutoCompletePlaces result={handleSelect} />
+				<GoogleMap
+					onLoad={onMapLoad}
+					zoom={12} // set zoom over map
+					center={position} // where map should be centered
+					mapContainerClassName="main-map" // container size of where map will be rendered
+					options={options}
+				>
+					{/*this marker should be the user position */}
+					{userPosition && (
+						<MarkerF
+							position={userPosition}
+							icon={{
+								path: faPerson.icon[4] as string, // path to icon
+								anchor: new google.maps.Point(
+									faPerson.icon[0] / 2, // width
+									faPerson.icon[1] // height
+								),
+								scale: 0.075,
+								fillColor: "#004d65",
+								fillOpacity: 1,
+							}}
+							// make marker accessible
+							options={{
+								optimized: false,
+							}}
+							title="you are here"
+						/>
+					)}
+					{/**render restaurants marker if they match the city that is the searched city */}
+					{data &&
+						data
+							.filter(
+								(restaurant) =>
+									restaurant.address.city === selectedCity &&
+									restaurant.adminApproved
+							)
+							.map((restaurant) => (
+								<MarkerF
+									key={restaurant._id}
+									position={restaurant.location}
+									onClick={() => handleMarkerClick(restaurant)}
+									// make marker accessible
+									options={{
+										optimized: false,
+										title: `${restaurant.address.restaurantName}`,
+									}}
+								>
+									{restaurant._id === selectedMarker?._id ? (
+										<InfoWindowF
+											onCloseClick={() => {
+												setSelectedMarker(null)
+											}}
+											options={{
+												ariaLabel: `${restaurant.address.restaurantName}`,
+												minWidth: 150,
+											}}
+											position={restaurant.location}
+										>
+											<RestaurantCard data={restaurant} />
+										</InfoWindowF>
+									) : null}
+								</MarkerF>
+							))}
+				</GoogleMap>
+			</div>
 		</>
 	)
 }

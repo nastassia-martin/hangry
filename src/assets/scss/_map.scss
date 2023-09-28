@@ -1,12 +1,50 @@
-.main-map {
-	height: 100vh;
-	width: 100%;
+.map-container {
+	padding: 0;
+	position: relative;
+	margin: 0;
+	.map-container > * {
+		padding: 0;
+		margin: 0;
+		border: none;
+	}
+	.main-map {
+		height: 100vh;
+		width: 100%;
+		position: relative;
+	}
+	.auto-complete-container {
+		position: absolute;
+		top: 3em;
+		left: 2em;
+		z-index: 5;
+		padding: 0;
+		margin: 0;
+		border: none;
+	}
+	.autocomplete-input {
+		min-width: 300px;
+		min-height: 50px;
+		padding: 0 0.5em;
+		border-style: none;
+		margin-bottom: 8px;
+		outline-color: black;
+	}
+	.autocomplete-list {
+		max-width: 300px;
+		cursor: pointer;
+	}
+	.autocomplete-error {
+		text-transform: uppercase;
+		font-size: 22px;
+		max-width: 350px;
+	}
 }
+
 .restuarant-card {
 	border: none;
 }
 .restaurant-card-body {
-	padding: none;
+	padding: 0;
 }
 .pan-to-position-button {
 	position: absolute;

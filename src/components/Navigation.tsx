@@ -39,6 +39,17 @@ const Navigation = () => {
 		<Navbar bg="dark" variant="dark" expand="sm">
 			<Container>
 				<Navbar.Brand as={Link} to="/">Eats by LMN</Navbar.Brand>
+				{currentUser &&
+					<>
+						<Navbar.Text>
+							Hello <span>{userName || userEmail}</span>
+						</Navbar.Text>
+						{/* <Button variant="outline-warning"
+							size='sm'
+							onClick={openLogoutModal}
+						>Logout</Button> */}
+					</>
+				}
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto">
@@ -59,10 +70,7 @@ const Navigation = () => {
 					</Nav>
 					{currentUser &&
 						<>
-							<Navbar.Text>
-								Signed in as: <span>{userName || userEmail}</span>
-							</Navbar.Text>
-							<Button variant="outline-danger"
+							<Button variant="outline-warning mx-2"
 								size='sm'
 								onClick={openLogoutModal}
 							>Logout</Button>
