@@ -10,7 +10,6 @@ export type Eatery = {
 	location?: Location | null
 	created_at: Timestamp
 	updated_at?: Timestamp
-	loc?: GeoPoint
 	description: string
 }
 

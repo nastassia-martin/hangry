@@ -14,17 +14,24 @@ import { Eatery } from "../types/restaurant.types"
 import RestaurantCard from "./RestaurantCard"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
 import AutoCompletePlaces from "./AutoCompletePlaces"
+import { useSearchParams } from 'react-router-dom'
+
+
 
 const MainMap = () => {
+	const [searchParams, setSearchParams] = useSearchParams({
+		city: '',
+		lat: '',
+		lng: ''
+	})
 	const { data } = useGetEateries()
-	const [city, setCity] = useState<string | undefined>("")
 	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
 	const [map, setMap] = useState<google.maps.Map | null>(null)
 	const [userPosition, setUserPosition] = useState<
 		google.maps.LatLngLiteral | undefined
 	>(undefined)
 	const [position, setPosition] = useState<
-		google.maps.LatLngLiteral | undefined
+		google.maps.LatLngLiteral
 	>({ lat: 55.5918001, lng: 13.0167039 })
 	//handle map instance on load
 	const onMapLoad = useCallback((map: google.maps.Map) => {
@@ -43,13 +50,12 @@ const MainMap = () => {
 		libraries: libraries,
 	})
 	useEffect(() => {
-	// run this once to get the users position
+		// run this once to get the users position
 		navigator.geolocation.getCurrentPosition(
 			// on success
 			(position) => {
 				const { latitude, longitude } = position.coords
 				setUserPosition({ lat: latitude, lng: longitude })
-				//console.log(userPosition)
 			},
 			// on error
 			(error) => {
@@ -57,6 +63,30 @@ const MainMap = () => {
 			}
 		)
 	}, [])
+
+	//To be able to get the map to pan to correct location after reload
+	useEffect(() => {
+		//const selectedCity = searchParams.get("city")
+		const selectedLat = searchParams.get("lat")
+		const selectedLng = searchParams.get("lng")
+
+		if (selectedLat !== null && selectedLng !== null) {
+			// Use selectedLat and selectedLng directly in the setPosition function
+			//to be able to pan the map on back/forward
+			setPosition({
+				lat: parseFloat(selectedLat) || 55.5918001, // extra default to a fallback value if not provided or cannot be parsed
+				lng: parseFloat(selectedLng) || 13.0167039,
+			})
+		} else {
+			//if we havnt selected anything, go to default lat/lng
+			setPosition({
+				lat: 55.5918001,
+				lng: 13.0167039,
+			})
+		}
+
+	}, [searchParams])
+
 	// show loading spinner
 	if (!isLoaded) {
 		return <p>Loading... </p>
@@ -66,20 +96,31 @@ const MainMap = () => {
 		return <p>epic fail</p>
 	}
 
+	// get "city=" from URL Search Params
+	const selectedCity = searchParams.get("city")
+
 	// handle actions for clicking on marker
 	const handleMarkerClick = (restaurant: Eatery) => {
 		setSelectedMarker(restaurant)
 		//pan to the restaurtant's location instead of the centered position of the map
+
 		map?.panTo(restaurant.location)
+
 	}
 	const handleSelect = (result: google.maps.GeocoderResult) => {
 		//extract the locality from the result
 		const locality = result.address_components[0].long_name
-		setCity(locality)
+
 		// extract the lat & lng from the result
 		const { lat, lng } = getLatLng(result)
 		setPosition({ lat, lng })
+
+		// set input value as city in searchParams
+		setSearchParams({ city: locality || '', lat: String(lat), lng: String(lng) })
+
 	}
+
+
 	return (
 		<>
 			<AutoCompletePlaces result={handleSelect} />
@@ -114,7 +155,7 @@ const MainMap = () => {
 				{/**render restaurants marker if they match the city that is the searched city */}
 				{data &&
 					data
-						.filter((restaurant) => restaurant.address.city === city)
+						.filter((restaurant) => restaurant.address.city === selectedCity)
 						.map((restaurant) => (
 							<MarkerF
 								key={restaurant._id}
