@@ -7,7 +7,6 @@ import { SignUpCredentials } from '../types/user.types'
 interface IFormProps {
     onSignup: SubmitHandler<SignUpCredentials>
     loading: boolean
-    //displayName: string
 }
 
 const SignUpForm: React.FC<IFormProps> = ({ onSignup, loading }) => {

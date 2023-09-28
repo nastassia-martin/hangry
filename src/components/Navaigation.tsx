@@ -14,19 +14,9 @@ const Navigation = () => {
 		currentUser,
 		userEmail,
 		userName,
-		//userPhotoUrl,
 	} = useAuth()
 
-	if (currentUser) {
-		console.log('current', currentUser.email)
-	}
-
 	const admin = useGetAdmin(currentUser?.uid)
-	console.log('admin', admin)
-
-	if (currentUser && admin) {
-		console.log('adminID', admin, 'currentUser', currentUser?.uid)
-	}
 
 	//to show the logout-modal
 	const navigate = useNavigate()
