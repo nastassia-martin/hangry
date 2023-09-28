@@ -40,11 +40,11 @@ export type Category =
 	| "Foodtruck"
 
 type Offering = {
-	lunch: boolean
-	afterWork: boolean
-	dinner: boolean
-	vegetarian: boolean
-	vegan: boolean
+	lunch: string | boolean
+	afterWork: string | boolean
+	dinner: string | boolean
+	vegetarian: string | boolean
+	vegan: string | boolean
 }
 
 
