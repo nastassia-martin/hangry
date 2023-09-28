@@ -17,8 +17,13 @@ import AutoCompletePlaces from "./AutoCompletePlaces"
 import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
 import { useSearchParams } from "react-router-dom"
+import Sidebar from "./Sidebar"
+import Button from "@restart/ui/Button"
 
 const MainMap = () => {
+	//Sidebar stuff
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
 		lat: "",
@@ -123,73 +128,87 @@ const MainMap = () => {
 	}
 
 	return (
-		<div className="map-container">
-			<AutoCompletePlaces result={handleSelect} />
-			<GoogleMap
-				onLoad={onMapLoad}
-				zoom={12} // set zoom over map
-				center={position} // where map should be centered
-				mapContainerClassName="main-map" // container size of where map will be rendered
-				options={options}
-			>
-				{/*this marker should be the user position */}
-				{userPosition && (
-					<MarkerF
-						position={userPosition}
-						icon={{
-							path: faPerson.icon[4] as string, // path to icon
-							anchor: new google.maps.Point(
-								faPerson.icon[0] / 2, // width
-								faPerson.icon[1] // height
-							),
-							scale: 0.075,
-							fillColor: "#004d65",
-							fillOpacity: 1,
-						}}
-						// make marker accessible
-						options={{
-							optimized: false,
-						}}
-						title="you are here"
-					/>
-				)}
-				{/**render restaurants marker if they match the city that is the searched city */}
-				{data &&
-					data
-						.filter(
-							(restaurant) =>
-								restaurant.address.city === selectedCity &&
-								restaurant.adminApproved
-						)
-						.map((restaurant) => (
-							<MarkerF
-								key={restaurant._id}
-								position={restaurant.location}
-								onClick={() => handleMarkerClick(restaurant)}
-								// make marker accessible
-								options={{
-									optimized: false,
-									title: `${restaurant.address.restaurantName}`,
-								}}
-							>
-								{restaurant._id === selectedMarker?._id ? (
-									<InfoWindowF
-										onCloseClick={() => {
-											setSelectedMarker(null)
-										}}
-										options={{
-											ariaLabel: `${restaurant.address.restaurantName}`,
-											minWidth: 150,
-										}}
-										position={restaurant.location}
-									>
-										<RestaurantCard data={restaurant} />
-									</InfoWindowF>
-								) : null}
-							</MarkerF>
-						))}
-			</GoogleMap>
-		</div>
+		<>
+			<div className="map-container">
+				<AutoCompletePlaces result={handleSelect} />
+				<Button
+					id="sidebarburger"
+					className="btn btn-light btn-sm m-1"
+					onClick={() => setIsSidebarOpen(!false)}
+				>
+					Slap this burger 🍔
+				</Button>
+				<GoogleMap
+					onLoad={onMapLoad}
+					zoom={12} // set zoom over map
+					center={position} // where map should be centered
+					mapContainerClassName="main-map" // container size of where map will be rendered
+					options={options}
+				>
+					{/*this marker should be the user position */}
+					{userPosition && (
+						<MarkerF
+							position={userPosition}
+							icon={{
+								path: faPerson.icon[4] as string, // path to icon
+								anchor: new google.maps.Point(
+									faPerson.icon[0] / 2, // width
+									faPerson.icon[1] // height
+								),
+								scale: 0.075,
+								fillColor: "#004d65",
+								fillOpacity: 1,
+							}}
+							// make marker accessible
+							options={{
+								optimized: false,
+							}}
+							title="you are here"
+						/>
+					)}
+					{/**render restaurants marker if they match the city that is the searched city */}
+					{data &&
+						data
+							.filter(
+								(restaurant) =>
+									restaurant.address.city === selectedCity &&
+									restaurant.adminApproved
+							)
+							.map((restaurant) => (
+								<MarkerF
+									key={restaurant._id}
+									position={restaurant.location}
+									onClick={() => handleMarkerClick(restaurant)}
+									// make marker accessible
+									options={{
+										optimized: false,
+										title: `${restaurant.address.restaurantName}`,
+									}}
+								>
+									{restaurant._id === selectedMarker?._id ? (
+										<InfoWindowF
+											onCloseClick={() => {
+												setSelectedMarker(null)
+											}}
+											options={{
+												ariaLabel: `${restaurant.address.restaurantName}`,
+												minWidth: 150,
+											}}
+											position={restaurant.location}
+										>
+											<RestaurantCard data={restaurant} />
+										</InfoWindowF>
+									) : null}
+								</MarkerF>
+							))}
+				</GoogleMap>
+				<Sidebar
+					data={data}
+					isOpen={isSidebarOpen}
+					onClose={() => setIsSidebarOpen(false)}
+				></Sidebar>
+			</div>
+		</>
 	)
 }
 

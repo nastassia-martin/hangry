@@ -6,7 +6,6 @@
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
-	// position: relative;
 }
 .loading-container {
 	padding: 3rem;
@@ -17,4 +16,23 @@
 
 .cursor-pointer {
 	cursor: pointer;
+}
+
+#restaurant-list-info {
+	background-color: #212529;
+	color: white;
+}
+
+#list-info > ul > a {
+	color: white;
+}
+
+#sidebarburger {
+	position: absolute;
+	top: 1em;
+	left: 2em;
+	z-index: 5;
+	padding: 0;
+	margin: 0;
+	border: none;
 }

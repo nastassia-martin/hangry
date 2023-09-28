@@ -6,7 +6,7 @@ export type Eatery = {
 	restaurangDetails: Partial<RestaurantDetails>
 	category: Category
 	offering: Partial<Offering>
-	adminApproved?: boolean
+	adminApproved: boolean
 	location: Location
 	created_at: Timestamp
 	updated_at: Timestamp
@@ -32,7 +32,7 @@ export type Location = {
 	lat: number
 	lng: number
 }
-type Category =
+export type Category =
 	| "Café"
 	| "Restaurant"
 	| "Fast food"
@@ -40,44 +40,9 @@ type Category =
 	| "Foodtruck"
 
 type Offering = {
-	lunch: boolean
-	afterWork: boolean
-	dinner: boolean
-	vegetarian: boolean
-	vegan: boolean
-}
-
-
-export type GeolocationResponse = {
-	results: [{
-		address_components: [{
-			long_name: string
-			short_name: string
-			types: string[]
-		}],
-		formatted_address: string
-		geometry: {
-			location: {
-				lat: number
-				lng: number
-			}
-			location_type: string
-			viewport: {
-				northeast: {
-					lat: number
-					lng: number
-				}
-				southwest: {
-					lat: number
-					lng: number
-				}
-			}
-		}
-		place_id: string
-		plus_code: {
-			compound_code: string
-			global_code: string
-		}
-		types: string[],
-	}]
+	lunch: string
+	afterWork: string
+	dinner: string
+	vegetarian: string
+	vegan: string
 }

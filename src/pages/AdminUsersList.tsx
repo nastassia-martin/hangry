@@ -6,6 +6,7 @@ import useGetAllAdmins from '../hooks/useGetAllAdmins'
 import Button from 'react-bootstrap/Button'
 import { doc, updateDoc } from 'firebase/firestore'
 import { newUser } from '../services/firebase'
+import Container from 'react-bootstrap/Container'
 
 
 const handleAdminStatus = async (id: string) => {
@@ -66,7 +67,7 @@ const AdminUsersList = () => {
                 <h1 className="mx-3 p-2">List of users & admins</h1>
 
             </div>
-            {admins && <UsersReactTable columns={columns} data={admins} />}
+            {admins && <Container className='mx-auto'><UsersReactTable columns={columns} data={admins} /></Container>}
         </>
     )
 }
