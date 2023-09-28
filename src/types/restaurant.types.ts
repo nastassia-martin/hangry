@@ -32,7 +32,7 @@ export type Location = {
 	lat: number
 	lng: number
 }
-type Category =
+export type Category =
 	| "Café"
 	| "Restaurant"
 	| "Fast food"
