@@ -13,8 +13,6 @@ export type Eatery = {
 	description: string
 }
 
-export type CreateEatery = {}
-
 type Address = {
 	restaurantName: string
 	street: string
@@ -42,9 +40,9 @@ type Category =
 	| "Foodtruck"
 
 type Offering = {
-	lunch: string
-	afterWork: string
-	dinner: string
-	vegetarian: string
-	vegan: string
+	lunch: boolean
+	afterWork: boolean
+	dinner: boolean
+	vegetarian: boolean
+	vegan: boolean
 }

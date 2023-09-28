@@ -43,7 +43,7 @@ const LoginForm: React.FC<IFormProps> = ({ onLogin: onSignup, loading }) => {
 					{...register("password", {
 						required: "You need to enter your password",
 						minLength: {
-							value: 3,
+							value: 6,
 							message: "Your password is at least 6 characters",
 						},
 					})}
