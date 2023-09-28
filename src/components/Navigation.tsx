@@ -7,7 +7,19 @@ import Button from 'react-bootstrap/Button'
 import { useState } from 'react'
 import LogoutModal from './LogoutModal'
 import useGetAdmin from '../hooks/useGetAdmin'
-
+import TipsForm from "../components/TipsForm"
+import TipModal from "../components/TipModal"
+import { toast } from "react-toastify"
+import { Eatery } from "../types/restaurant.types"
+import {
+	doc,
+	serverTimestamp,
+	setDoc,
+} from "firebase/firestore"
+import { restaurantsCol } from "../services/firebase"
+import { get } from "../services/googleAPI"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBowlFood } from '@fortawesome/free-solid-svg-icons';
 const Navigation = () => {
 
 	const {
@@ -35,6 +47,34 @@ const Navigation = () => {
 		setShowLogoutModal(true)
 	}
 
+
+	//Add tip stuff
+	const [isTipModalOpen, setIsTipModalOpen] = useState(false)
+
+	const addTip = async (data: Eatery) => {
+		const streetAddress = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
+
+		try {
+			const docRef = doc(restaurantsCol)
+
+			const geoLocation = await get(streetAddress)
+
+			await setDoc(docRef, {
+				...data,
+				location: geoLocation?.results[0].geometry.location,
+				created_at: serverTimestamp(),
+				updated_at: serverTimestamp(),
+			})
+
+			toast.success("Your tip has been sent.")
+
+		} catch (error) {
+			toast.error("INVALID ADDRESS")
+		}
+		setIsTipModalOpen(false)
+	}
+
+
 	return (
 		<Navbar bg="dark" variant="dark" expand="sm">
 			<Container>
@@ -44,10 +84,18 @@ const Navigation = () => {
 						<Navbar.Text>
 							Hello <span>{userName || userEmail}</span>
 						</Navbar.Text>
-						{/* <Button variant="outline-warning"
-							size='sm'
-							onClick={openLogoutModal}
-						>Logout</Button> */}
+						<div className=''>
+							<Button className="btn btn-dark btn-sm m-1" onClick={() => setIsTipModalOpen(true)}>Send a tip <FontAwesomeIcon icon={faBowlFood} /></Button>
+							
+							<TipModal
+								isOpen={isTipModalOpen}
+								onClose={() => setIsTipModalOpen(false)}
+							>
+								<TipsForm
+									onAddTip={addTip}
+								></TipsForm>
+							</TipModal>
+						</div>
 					</>
 				}
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />

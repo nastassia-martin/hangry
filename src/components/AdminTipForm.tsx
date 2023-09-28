@@ -44,10 +44,6 @@ const AdminTipForm: React.FC<IProps> = ({
 							value: 3,
 							message: "the name must be a minimum of 3 characters",
 						},
-						pattern: {
-							value: /^\S*$/,
-							message: "no white space please",
-						},
 					})}
 				/>
 				{errors.address?.restaurantName && (

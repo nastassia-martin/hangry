@@ -26,7 +26,6 @@ const Restaurant_tips = () => {
 	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 	const [isSingleData, setIsSingleData] = useState<Eatery>()
 	const { data, loading } = useGetOrderedByEateries()
-	console.log(data)
 
 	const [isTipModalOpen, setIsTipModalOpen] = useState(false)
 
@@ -121,7 +120,7 @@ const Restaurant_tips = () => {
 		setIsModalOpen(false)
 		setOpenConfirmDelete(false)
 
-		toast.error("This place is GONZOO, NO BACKSIES")
+		toast.error("This place is GONZO, NO BACKSIES")
 	}
 
 	const addTip = async (data: Eatery) => {
