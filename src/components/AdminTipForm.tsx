@@ -7,13 +7,13 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 
 interface IProps {
-	onAddTip: (data: Eatery) => Promise<void>
+	onEditTip: (data: Eatery) => Promise<void>
 	onDelete: () => void
 	initialValues?: Eatery | null
 }
 
 const AdminTipForm: React.FC<IProps> = ({
-	onAddTip,
+	onEditTip,
 	onDelete,
 	initialValues,
 }) => {
@@ -28,7 +28,7 @@ const AdminTipForm: React.FC<IProps> = ({
 	})
 
 	const onFormSubmit: SubmitHandler<Eatery> = async (data: Eatery) => {
-		await onAddTip(data)
+		await onEditTip(data)
 	}
 
 	return (
@@ -66,21 +66,8 @@ const AdminTipForm: React.FC<IProps> = ({
 						placeholder="tasty street"
 						{...register("address.street", {
 							required: "This field cant be left empty.",
-							minLength: {
-								value: 3,
-								message: "the street must be a minimum of 3 characters",
-							},
-							pattern: {
-								value: /^[^\s]+(?:$|.*[^\s]+$)/,
-								message: "no white space please",
-							},
 						})}
 					/>
-					{errors.address?.street && (
-						<p>
-							{errors.address.street?.message ?? "This is an invalid value"}
-						</p>
-					)}
 				</Form.Group>
 				<Form.Group as={Col} controlId="addressNumber">
 					<Form.Label>Street Number</Form.Label>
@@ -89,22 +76,8 @@ const AdminTipForm: React.FC<IProps> = ({
 						placeholder="42"
 						{...register("address.addressNumber", {
 							required: "This field cant be left empty.",
-							minLength: {
-								value: 1,
-								message: "the street must be a minimum of 1 character",
-							},
-							pattern: {
-								value: /^\S*$/,
-								message: "no white space please",
-							},
 						})}
 					/>
-					{errors.address?.addressNumber && (
-						<p>
-							{errors.address.addressNumber?.message ??
-								"This is an invalid value"}
-						</p>
-					)}
 				</Form.Group>
 			</Row>
 			<Row>
@@ -115,21 +88,8 @@ const AdminTipForm: React.FC<IProps> = ({
 						placeholder="133742"
 						{...register("address.postcode", {
 							required: "This field cant be left empty.",
-							minLength: {
-								value: 5,
-								message: "post code must be minimum of 5 characters",
-							},
-							pattern: {
-								value: /^\S*$/,
-								message: "no white space please",
-							},
 						})}
 					/>
-					{errors.address?.postcode && (
-						<p>
-							{errors.address.postcode?.message ?? "This is an invalid value"}
-						</p>
-					)}
 				</Form.Group>
 				<Form.Group as={Col} controlId="city">
 					<Form.Label>City</Form.Label>
@@ -138,19 +98,8 @@ const AdminTipForm: React.FC<IProps> = ({
 						placeholder="Flavour-town"
 						{...register("address.city", {
 							required: "This field cant be left empty.",
-							minLength: {
-								value: 3,
-								message: "city must be minimum of 3 characters",
-							},
-							pattern: {
-								value: /^\S*$/,
-								message: "no white space please",
-							},
 						})}
 					/>
-					{errors.address?.city && (
-						<p>{errors.address.city?.message ?? "This is an invalid value"}</p>
-					)}
 				</Form.Group>
 			</Row>
 
@@ -166,7 +115,6 @@ const AdminTipForm: React.FC<IProps> = ({
 			</Form.Group>
 			<Form.Group className="mb-3" controlId="offers">
 				<Form.Check
-					value="Lunch"
 					inline
 					type="checkbox"
 					label="Lunch"
@@ -174,53 +122,32 @@ const AdminTipForm: React.FC<IProps> = ({
 				/>
 				<Form.Check
 					inline
-					value="after Work"
 					type="checkbox"
 					label="After Work"
 					{...register("offering.afterWork")}
 				/>
 				<Form.Check
 					inline
-					value="Dinner"
 					type="checkbox"
 					label="Dinner"
 					{...register("offering.dinner")}
 				/>
 				<Form.Check
 					inline
-					value="Vegan"
 					type="checkbox"
 					label="Vegan"
 					{...register("offering.vegan")}
 				/>
 				<Form.Check
 					inline
-					value="Vegetarian"
 					type="checkbox"
 					label="Vegetarian"
 					{...register("offering.vegetarian")}
 				/>
 			</Form.Group>
 			<Form.Group className="mb-3" controlId="description">
-				<Form.Label>Describe the place</Form.Label>
-				<Form.Control
-					as="textarea"
-					rows={3}
-					{...register("description", {
-						required: "This field cant be left empty.",
-						minLength: {
-							value: 3,
-							message: "the description must be a minimum of 3 characters",
-						},
-						maxLength: {
-							value: 140,
-							message: "too long! i just wanna eat",
-						},
-					})}
-				/>
-				{errors.description && (
-					<p>{errors.description.message ?? "This is an invalid value"}</p>
-				)}
+				<Form.Label>Description (optional)</Form.Label>
+				<Form.Control as="textarea" rows={3} {...register("description")} />
 			</Form.Group>
 
 			<Form.Group controlId="email">

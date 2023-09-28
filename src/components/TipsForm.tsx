@@ -224,6 +224,13 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 				)}
 			</Form.Group>
 
+			<input
+				type="checkbox"
+				style={{ display: "none" }}
+				defaultChecked={false}
+				{...register("adminApproved")}
+			/>
+
 			<Button className="mt-3" variant="dark" type="submit" onClick={onSubmit}>
 				Send in tip
 			</Button>

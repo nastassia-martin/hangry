@@ -27,7 +27,7 @@ const SignUp = () => {
         try {
 
             setLoading(true)
-            await signup(data.email, data.password)
+            await signup(data.email, data.password, data.displayName)
             console.log(data.email, data.password)
 
             toast.success('Welcome!')

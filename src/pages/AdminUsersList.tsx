@@ -23,7 +23,7 @@ const columns: ColumnDef<UserList>[] = [
         header: "Email",
     },
     {
-        accessorKey: "name",
+        accessorKey: "displayName",
         header: "Name",
     },
     {
@@ -62,6 +62,10 @@ const AdminUsersList = () => {
 
     return (
         <>
+            <div className='text-center'>
+                <h1 className="mx-3 p-2">List of users & admins</h1>
+
+            </div>
             {admins && <UsersReactTable columns={columns} data={admins} />}
         </>
     )

@@ -3,7 +3,6 @@ import { restaurantsCol } from "../services/firebase"
 import useStreamCollection from "./useGetStreamColleciton"
 
 const useGetEateries = () => {
-	console.log()
 	return useStreamCollection<Eatery>(restaurantsCol)
 }
 

@@ -50,7 +50,6 @@ const MainMap = () => {
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
 		libraries: libraries,
 	})
-
 	useEffect(() => {
 		// run this once to get the users position
 		navigator.geolocation.getCurrentPosition(
