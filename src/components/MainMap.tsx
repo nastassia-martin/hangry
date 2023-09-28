@@ -119,7 +119,10 @@ const MainMap = () => {
 					{/**render restaurants marker if they match the city that is the searched city */}
 					{data &&
 						data
-							.filter((restaurant) => restaurant.address.city === city)
+							.filter(
+								(restaurant) =>
+									restaurant.address.city === city && restaurant.adminApproved
+							)
 							.map((restaurant) => (
 								<MarkerF
 									key={restaurant._id}

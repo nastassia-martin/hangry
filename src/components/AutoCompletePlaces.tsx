@@ -12,7 +12,7 @@ const AutoCompletePlaces: React.FC<Prop> = ({ result }) => {
 		setValue,
 		suggestions: { status, data },
 		clearSuggestions,
-	} = usePlacesAutocomplete()
+	} = usePlacesAutocomplete({ requestOptions: { types: ["locality"] } })
 
 	const handleSelect =
 		({ description }: google.maps.places.AutocompletePrediction) =>
