@@ -17,7 +17,14 @@ import AutoCompletePlaces from "./AutoCompletePlaces"
 import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
 import { useSearchParams } from "react-router-dom"
+import Sidebar from "./Sidebar"
+import Button from "@restart/ui/Button"
+
+
 const MainMap = () => {
+		//Sidebar stuff
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
 		lat: "",
@@ -121,10 +128,14 @@ const MainMap = () => {
 		})
 	}
 
+
+
+
 	return (
 		<>
 			<div className="map-container">
 				<AutoCompletePlaces result={handleSelect} />
+				<Button id="sidebarburger" className="btn btn-light btn-sm m-1" onClick={() => setIsSidebarOpen(!false)}>Slap this burger 🍔</Button>
 				<GoogleMap
 					onLoad={onMapLoad}
 					zoom={12} // set zoom over map
@@ -189,6 +200,7 @@ const MainMap = () => {
 								</MarkerF>
 							))}
 				</GoogleMap>
+				<Sidebar data={data} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}></Sidebar>
 			</div>
 		</>
 	)

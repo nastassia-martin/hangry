@@ -26,3 +26,13 @@
 #list-info > ul > a {
 	color: white;
 }
+
+#sidebarburger {
+	position: absolute;
+	top: 1em;
+	left: 2em;
+	z-index: 5;
+	padding: 0;
+	margin: 0;
+	border: none;
+}
