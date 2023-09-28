@@ -11,15 +11,12 @@ import {
 	updateDoc,
 	deleteDoc,
 	Timestamp,
-	setDoc,
 } from "firebase/firestore"
 import { restaurantsCol } from "../services/firebase"
 import TipModal from "../components/TipModal"
 import { toast } from "react-toastify"
-import { get } from "../services/googleAPI"
+import LoadingSpinner from "../components/LoadingSpinner"
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal"
-import { Button } from "react-bootstrap"
-import TipsForm from "../components/TipsForm"
 
 const Restaurant_tips = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -27,7 +24,6 @@ const Restaurant_tips = () => {
 	const [isSingleData, setIsSingleData] = useState<Eatery>()
 	const { data, loading } = useGetOrderedByEateries()
 
-	const [isTipModalOpen, setIsTipModalOpen] = useState(false)
 
 	const columnHelper = createColumnHelper<Eatery>()
 	const columns = [
@@ -120,47 +116,14 @@ const Restaurant_tips = () => {
 		setIsModalOpen(false)
 		setOpenConfirmDelete(false)
 
-		toast.error("This place is GONZOO, NO BACKSIES")
+		toast.error("This place is GONZO, NO BACKSIES")
 	}
 
-	const addTip = async (data: Eatery) => {
-		const streetAddress = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
 
-		try {
-			const docRef = doc(restaurantsCol)
-
-			const geoLocation = await get(streetAddress)
-			console.log("get a load of this", geoLocation)
-
-			await setDoc(docRef, {
-				...data,
-				location: geoLocation?.results[0].geometry.location,
-				created_at: serverTimestamp(),
-				updated_at: serverTimestamp(),
-			})
-			toast.success("Your tip has been sent.")
-			console.log("will the real doc please stand up", docRef)
-		} catch (error) {
-			toast.error("INVALID ADDRESS")
-		}
-	}
 
 	return (
 		<>
-			{loading && <p>Loading table...</p>}
-
-			<div>
-				<Button onClick={() => setIsTipModalOpen(true)}>Add tip</Button>
-				<TipModal
-					isOpen={isTipModalOpen}
-					onClose={() => setIsTipModalOpen(false)}
-				>
-					<TipsForm
-						onAddTip={addTip}
-						onSubmit={() => setIsTipModalOpen(false)}
-					></TipsForm>
-				</TipModal>
-			</div>
+			{loading && <LoadingSpinner />}
 
 			<div className="d-flex align-items-center flex-column justfiy-center">
 				<h2>Restaurant Index</h2>

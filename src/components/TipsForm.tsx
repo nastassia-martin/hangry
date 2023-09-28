@@ -5,19 +5,23 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { Eatery } from "../types/restaurant.types"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
+import useAuth from "../hooks/useAuth"
+import useGetAdmin from "../hooks/useGetAdmin"
 
 interface IProps {
 	onAddTip: (data: Eatery) => Promise<void>
-	onSubmit: () => void
 }
 
-const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
+const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
 	const {
 		handleSubmit,
 		register,
 		formState: { isSubmitSuccessful, errors },
 		reset,
 	} = useForm<Eatery>()
+
+	const {currentUser} = useAuth()
+	const admin = useGetAdmin(currentUser?.uid)
 
 	const onFormSubmit: SubmitHandler<Eatery> = async (data: Eatery) => {
 		await onAddTip(data)
@@ -34,17 +38,16 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 				<Form.Control
 					type="text"
 					placeholder="Yum tum 420 bar"
-					defaultValue="Yum tum 420 bar"
 					{...register("address.restaurantName", {
-						required: "This field cant be left empty.",
+						required: true,
 						minLength: {
 							value: 3,
 							message: "the name must be a minimum of 3 characters",
 						},
-						pattern: {
-							value: /^\S*$/,
-							message: "no white space please",
-						},
+						// pattern: {
+						// 	value: /^\S*$/,
+						// 	message: "no white space please",
+						// },
 					})}
 				/>
 				{errors.address?.restaurantName && (
@@ -62,7 +65,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 						type="text"
 						placeholder="tasty street"
 						{...register("address.street", {
-							required: "This field cant be left empty.",
+							required: true,
 							minLength: {
 								value: 3,
 								message: "the street must be a minimum of 3 characters",
@@ -84,9 +87,8 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 					<Form.Control
 						type="text"
 						placeholder="42"
-						defaultValue="42"
 						{...register("address.addressNumber", {
-							required: "This field cant be left empty.",
+							required: true,
 							minLength: {
 								value: 1,
 								message: "the street must be a minimum of 1 character",
@@ -111,9 +113,8 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 					<Form.Control
 						type="text"
 						placeholder="133742"
-						defaultValue="133742"
 						{...register("address.postcode", {
-							required: "This field cant be left empty.",
+							required: true,
 							minLength: {
 								value: 5,
 								message: "post code must be minimum of 5 characters",
@@ -135,9 +136,8 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 					<Form.Control
 						type="text"
 						placeholder="Flavour-town"
-						defaultValue="Flavour-town"
 						{...register("address.city", {
-							required: "This field cant be left empty.",
+							required: true,
 							minLength: {
 								value: 3,
 								message: "city must be minimum of 3 characters",
@@ -208,7 +208,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 					as="textarea"
 					rows={3}
 					{...register("description", {
-						required: "This field cant be left empty.",
+						required: true,
 						minLength: {
 							value: 3,
 							message: "the description must be a minimum of 3 characters",
@@ -224,14 +224,23 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 				)}
 			</Form.Group>
 
-			<input
-				type="checkbox"
-				style={{ display: "none" }}
-				defaultChecked={false}
-				{...register("adminApproved")}
-			/>
+			{currentUser && admin ? (
+				<input
+					type="checkbox"
+					style={{ display: 'none' }}
+					defaultChecked={true}
+					{...register('adminApproved')}
+				/>
+			) : (
+				<input
+					type="checkbox"
+					style={{ display: 'none' }}
+					defaultChecked={false}
+					{...register('adminApproved')}
+				/>
+			)}
 
-			<Button className="mt-3" variant="dark" type="submit" onClick={onSubmit}>
+			<Button className="mt-3" variant="dark" type="submit">
 				Send in tip
 			</Button>
 		</Form>

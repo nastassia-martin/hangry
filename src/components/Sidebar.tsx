@@ -8,12 +8,16 @@ import { useFilterData } from '../hooks/useFilteredData'
 
 interface IProps {
     data: Eatery[] | null
+    onClose: () => void
+    isOpen: boolean
 }
 
-const Sidebar: React.FC<IProps> = ({ data }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [value, setValue] = useState('Options')
-    const [isChecked, setChecked] = useState(false)
+const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
+
+    const [value, setValue] = useState('options')
+    const [isFiltered, setFiltered] = useState(false)
+    const [isFilteredData, setFilteredData] = useState<Eatery[] | null>()
+    //const [isChecked, setChecked] = useState(false)
     const [checkedValues, setCheckedValues] = useState<string[]>([])
     const [isFilteredData, setFilteredData] = useState<Eatery[] | null>(null)
 
@@ -44,12 +48,12 @@ const Sidebar: React.FC<IProps> = ({ data }) => {
             className="modal show"
             style={{ display: 'block', position: 'initial' }}
         >
-            <Modal.Dialog >
+            <Modal show={isOpen} onHide={onClose}>
                 <Modal.Header
                     closeButton
-                    onClick={() => setIsOpen(false)}
+                    onHide={onClose}
                 >
-                    <Modal.Title>Our Restaurants</Modal.Title>
+                    <Modal.Title>Restaurants</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
@@ -109,7 +113,7 @@ const Sidebar: React.FC<IProps> = ({ data }) => {
                     {/* <Button variant="secondary" onClick={() => setIsOpen(false)}>Close</Button> */}
 
                 </Modal.Footer>
-            </Modal.Dialog>
+            </Modal>
         </div>
     )
 

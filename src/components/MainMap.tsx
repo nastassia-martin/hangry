@@ -18,12 +18,13 @@ import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
 import { useSearchParams } from "react-router-dom"
 import Sidebar from "./Sidebar"
+import Button from "@restart/ui/Button"
 
 
-interface IMainMapProps {
-	filteredData: Eatery[] | null;
-}
-const MainMap: React.FC<IMainMapProps> = ({ filteredData }) => {
+const MainMap = () => {
+	//Sidebar stuff
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
 		lat: "",
@@ -129,10 +130,14 @@ const MainMap: React.FC<IMainMapProps> = ({ filteredData }) => {
 		})
 	}
 
+
+
+
 	return (
 		<>
 			<div className="map-container">
 				<AutoCompletePlaces result={handleSelect} />
+				<Button id="sidebarburger" className="btn btn-light btn-sm m-1" onClick={() => setIsSidebarOpen(!false)}>Slap this burger 🍔</Button>
 				<GoogleMap
 					onLoad={onMapLoad}
 					zoom={12} // set zoom over map
@@ -140,8 +145,7 @@ const MainMap: React.FC<IMainMapProps> = ({ filteredData }) => {
 					mapContainerClassName="main-map" // container size of where map will be rendered
 					options={options}
 				>
-					<Sidebar
-						data={data} />
+					<Sidebar data={data} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}></Sidebar>
 					{/*this marker should be the user position */}
 					{userPosition && (
 						<MarkerF
@@ -199,6 +203,7 @@ const MainMap: React.FC<IMainMapProps> = ({ filteredData }) => {
 								</MarkerF>
 							))}
 				</GoogleMap>
+				<Sidebar data={data} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}></Sidebar>
 			</div>
 		</>
 	)
