@@ -1,5 +1,5 @@
 import "./assets/scss/App.scss"
-import Navigation from "./components/Navaigation"
+import Navigation from "./components/Navigation"
 import { Routes, Route } from "react-router-dom"
 import HomePage from "./pages/HomePage"
 import NotFound from "./pages/NotFound"

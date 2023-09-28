@@ -73,9 +73,9 @@ const UsersReactTable = <TData, TValue>({ columns, data }: IProps<TData, TValue>
                                 {cell.column.id === 'photoUrl' ? (
                                     <img
                                         src={
-                                            cell.getValue() !== 'undefined' && cell.getValue() !== undefined
+                                            cell.getValue() !== 'undefined' && cell.getValue() !== undefined && cell.getValue() !== null
                                                 ? String(cell.getValue())
-                                                : 'https://via.placeholder.com/225'
+                                                : 'https://placehold.co/200x200'
                                         }
                                         alt="User Photo"
                                         style={{ maxWidth: '100px' }}

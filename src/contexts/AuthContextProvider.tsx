@@ -4,8 +4,6 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
     User,
-    // sendPasswordResetEmail,
-    //getIdToken,
     updateProfile,
     updateEmail,
     updatePassword,
@@ -20,7 +18,7 @@ type AuthContextType = {
     currentUser: User | null
     login: (email: string, password: string) => Promise<UserCredential>
     logout: () => Promise<void>
-    signup: (email: string, password: string) => Promise<UserCredential>
+    signup: (email: string, password: string, displayName: string) => Promise<UserCredential>
     reloadUser: () => Promise<boolean>
     setEmail: (email: string) => Promise<void>
     setDisplayName: (displayName: string) => Promise<void>
@@ -53,22 +51,25 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     //later admin
     const [isAdmin, setIsAdmin] = useState(false)
 
-    const signup = async (email: string, password: string) => {
+    const signup = async (email: string, password: string, displayName: string) => {
         try {
             // Create a user account 
             const userCredential = await createUserWithEmailAndPassword(auth, email, password)
 
             // Check if the user creation was successful
             if (userCredential.user) {
-                //const docRef = doc(newUser)
+
                 const docRef = doc(newUser, userCredential.user.uid)
                 // Set the user info for the new user
                 await setDoc(docRef, {
                     _id: userCredential.user.uid,
                     isAdmin: false,
-                    name: userCredential.user.displayName || 'no name',
+                    displayName: displayName || 'no name',
                     email: userCredential.user.email! // Because all users have an email
                 })
+                //to set and get the userprovided name
+                setUserName(displayName)
+                updateProfile(userCredential.user, { displayName })
             }
 
             return userCredential
