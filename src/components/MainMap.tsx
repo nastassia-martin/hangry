@@ -17,7 +17,6 @@ import AutoCompletePlaces from "./AutoCompletePlaces"
 import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
 import { useSearchParams } from "react-router-dom"
-
 const MainMap = () => {
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
