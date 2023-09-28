@@ -17,6 +17,7 @@ import AutoCompletePlaces from "./AutoCompletePlaces"
 import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
 import { useSearchParams } from "react-router-dom"
+import Sidebar from "./Sidebar"
 const MainMap = () => {
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
@@ -132,6 +133,8 @@ const MainMap = () => {
 					mapContainerClassName="main-map" // container size of where map will be rendered
 					options={options}
 				>
+				<Sidebar
+				data={data}/>
 					{/*this marker should be the user position */}
 					{userPosition && (
 						<MarkerF
