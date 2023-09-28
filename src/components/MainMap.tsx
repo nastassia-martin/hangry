@@ -203,7 +203,14 @@ const MainMap = () => {
 							))}
 				</GoogleMap>
 				<Sidebar
-					data={data}
+					data={
+						data &&
+						data.filter(
+							(restaurant) =>
+								restaurant.address.city === selectedCity &&
+								restaurant.adminApproved
+						)
+					}
 					isOpen={isSidebarOpen}
 					onClose={() => setIsSidebarOpen(false)}
 				></Sidebar>
