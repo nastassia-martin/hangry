@@ -5,32 +5,28 @@ import useGetOrderedByEateries from '../hooks/useGetOrderedByEateries'
 import AdminTipForm from '../components/AdminTipForm'
 import { useState } from 'react'
 import { firebaseTimestampToString } from '../helpers/time'
-import { doc, serverTimestamp, updateDoc, deleteDoc, Timestamp, setDoc } from 'firebase/firestore'
+import { doc, serverTimestamp, updateDoc, deleteDoc, Timestamp, setDoc, } from 'firebase/firestore'
 import { restaurantsCol } from '../services/firebase'
 import TipModal from '../components/TipModal'
-import Button from 'react-bootstrap/esm/Button'
-import DeleteConfirmationModal from '../components/DeleteConfirmationModal'
-import RestaurantModal from '../components/RestaurantDetailsModal'
-import TipsForm from '../components/TipsForm'
-import { get } from '../services/googleAPI'
 import { toast } from 'react-toastify'
+import { get } from '../services/googleAPI'
+import DeleteConfirmationModal from '../components/DeleteConfirmationModal'
+import { Button } from 'react-bootstrap'
+import TipsForm from '../components/TipsForm'
+
 
 const Restaurant_tips = () => {
-    
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
     const [isSingleData, setIsSingleData] = useState<Eatery>()
     const { data, loading } = useGetOrderedByEateries()
+    console.log(data)
 
-    //to try add tip before we put it on the map page
-    // const [street, setStreet] = useState("")
     const [isTipModalOpen, setIsTipModalOpen] = useState(false)
-    // const { getData, Data: Loc } = useGetAddress<Location>("malmo")
-
 
 
     const columnHelper = createColumnHelper<Eatery>()
-
     const columns = [
 
         columnHelper.group({
@@ -53,6 +49,7 @@ const Restaurant_tips = () => {
                 }),
             ]
         }),
+
         columnHelper.accessor("created_at", {
             header: "Created",
             cell: (props) => {
@@ -96,6 +93,9 @@ const Restaurant_tips = () => {
         })
     ]
 
+
+
+
     const editRestaurant = async (data: Eatery) => {
 
         const docRef = doc(restaurantsCol, isSingleData?._id)
@@ -107,7 +107,6 @@ const Restaurant_tips = () => {
 
         setIsModalOpen(false)
         toast.success("This place is UPDATED")
-
     }
 
     const deleteRestaurant = async () => {
@@ -116,9 +115,10 @@ const Restaurant_tips = () => {
 
         await deleteDoc(docRef)
 
-        toast.error("This place is GONZOO, NO BACKSIES")
         setIsModalOpen(false)
         setOpenConfirmDelete(false)
+
+        toast.error("This place is GONZOO, NO BACKSIES")
     }
 
 
@@ -126,15 +126,11 @@ const Restaurant_tips = () => {
 
         const streetAddress = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
 
-        console.log(data)
-
         try {
+            const docRef = doc(restaurantsCol)
 
             const geoLocation = await get(streetAddress)
             console.log("get a load of this", geoLocation)
-
-            const docRef = doc(restaurantsCol)
-
 
             await setDoc(docRef, {
                 ...data,
@@ -142,7 +138,6 @@ const Restaurant_tips = () => {
                 created_at: serverTimestamp(),
                 updated_at: serverTimestamp(),
             })
-
             toast.success("Your tip has been sent.")
             console.log("will the real doc please stand up", docRef)
 
@@ -161,11 +156,6 @@ const Restaurant_tips = () => {
                 <p>Loading table...</p>
             )}
 
-
-            <div className="d-flex align-items-center flex-column justfiy-center">
-                <h2>Restaurant Index</h2>
-            </div>
-
             <div>
                 <Button onClick={() => setIsTipModalOpen(true)}>Add tip</Button>
                 <TipModal isOpen={isTipModalOpen} onClose={() => setIsTipModalOpen(false)}>
@@ -173,10 +163,14 @@ const Restaurant_tips = () => {
                 </TipModal>
             </div>
 
+            <div className="d-flex align-items-center flex-column justfiy-center">
+                <h2>Restaurant Index</h2>
+            </div>
+
             <div>
-                <RestaurantModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <TipModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                     <AdminTipForm onEditTip={editRestaurant} initialValues={isSingleData} onDelete={() => setOpenConfirmDelete(true)} />
-                </RestaurantModal>
+                </TipModal>
             </div>
 
             <DeleteConfirmationModal
