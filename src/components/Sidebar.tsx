@@ -61,7 +61,6 @@ const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
 			const newValues = (prevValues: string[]) => [...prevValues, newValue]
 			setCheckedValues(newValues)
 		}
-		// console.log("values", checkedValues)
 	}
 
 	useEffect(() => {
@@ -77,27 +76,22 @@ const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
 			if (eatery.offering.lunch === "lunch") {
 				const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
 				setLunch(newValues)
-				console.log("Yay! lunch!", isLunches)
 			}
 			if (eatery.offering.afterWork === "after work") {
 				const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
 				setAfterWork(newValues)
-				console.log("Yay! AfterWork!", isAfterwork)
 			}
 			if (eatery.offering.dinner === "dinner") {
 				const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
 				setDinner(newValues)
-				console.log("Yay! dinner!", isDinners)
 			}
 			if (eatery.offering.vegan === "vegan") {
 				const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
 				setVegan(newValues)
-				console.log("Yay! Vegan!", isVegan)
 			}
 			if (eatery.offering.vegan === "vegetarian") {
 				const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
 				setVegetarian(newValues)
-				console.log("Yay! Vegetarian!", isVegetarian)
 			}
 		})
 	}
