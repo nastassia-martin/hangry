@@ -7,6 +7,12 @@
 	flex-direction: column;
 	min-height: 100vh;
 }
+#App {
+	font-family: "Roboto", sans-serif;
+}
+.nav-bar {
+	background-color: black;
+}
 .loading-container {
 	padding: 3rem;
 	display: flex;
@@ -29,10 +35,17 @@
 
 #sidebarburger {
 	position: absolute;
-	top: 1em;
-	left: 2em;
+	top: 50px;
+	right: 2em;
 	z-index: 5;
 	padding: 0;
 	margin: 0;
 	border: none;
+	min-width: 300px;
+	min-height: 50px;
+}
+@media (max-width: 500px) {
+	#sidebarburger {
+		min-width: 75px;
+	}
 }

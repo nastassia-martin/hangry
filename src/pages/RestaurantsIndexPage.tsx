@@ -24,9 +24,9 @@ const Restaurant_tips = () => {
 	const [isSingleData, setIsSingleData] = useState<Eatery>()
 	const { data, loading } = useGetOrderedByEateries()
 
-
 	const columnHelper = createColumnHelper<Eatery>()
-	const columns = [
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const columns: any[] = [
 		columnHelper.group({
 			header: "Location",
 			columns: [
@@ -118,8 +118,6 @@ const Restaurant_tips = () => {
 
 		toast.error("This place is GONZO, NO BACKSIES")
 	}
-
-
 
 	return (
 		<>
