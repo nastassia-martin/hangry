@@ -46,6 +46,15 @@
 .restaurant-card-body {
 	padding: 0;
 }
+.restaurant-offering {
+	border: 1px solid black;
+	margin: 0 0 5px 0;
+	padding: 5px 0;
+	border-radius: 15px;
+	display: block;
+	height: 30px;
+	text-align: center;
+}
 .pan-to-position-button {
 	position: absolute;
 	z-index: 2;
