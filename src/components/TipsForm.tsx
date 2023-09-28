@@ -111,8 +111,9 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, onSubmit }) => {
 			</Form.Group>
 
 			<input
-				type="hidden"
-				defaultValue="false"
+				type="checkbox"
+				style={{ display: 'none' }}
+				defaultChecked={false} 
 				{...register('adminApproved')}
 			/>
 

@@ -22,7 +22,7 @@ const useGetAddress = <T = Location>(endpoint: string) => {
             try {
                 const res = await get(endpoint)
                 setData(res?.results[0].geometry.location)
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                
             } catch (err: any) {
                 setError(err.message)
                 setIsError(true)
