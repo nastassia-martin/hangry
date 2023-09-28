@@ -18,7 +18,7 @@ import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
 import { useSearchParams } from "react-router-dom"
 import Sidebar from "./Sidebar"
-import { useFilterData } from '../hooks/useFilteredData'
+
 
 interface IMainMapProps {
 	filteredData: Eatery[] | null;
@@ -56,7 +56,7 @@ const MainMap: React.FC<IMainMapProps> = ({ filteredData }) => {
 		libraries: libraries,
 	})
 
-	const filtered = useFilterData
+
 	useEffect(() => {
 		// run this once to get the users position
 		navigator.geolocation.getCurrentPosition(
@@ -164,8 +164,8 @@ const MainMap: React.FC<IMainMapProps> = ({ filteredData }) => {
 						/>
 					)}
 					{/**render restaurants marker if they match the city that is the searched city */}
-					{filteredData &&
-						filteredData
+					{data &&
+						data
 							.filter(
 								(restaurant) =>
 									restaurant.address.city === selectedCity &&
