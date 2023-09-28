@@ -86,7 +86,7 @@ const Navigation = () => {
 						</Navbar.Text>
 						<div className=''>
 							<Button className="btn btn-dark btn-sm m-1" onClick={() => setIsTipModalOpen(true)}>Send a tip <FontAwesomeIcon icon={faBowlFood} /></Button>
-							
+
 							<TipModal
 								isOpen={isTipModalOpen}
 								onClose={() => setIsTipModalOpen(false)}
@@ -107,10 +107,12 @@ const Navigation = () => {
 								<Nav.Link as={NavLink} to="/login">Login</Nav.Link>
 							</>
 						}
-						<Nav.Link as={NavLink} to="/tips">Tips</Nav.Link>
 						{currentUser && admin && (
-							<Nav.Link as={NavLink} to="/users">Manage users</Nav.Link>
+							<>
+								<Nav.Link as={NavLink} to="/tips">Restaurant Index</Nav.Link>
 
+								<Nav.Link as={NavLink} to="/users">Manage users</Nav.Link>
+							</>
 						)}
 						{currentUser && (
 							<Nav.Link as={NavLink} to="/update-profile">Update Profile</Nav.Link>
