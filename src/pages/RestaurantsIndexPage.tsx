@@ -1,25 +1,36 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import ReactTable from '../components/ReactTable'
 import { Eatery } from '../types/restaurant.types'
-import useGetEateries from '../hooks/useGetEateries'
+import useGetOrderedByEateries from '../hooks/useGetOrderedByEateries'
 import AdminTipForm from '../components/AdminTipForm'
 import { useState } from 'react'
 import { firebaseTimestampToString } from '../helpers/time'
-import { doc, serverTimestamp, updateDoc, deleteDoc, Timestamp } from 'firebase/firestore'
+import { doc, serverTimestamp, updateDoc, deleteDoc, Timestamp, setDoc } from 'firebase/firestore'
 import { restaurantsCol } from '../services/firebase'
 import TipModal from '../components/TipModal'
-
+import Button from 'react-bootstrap/esm/Button'
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal'
-
+import RestaurantModal from '../components/RestaurantDetailsModal'
+import TipsForm from '../components/TipsForm'
+import { get } from '../services/googleAPI'
+import { toast } from 'react-toastify'
 
 const Restaurant_tips = () => {
-
+    
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
     const [isSingleData, setIsSingleData] = useState<Eatery>()
-    const { data, loading } = useGetEateries()
+    const { data, loading } = useGetOrderedByEateries()
+
+    //to try add tip before we put it on the map page
+    // const [street, setStreet] = useState("")
+    const [isTipModalOpen, setIsTipModalOpen] = useState(false)
+    // const { getData, Data: Loc } = useGetAddress<Location>("malmo")
+
+
 
     const columnHelper = createColumnHelper<Eatery>()
+
     const columns = [
 
         columnHelper.group({
@@ -42,31 +53,6 @@ const Restaurant_tips = () => {
                 }),
             ]
         }),
-        // columnHelper.group({
-        //     header: "Details",
-        //     columns: [
-        //         columnHelper.accessor('restaurangDetails.email', {
-        //             header: "Email"
-        //         }),
-        //         columnHelper.accessor('restaurangDetails.telephone', {
-        //             header: "Phone Nr"
-        //         }),
-        //         columnHelper.accessor('restaurangDetails.website', {
-        //             header: "Webpage"
-        //         }),
-        //     ]
-        // }),
-        // columnHelper.group({
-        //     header: "Misc",
-        //     columns: [
-        //         columnHelper.accessor('category', {
-        //             header: "Category",
-        //         }),
-        //         columnHelper.accessor('offering', {
-        //             header: "Offers",
-        //         }),
-        //     ]
-        // }),
         columnHelper.accessor("created_at", {
             header: "Created",
             cell: (props) => {
@@ -103,13 +89,6 @@ const Restaurant_tips = () => {
                             setIsSingleData(findData)
                             setIsModalOpen(true)
                         }}>Edit data</button>
-
-                        {/* <button className='btn btn-danger btn-sm' onClick={() => {
-                            setIsSingleData(findData)
-                            setOpenConfirmDelete(true)
-                        }}>
-                            Delete
-                        </button> */}
                     </div>
 
                 )
@@ -127,6 +106,7 @@ const Restaurant_tips = () => {
         })
 
         setIsModalOpen(false)
+        toast.success("This place is UPDATED")
 
     }
 
@@ -136,38 +116,67 @@ const Restaurant_tips = () => {
 
         await deleteDoc(docRef)
 
+        toast.error("This place is GONZOO, NO BACKSIES")
         setIsModalOpen(false)
         setOpenConfirmDelete(false)
     }
 
 
+    const addTip = async (data: Eatery) => {
+
+        const streetAddress = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
+
+        console.log(data)
+
+        try {
+
+            const geoLocation = await get(streetAddress)
+            console.log("get a load of this", geoLocation)
+
+            const docRef = doc(restaurantsCol)
 
 
-    // to use the form to create a new eatery
-    // const addTip = async (data: Eatery) => {
+            await setDoc(docRef, {
+                ...data,
+                location: geoLocation?.results[0].geometry.location,
+                created_at: serverTimestamp(),
+                updated_at: serverTimestamp(),
+            })
 
-    //     const docRef = doc(restaurantsCol)
+            toast.success("Your tip has been sent.")
+            console.log("will the real doc please stand up", docRef)
 
-    //     await setDoc(docRef, {
-    //         ...data,
-    //         created_at: serverTimestamp(),
-    //     })
+        } catch (error) {
+            toast.error("INVALID ADDRESS")
 
-    // }
+        }
+    }
+
+
+
+
     return (
         <>
             {loading && (
                 <p>Loading table...</p>
             )}
 
+
             <div className="d-flex align-items-center flex-column justfiy-center">
                 <h2>Restaurant Index</h2>
             </div>
 
             <div>
-                <TipModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <AdminTipForm onAddTip={editRestaurant} initialValues={isSingleData} onDelete={() => setOpenConfirmDelete(true)} />
+                <Button onClick={() => setIsTipModalOpen(true)}>Add tip</Button>
+                <TipModal isOpen={isTipModalOpen} onClose={() => setIsTipModalOpen(false)}>
+                    <TipsForm onAddTip={addTip} onSubmit={() => setIsTipModalOpen(false)}></TipsForm>
                 </TipModal>
+            </div>
+
+            <div>
+                <RestaurantModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                    <AdminTipForm onEditTip={editRestaurant} initialValues={isSingleData} onDelete={() => setOpenConfirmDelete(true)} />
+                </RestaurantModal>
             </div>
 
             <DeleteConfirmationModal
