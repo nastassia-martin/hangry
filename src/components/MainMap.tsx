@@ -18,7 +18,12 @@ import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
 import { useSearchParams } from "react-router-dom"
 import Sidebar from "./Sidebar"
-const MainMap = () => {
+import { useFilterData } from '../hooks/useFilteredData'
+
+interface IMainMapProps {
+	filteredData: Eatery[] | null;
+}
+const MainMap: React.FC<IMainMapProps> = ({ filteredData }) => {
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
 		lat: "",
@@ -50,6 +55,8 @@ const MainMap = () => {
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
 		libraries: libraries,
 	})
+
+	const filtered = useFilterData
 	useEffect(() => {
 		// run this once to get the users position
 		navigator.geolocation.getCurrentPosition(
@@ -133,8 +140,8 @@ const MainMap = () => {
 					mapContainerClassName="main-map" // container size of where map will be rendered
 					options={options}
 				>
-				<Sidebar
-				data={data}/>
+					<Sidebar
+						data={data} />
 					{/*this marker should be the user position */}
 					{userPosition && (
 						<MarkerF
@@ -157,8 +164,8 @@ const MainMap = () => {
 						/>
 					)}
 					{/**render restaurants marker if they match the city that is the searched city */}
-					{data &&
-						data
+					{filteredData &&
+						filteredData
 							.filter(
 								(restaurant) =>
 									restaurant.address.city === selectedCity &&
