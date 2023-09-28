@@ -174,7 +174,7 @@ const AdminTipForm: React.FC<IProps> = ({
 				/>
 				<Form.Check
 					inline
-					value="afterWork"
+					value="after Work"
 					type="checkbox"
 					label="After Work"
 					{...register("offering.afterWork")}
