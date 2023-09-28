@@ -26,7 +26,7 @@ const Restaurant_tips = () => {
 	const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 	const [isSingleData, setIsSingleData] = useState<Eatery>()
 	const { data, loading } = useGetOrderedByEateries()
-
+	console.log(data)
 	const [isTipModalOpen, setIsTipModalOpen] = useState(false)
 
 	const columnHelper = createColumnHelper<Eatery>()
