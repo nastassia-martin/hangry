@@ -20,10 +20,15 @@ const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
 		reset,
 	} = useForm<Eatery>()
 
-	const {currentUser} = useAuth()
+	const { currentUser } = useAuth()
 	const admin = useGetAdmin(currentUser?.uid)
 
 	const onFormSubmit: SubmitHandler<Eatery> = async (data: Eatery) => {
+		
+		if (currentUser && admin) {
+			data.adminApproved = true;
+		  }
+
 		await onAddTip(data)
 	}
 
@@ -224,7 +229,7 @@ const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
 				)}
 			</Form.Group>
 
-			{currentUser && admin ? (
+			{/* {currentUser && admin ? (
 				<input
 					type="checkbox"
 					style={{ display: 'none' }}
@@ -237,13 +242,22 @@ const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
 					style={{ display: 'none' }}
 					defaultChecked={false}
 					{...register('adminApproved')}
+					
 				/>
-			)}
+			)} */}
+
+			<input
+				type="checkbox"
+				style={{ display: 'none' }}
+				checked={!!(currentUser && admin)}  // Convert to boolean
+				{...register('adminApproved')}
+			/>
 
 			<Button className="mt-3" variant="dark" type="submit">
 				Send in tip
 			</Button>
 		</Form>
+
 	)
 }
 
