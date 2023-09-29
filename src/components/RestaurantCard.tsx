@@ -12,12 +12,22 @@ const RestaurantCard: React.FC<IProps> = ({ data }) => {
 			<Card.Title>{data.address.restaurantName}</Card.Title>
 			<Card.Body className="restaurant-card-body">
 				<Card.Text>{data.description}</Card.Text>
-				<Card.Text>
-					{data.offering.afterWork && <span>After work</span>}
-					{data.offering.dinner && <span>Dinner</span>}
-					{data.offering.lunch && <span>Lunch</span>}
-					{data.offering.vegan && <span>Vegan</span>}
-					{data.offering.vegetarian && <span>Vegetarian</span>}
+				<Card.Text className="d-flex flex-column">
+					{data.offering.afterWork && (
+						<span className="restaurant-offering">After work</span>
+					)}
+					{data.offering.dinner && (
+						<span className="restaurant-offering">Dinner</span>
+					)}
+					{data.offering.lunch && (
+						<span className="restaurant-offering">Lunch</span>
+					)}
+					{data.offering.vegan && (
+						<span className="restaurant-offering">Vegan</span>
+					)}
+					{data.offering.vegetarian && (
+						<span className="restaurant-offering">Vegetarian</span>
+					)}
 				</Card.Text>
 				<Card.Link
 					target="_blank"

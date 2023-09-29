@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useMemo, useState } from "react"
 import {
 	GoogleMap,
 	useJsApiLoader,
@@ -5,24 +6,23 @@ import {
 	InfoWindowF,
 	Libraries,
 } from "@react-google-maps/api"
-import { getLatLng } from "use-places-autocomplete"
-
 const libraries: Libraries = ["places"]
+import { getLatLng } from "use-places-autocomplete"
+import { useSearchParams } from "react-router-dom"
+
 import useGetEateries from "../hooks/useGetEateries"
-import { useCallback, useEffect, useMemo, useState } from "react"
 import { Eatery } from "../types/restaurant.types"
+
 import RestaurantCard from "./RestaurantCard"
-import { faPerson } from "@fortawesome/free-solid-svg-icons"
 import AutoCompletePlaces from "./AutoCompletePlaces"
 import LoadingSpinner from "./LoadingSpinner"
 import ErrorAlert from "./ErrorAlert"
-import { useSearchParams } from "react-router-dom"
 import Sidebar from "./Sidebar"
-import Button from "@restart/ui/Button"
-
+import Button from "react-bootstrap/Button"
+import { faPerson } from "@fortawesome/free-solid-svg-icons"
 
 const MainMap = () => {
-		//Sidebar stuff
+	//Sidebar stuff
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
 	const [searchParams, setSearchParams] = useSearchParams({
@@ -56,6 +56,8 @@ const MainMap = () => {
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
 		libraries: libraries,
 	})
+
+
 	useEffect(() => {
 		// run this once to get the users position
 		navigator.geolocation.getCurrentPosition(
@@ -128,14 +130,18 @@ const MainMap = () => {
 		})
 	}
 
-
-
-
 	return (
 		<>
 			<div className="map-container">
 				<AutoCompletePlaces result={handleSelect} />
-				<Button id="sidebarburger" className="btn btn-light btn-sm m-1" onClick={() => setIsSidebarOpen(!false)}>Slap this burger 🍔</Button>
+				<Button
+					id="sidebarburger"
+					className="btn btn-light btn-sm"
+					onClick={() => setIsSidebarOpen(!false)}
+				>
+					The list 🍔
+				</Button>
+
 				<GoogleMap
 					onLoad={onMapLoad}
 					zoom={12} // set zoom over map
@@ -143,6 +149,7 @@ const MainMap = () => {
 					mapContainerClassName="main-map" // container size of where map will be rendered
 					options={options}
 				>
+					<Sidebar data={data} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}></Sidebar>
 					{/*this marker should be the user position */}
 					{userPosition && (
 						<MarkerF
@@ -200,7 +207,18 @@ const MainMap = () => {
 								</MarkerF>
 							))}
 				</GoogleMap>
-				<Sidebar data={data} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}></Sidebar>
+				<Sidebar
+					data={
+						data &&
+						data.filter(
+							(restaurant) =>
+								restaurant.address.city === selectedCity &&
+								restaurant.adminApproved
+						)
+					}
+					isOpen={isSidebarOpen}
+					onClose={() => setIsSidebarOpen(false)}
+				></Sidebar>
 			</div>
 		</>
 	)

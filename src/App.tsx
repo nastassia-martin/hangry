@@ -35,7 +35,11 @@ const App = () => {
           </RequireAdminAuth>
         } />
 
-        <Route path="/tips" element={<Restaurant_tips />} />
+        <Route path="/tips" element={
+          <RequireAdminAuth>
+            <Restaurant_tips />
+          </RequireAdminAuth>
+        } />
       </Routes>
 
       <ToastContainer theme="colored" />

@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 

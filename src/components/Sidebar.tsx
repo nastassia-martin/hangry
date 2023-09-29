@@ -1,12 +1,10 @@
-import { Eatery, Category } from '../types/restaurant.types'
+
+import { Eatery } from '../types/restaurant.types'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { useState, useEffect } from 'react'
-import CloseButton from 'react-bootstrap/esm/CloseButton'
 import RestaurantSidebar from './RestaurantSidebar'
-import Form from 'react-bootstrap/Form'
-import { useForm, SubmitHandler } from 'react-hook-form'
-
+import { useFilterData } from '../hooks/useFilteredData'
 
 interface IProps {
     data: Eatery[] | null
@@ -17,117 +15,39 @@ interface IProps {
 const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
 
     const [value, setValue] = useState('options')
-    const [isFiltered, setFiltered] = useState(false)
-    const [isFilteredData, setFilteredData] = useState<Eatery[] | null>()
+    //const [isFiltered, setFiltered] = useState(false)
+    //const [isFilteredData, setFilteredData] = useState<Eatery[] | null>()
     const [isChecked, setChecked] = useState(false)
     const [checkedValues, setCheckedValues] = useState<string[]>([])
-    const [savedResults, setSavedResults] = useState<Eatery[]>([])
-    const [isLunches, setLunch] = useState<Eatery[]>([])
-    const [isDinners, setDinner] = useState<Eatery[]>([])
-    const [isAfterwork, setAfterWork] = useState<Eatery[]>([])
-    const [isVegan, setVegan] = useState<Eatery[]>([])
-    const [isVegetarian, setVegetarian] = useState<Eatery[]>([])
+    const [isFilteredData, setFilteredData] = useState<Eatery[] | null>(null)
 
 
-    const handleOptions = (event: any) => {
-        setValue(event.target.value)
+    //const isFilteredDataNew = useFilterData(data, value, isChecked, checkedValues)
 
-    }
-
-    const handleCategory = (data: Eatery[] | null, option: string) => {
-        if (data === null) {
-            return
-        }
-
-        // choose what category of restaurants to see
-        const restaurantCategory = data.filter((cathegories) => cathegories.category === option)
-        setFiltered(true)
-        setFilteredData(restaurantCategory)
-
-        if (option === "Options...") {
-            setFiltered(false)
-            setFilteredData(data)
-        }
-
-        if (option === null) {
-            setFiltered(false)
-        }
-    }
-
-    // toggle the checkboxes 
-    const handleCheckToggle = (newValue: string) => {
-        if (checkedValues.includes(newValue)) {
-            const newValues = (prevValues: string[]) => prevValues.filter((value) => value !== newValue)
-            setCheckedValues(newValues)
-        } else {
-            const newValues = (prevValues: string[]) => [...prevValues, newValue]
-            setCheckedValues(newValues)
-        }
-        console.log("values", checkedValues)
-    }
-
+    // Update the filtered data when data, value, isChecked, or checkedValues change
     useEffect(() => {
-        console.log("checked values:", checkedValues)
-    }, [checkedValues])
+        const filteredData = useFilterData(data, value, isChecked, checkedValues)//filterData(data)
+        setFilteredData(filteredData)
+        console.log('filtered', filteredData)
+    }, [data, value, isChecked, checkedValues])
 
-    const filterCheckToggle = (data: Eatery[] | null) => {
-
-        if (data === null) {
-            return
-        }
-
-        data.map((eatery) => {
-            if (eatery.offering.lunch === "lunch") {
-                const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
-                setLunch(newValues)
-                console.log("Yay! lunch!", isLunches)
-            }
-            if (eatery.offering.afterWork === "after work") {
-                const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
-                setAfterWork(newValues)
-                console.log("Yay! AfterWork!", isAfterwork)
-            }
-            if (eatery.offering.dinner === "dinner") {
-                const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
-                setDinner(newValues)
-                console.log("Yay! dinner!", isDinners)
-            }
-            if (eatery.offering.vegan === "vegan") {
-                const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
-                setVegan(newValues)
-                console.log("Yay! Vegan!", isVegan)
-            }
-            if (eatery.offering.vegan === "vegetarian") {
-                const newValues = (prevValues: Eatery[]) => [...prevValues, eatery]
-                setVegetarian(newValues)
-                console.log("Yay! Vegetarian!", isVegetarian)
-            }
-
-            console.log("all results", savedResults)
-            // setSavedResults(finalValue)
-            console.log("lunch", isLunches)
-            console.log("dinner", isDinners)
-            console.log("aw", isAfterwork)
-            console.log("vegan", isVegan)
-            console.log("vegetarian", isVegetarian)
-
-        })
-
-
+    // Function to handle the category selection
+    const handleCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedValue = event.target.value
+        setValue(selectedValue)
+        setChecked(false) // Reset checkbox state when the category changes
     }
 
-
-    // const handleChecks = (value:string, data:Eatery[]) => {
-
-    //     useEffect(() => {
-    //       // Update the filtered values whenever checkedValues change
-    //       const filtered = data.filter((offers) => checkedValues.includes(value));
-    //       setFilteredValues(filtered)
-
-    //     }, [checkedValues, values, setFilteredValues])
-    // }
-
+    const clearFilters = () => {
+        setValue('Options')// Reset the category selection
+        setChecked(false)// Uncheck all checkboxes
+        setCheckedValues([])// Clear the array of checked values
+    }
     return (
+        <div
+            className="modal show"
+            style={{ display: 'block', position: 'initial' }}
+        >
             <Modal show={isOpen} onHide={onClose}>
                 <Modal.Header
                     closeButton
@@ -142,104 +62,61 @@ const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen }) => {
                             <label>What kind of place are you looking for? </label>
                             <select
                                 value={value}
-                                onChange={handleOptions}>
+                                onChange={handleCategory}>
                                 <option
-                                    value="Options..."
-                                    onClick={() => handleCategory(data, value)}
-                                >
-                                    Options...
+                                    value="Options">
+                                    Options
                                 </option>
                                 <option
-                                    onClick={() => handleCategory(data, value)}
                                     value="Café"
                                 >
                                     Café
                                 </option>
                                 <option
-                                    onClick={() => handleCategory(data, value)}
                                     value="Restaurant"
                                 >
                                     Restaurant
                                 </option>
                                 <option
-                                    onClick={() => handleCategory(data, value)}
                                     value="Kiosk/grill"
                                 >
                                     Kiosk/Grill
                                 </option>
                                 <option
-                                    onClick={() => handleCategory(data, value)}
                                     value="Foodtruck"
                                 >
                                     Foodtruck
                                 </option>
                             </select>
                         </div>
-                        <div>
-                            <label>What should they offer? </label>
-                            <Form.Group className="mb-3" controlId='offers'>
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="Lunch"
-                                    value={"Lunch"}
-                                    onChange={() => handleCheckToggle("Lunch")}
-                                />
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="After Work"
-                                    value={"After Work"}
-                                    onChange={() => handleCheckToggle("After Work")}
-                                />
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="Dinner"
-                                    value={"Dinner"}
-                                    onChange={() => handleCheckToggle("Dinner")}
-                                />
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="Vegan"
-                                    value={"Vegan"}
-                                    onChange={() => handleCheckToggle("Vegan")}
-                                />
-                                <Form.Check
-                                    inline
-                                    onClick={() => filterCheckToggle(data)}
-                                    type="checkbox"
-                                    label="Vegetarian"
-                                    value={"Vegetarian"}
-                                    onChange={() => handleCheckToggle("Vegetarian")}
-                                />
-                            </Form.Group>
-                        </div>
                     </div>
-                    {data && !isFiltered &&
+                    {data && !isFilteredData &&
                         <RestaurantSidebar
                             data={data}
                         />
                     }
-                    {isFiltered && isFilteredData &&
+                    {isFilteredData &&
                         <RestaurantSidebar
                             data={isFilteredData}
                         />
                     }
                 </Modal.Body>
                 <Modal.Footer>
+                    <Button variant="secondary" onClick={() => clearFilters()}>
+                        Clear Filters
+                    </Button>
                     <div>
                         Copyright LLMN Inc.
                     </div>
-                    <Button variant="secondary" onClick={onClose}>Close</Button>
+                    {/* <Button variant="secondary" onClick={() => setIsOpen(false)}>Close</Button>
+                     */}
+                    {/* <Button variant="secondary" onClick={() => setIsOpen(false)}>Close</Button> */}
+
                 </Modal.Footer>
             </Modal>
+        </div>
     )
+
 }
 
 export default Sidebar
