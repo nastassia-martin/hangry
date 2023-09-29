@@ -38,8 +38,10 @@ const Navigation = () => {
 
 	//Add tip stuff
 	const [isTipModalOpen, setIsTipModalOpen] = useState(false)
-
+	const [formBtnDisabled, setFormBtnDisabled] = useState(false)
 	const addTip = async (data: Eatery) => {
+		setFormBtnDisabled(true)
+		
 		const streetAddress = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
 
 		try {
@@ -59,6 +61,7 @@ const Navigation = () => {
 			toast.error("INVALID ADDRESS")
 		}
 		setIsTipModalOpen(false)
+		setFormBtnDisabled(false)
 	}
 
 	return (
@@ -84,7 +87,7 @@ const Navigation = () => {
 								isOpen={isTipModalOpen}
 								onClose={() => setIsTipModalOpen(false)}
 							>
-								<TipsForm onAddTip={addTip}></TipsForm>
+								<TipsForm onAddTip={addTip} isDisabled={formBtnDisabled}></TipsForm>
 							</TipModal>
 						</div>
 					</>

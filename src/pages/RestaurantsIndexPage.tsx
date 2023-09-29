@@ -133,6 +133,7 @@ const Restaurant_tips = () => {
 						onEditTip={editRestaurant}
 						initialValues={isSingleData}
 						onDelete={() => setOpenConfirmDelete(true)}
+						
 					/>
 				</TipModal>
 			</div>

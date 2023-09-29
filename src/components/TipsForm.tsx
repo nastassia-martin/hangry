@@ -10,9 +10,10 @@ import useGetAdmin from "../hooks/useGetAdmin"
 
 interface IProps {
 	onAddTip: (data: Eatery) => Promise<void>
+	isDisabled: boolean
 }
 
-const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
+const TipsForm: React.FC<IProps> = ({ onAddTip, isDisabled }) => {
 	const {
 		handleSubmit,
 		register,
@@ -246,14 +247,14 @@ const TipsForm: React.FC<IProps> = ({ onAddTip }) => {
 				/>
 			)} */}
 
-			<input
+			{/* <input
 				type="checkbox"
 				style={{ display: 'none' }}
 				checked={!!(currentUser && admin)}  // Convert to boolean
 				{...register('adminApproved')}
-			/>
+			/> */}
 
-			<Button className="mt-3" variant="dark" type="submit">
+			<Button className="mt-3" variant="dark" type="submit" disabled={isDisabled}>
 				Send in tip
 			</Button>
 		</Form>
