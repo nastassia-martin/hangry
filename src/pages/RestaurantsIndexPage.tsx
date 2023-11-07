@@ -25,7 +25,6 @@ const Restaurant_tips = () => {
 	const { data, loading } = useGetOrderedByEateries()
 
 	const columnHelper = createColumnHelper<Eatery>()
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const columns: any[] = [
 		columnHelper.group({
 			header: "Location",
@@ -98,6 +97,8 @@ const Restaurant_tips = () => {
 
 	const editRestaurant = async (data: Eatery) => {
 		const docRef = doc(restaurantsCol, isSingleData?._id)
+
+		
 
 		await updateDoc(docRef, {
 			...data,

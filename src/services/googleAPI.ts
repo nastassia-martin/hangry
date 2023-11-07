@@ -4,7 +4,7 @@ import axios from 'axios'
 const API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY
 
 const instance = axios.create({
-    baseURL: "https://maps.googleapis.com/maps/api/geocode/json?address=",
+    baseURL: "https://maps.googleapis.com/maps/api/geocode/",
     headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
@@ -12,6 +12,12 @@ const instance = axios.create({
 })
 
 export const get = async (endpoint: string) => {
-    const res = await instance.get(`${endpoint}&key=${API_KEY}`)
+    const res = await instance.get(`json?address=${endpoint}&key=${API_KEY}`)
+    return res.data
+}
+
+
+export const getLocality = async (endpoint: string) => {
+    const res = await instance.get(`json?latlng=${endpoint}&key=${API_KEY}`)
     return res.data
 }

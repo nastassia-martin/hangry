@@ -12,7 +12,8 @@ import { useSearchParams } from "react-router-dom"
 
 import useGetEateries from "../hooks/useGetEateries"
 import { Eatery } from "../types/restaurant.types"
-
+import { getLocality } from "../services/googleAPI"
+import useGetLocality from "../hooks/useGetLocality"
 import RestaurantCard from "./RestaurantCard"
 import AutoCompletePlaces from "./AutoCompletePlaces"
 import LoadingSpinner from "./LoadingSpinner"
@@ -58,20 +59,63 @@ const MainMap = () => {
 	})
 
 
+
+
+
 	useEffect(() => {
 		// run this once to get the users position
 		navigator.geolocation.getCurrentPosition(
 			// on success
-			(position) => {
+			async (position) => {
 				const { latitude, longitude } = position.coords
+
+
+				// get city from cords
 				setUserPosition({ lat: latitude, lng: longitude })
+
+				// const locality = async (latitude: number, longitude: number) => {
+
+				// 	try {
+						
+				// 		return trueLocality
+			
+				// 	} catch (error) {
+				// 		console.log("this is not  what we want: ", error)
+				// 	}
+				// }
+
+				const trueLocality = await getLocality(`${latitude},${longitude}`)
+
+				console.log("get locality? ", trueLocality.results[0].address_components[3].long_name)
+				
+				
+				setSearchParams({ city: `${trueLocality.results[0].address_components[3].long_name}`, lat: String(latitude), lng: String(longitude) })
+
+				
+
+
 			},
 			// on error
 			(error) => {
 				console.log(error.message)
 			}
 		)
+
 	}, [])
+
+
+	// useEffect(() => {
+
+	// 	if (!userPosition) {
+	// 		console.log("im returning, im done")
+	// 		return
+	// 	} 
+	// 		const loc = locality(userPosition?.lat, userPosition?.lng)
+	// 		console.log("get locality inside useEffect? ", loc)
+		
+
+	// }), []
+
 
 	//To be able to get the map to pan to correct location after reload
 	useEffect(() => {
@@ -111,8 +155,8 @@ const MainMap = () => {
 	const handleMarkerClick = (restaurant: Eatery) => {
 		setSelectedMarker(restaurant)
 		//pan to the restaurtant's location instead of the centered position of the map
-
 		map?.panTo(restaurant.location)
+
 	}
 	const handleSelect = (result: google.maps.GeocoderResult) => {
 		//extract the locality from the result
@@ -144,8 +188,8 @@ const MainMap = () => {
 
 				<GoogleMap
 					onLoad={onMapLoad}
-					zoom={12} // set zoom over map
-					center={position} // where map should be centered
+					zoom={14} // set zoom over map
+					center={userPosition || position} // where map should be centered
 					mapContainerClassName="main-map" // container size of where map will be rendered
 					options={options}
 				>
