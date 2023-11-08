@@ -69,16 +69,15 @@ const MainMap = () => {
 			async (position) => {
 				const { latitude, longitude } = position.coords
 
-
 				// get city from cords
 				setUserPosition({ lat: latitude, lng: longitude })
 
 				// const locality = async (latitude: number, longitude: number) => {
 
 				// 	try {
-						
+
 				// 		return trueLocality
-			
+
 				// 	} catch (error) {
 				// 		console.log("this is not  what we want: ", error)
 				// 	}
@@ -88,12 +87,15 @@ const MainMap = () => {
 
 				const localityComponent = trueLocality.results[0].address_components.find(
 					(component: any) => component.types.includes("postal_town")
-				  )
-			  
-				console.log("get locality? ",  )
+				)
+
+				setSearchParams({ city: `${localityComponent.long_name}`, lat: String(latitude), lng: String(longitude) })
+
 				
-				
-				setSearchParams({ city: `${localityComponent.long_name}`})
+				//Not needed since we center around lat / lng at start anyway? 
+				// map?.panTo({ lat: latitude, lng: longitude })
+				// console.log("why we not panning?")
+
 
 
 			},
@@ -102,6 +104,7 @@ const MainMap = () => {
 				console.log(error.message)
 			}
 		)
+
 
 	}, [])
 
@@ -114,7 +117,7 @@ const MainMap = () => {
 	// 	} 
 	// 		const loc = locality(userPosition?.lat, userPosition?.lng)
 	// 		console.log("get locality inside useEffect? ", loc)
-		
+
 
 	// }), []
 
@@ -159,13 +162,18 @@ const MainMap = () => {
 		//pan to the restaurtant's location instead of the centered position of the map
 		map?.panTo(restaurant.location)
 
+		console.log("how we panning here?", restaurant.location)
+
 	}
 	const handleSelect = (result: google.maps.GeocoderResult) => {
 		//extract the locality from the result
 		const locality = result.address_components[0].long_name
 
+
 		// extract the lat & lng from the result
 		const { lat, lng } = getLatLng(result)
+
+
 		setPosition({ lat, lng })
 
 		// set input value as city in searchParams
@@ -191,7 +199,7 @@ const MainMap = () => {
 				<GoogleMap
 					onLoad={onMapLoad}
 					zoom={14} // set zoom over map
-					center={userPosition || position} // where map should be centered
+					center={position} // where map should be centered
 					mapContainerClassName="main-map" // container size of where map will be rendered
 					options={options}
 				>
