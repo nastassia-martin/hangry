@@ -2,6 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import ReactTable from "../components/ReactTable"
 import { Eatery } from "../types/restaurant.types"
 import useGetOrderedByEateries from "../hooks/useGetOrderedByEateries"
+import { get } from '../services/googleAPI'
 import AdminTipForm from "../components/AdminTipForm"
 import { useState } from "react"
 import { firebaseTimestampToString } from "../helpers/time"
@@ -98,12 +99,26 @@ const Restaurant_tips = () => {
 	const editRestaurant = async (data: Eatery) => {
 		const docRef = doc(restaurantsCol, isSingleData?._id)
 
-		
+		const newAddress = `${data.address.street}${data.address.addressNumber}${data.address.postcode}${data.address.city}`
+		const oldAddress = `${isSingleData?.address.street}${isSingleData?.address.addressNumber}${isSingleData?.address.postcode}${isSingleData?.address.city}`
+		console.log("this is current singleData :", isSingleData)
+		console.log("this is the form data:", data)
 
-		await updateDoc(docRef, {
-			...data,
-			updated_at: serverTimestamp(),
-		})
+		if(newAddress !== oldAddress){
+			const newLatLng = await get(`${data.address.addressNumber}+${data.address.street}+${data.address.city}`)
+			await updateDoc(docRef, {
+				...data,
+				location: newLatLng.results[0].geometry.location,
+				updated_at: serverTimestamp(),
+			})
+
+		}else{
+			await updateDoc(docRef, {
+				...data,
+				updated_at: serverTimestamp(),
+			})
+		}
+
 
 		setIsModalOpen(false)
 		toast.success("This place is UPDATED")

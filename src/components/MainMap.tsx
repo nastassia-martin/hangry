@@ -86,12 +86,14 @@ const MainMap = () => {
 
 				const trueLocality = await getLocality(`${latitude},${longitude}`)
 
-				console.log("get locality? ", trueLocality.results[0].address_components[3].long_name)
+				const localityComponent = trueLocality.results[0].address_components.find(
+					(component: any) => component.types.includes("postal_town")
+				  )
+			  
+				console.log("get locality? ",  )
 				
 				
-				setSearchParams({ city: `${trueLocality.results[0].address_components[3].long_name}`, lat: String(latitude), lng: String(longitude) })
-
-				
+				setSearchParams({ city: `${localityComponent.long_name}`})
 
 
 			},
