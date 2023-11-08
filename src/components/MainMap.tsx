@@ -89,7 +89,15 @@ const MainMap = () => {
 					(component: any) => component.types.includes("postal_town")
 				)
 
-				setSearchParams({ city: `${localityComponent.long_name}`, lat: String(latitude), lng: String(longitude) })
+				const selectedCity = searchParams.get("city")
+				const selectedLat = searchParams.get("lat")
+				const selectedLng = searchParams.get("lng")
+
+				if(selectedCity == "" && selectedLat == "" && selectedLng == ""){
+					
+					setSearchParams({ city: `${localityComponent.long_name}`, lat: String(latitude), lng: String(longitude) })
+
+				}
 
 				
 				//Not needed since we center around lat / lng at start anyway? 
@@ -124,7 +132,7 @@ const MainMap = () => {
 
 	//To be able to get the map to pan to correct location after reload
 	useEffect(() => {
-		//const selectedCity = searchParams.get("city")
+		// const selectedCity = searchParams.get("city")
 		const selectedLat = searchParams.get("lat")
 		const selectedLng = searchParams.get("lng")
 
