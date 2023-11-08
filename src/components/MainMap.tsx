@@ -83,9 +83,9 @@ const MainMap = () => {
 				// 	}
 				// }
 
-				const trueLocality = await getLocality(`${latitude},${longitude}`)
+				const locality = await getLocality(`${latitude},${longitude}`)
 
-				const localityComponent = trueLocality.results[0].address_components.find(
+				const localityComponent = locality.results[0].address_components.find(
 					(component: any) => component.types.includes("postal_town")
 				)
 
