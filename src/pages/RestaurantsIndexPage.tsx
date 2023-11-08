@@ -101,8 +101,6 @@ const Restaurant_tips = () => {
 
 		const newAddress = `${data.address.street}${data.address.addressNumber}${data.address.postcode}${data.address.city}`
 		const oldAddress = `${isSingleData?.address.street}${isSingleData?.address.addressNumber}${isSingleData?.address.postcode}${isSingleData?.address.city}`
-		console.log("this is current singleData :", isSingleData)
-		console.log("this is the form data:", data)
 
 		if(newAddress !== oldAddress){
 			const newLatLng = await get(`${data.address.addressNumber}+${data.address.street}+${data.address.city}`)
