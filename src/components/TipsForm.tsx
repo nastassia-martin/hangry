@@ -50,10 +50,6 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, isDisabled }) => {
 							value: 3,
 							message: "the name must be a minimum of 3 characters",
 						},
-						// pattern: {
-						// 	value: /^\S*$/,
-						// 	message: "no white space please",
-						// },
 					})}
 				/>
 				{errors.address?.restaurantName && (
@@ -229,31 +225,6 @@ const TipsForm: React.FC<IProps> = ({ onAddTip, isDisabled }) => {
 					<p>{errors.description.message ?? "This is an invalid value"}</p>
 				)}
 			</Form.Group>
-
-			{/* {currentUser && admin ? (
-				<input
-					type="checkbox"
-					style={{ display: 'none' }}
-					defaultChecked={true}
-					{...register('adminApproved')}
-				/>
-			) : (
-				<input
-					type="checkbox"
-					style={{ display: 'none' }}
-					defaultChecked={false}
-					{...register('adminApproved')}
-					
-				/>
-			)} */}
-
-			{/* <input
-				type="checkbox"
-				style={{ display: 'none' }}
-				checked={!!(currentUser && admin)}  // Convert to boolean
-				{...register('adminApproved')}
-			/> */}
-
 			<Button className="mt-3" variant="dark" type="submit" disabled={isDisabled}>
 				Send in tip
 			</Button>

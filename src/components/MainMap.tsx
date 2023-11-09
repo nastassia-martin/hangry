@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
+
+//MAP
 import {
 	GoogleMap,
 	useJsApiLoader,
@@ -8,68 +10,97 @@ import {
 } from "@react-google-maps/api"
 const libraries: Libraries = ["places"]
 import { getLatLng } from "use-places-autocomplete"
-import { useSearchParams } from "react-router-dom"
-import { useFilterData } from '../hooks/useFilteredData'
 
-import useGetEateries from "../hooks/useGetEateries"
-import { Eatery } from "../types/restaurant.types"
-import { getLocality } from "../services/googleAPI"
-import useGetLocality from "../hooks/useGetLocality"
-import RestaurantCard from "./RestaurantCard"
-import AutoCompletePlaces from "./AutoCompletePlaces"
-import LoadingSpinner from "./LoadingSpinner"
-import ErrorAlert from "./ErrorAlert"
-import Sidebar from "./Sidebar"
+//LIBRARIES
+import { useSearchParams } from "react-router-dom"
 import Button from "react-bootstrap/Button"
 import { faPerson } from "@fortawesome/free-solid-svg-icons"
 
+//CUSTOM HOOKS
+import useFilterData  from '../hooks/useFilteredData'
+import useGetEateries from "../hooks/useGetEateries"
+
+//COMPONENTS
+import AutoCompletePlaces from "./AutoCompletePlaces"
+import ErrorAlert from "./ErrorAlert"
+import LoadingSpinner from "./LoadingSpinner"
+import RestaurantCard from "./RestaurantCard"
+import Sidebar from "./Sidebar"
+
+//TYPES AND SERVICES
+import { Eatery } from "../types/restaurant.types"
+import { getLocality } from "../services/googleAPI"
+
 const MainMap = () => {
-	//Sidebar stuff
+	const [isFilteredData, setFilteredData] = useState<Eatery[] | null>(null)
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+	const [map, setMap] = useState<google.maps.Map | null>(null)
+	const [position, setPosition] = useState<google.maps.LatLngLiteral>({
+		lat: 55.5918001,
+		lng: 13.0167039,
+	})
+	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
+	const [userPosition, setUserPosition] = useState<
+		google.maps.LatLngLiteral | undefined
+	>(undefined)
+	const [value, setValue] = useState('Options')
+	
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
 		lat: "",
 		lng: "",
 	})
 	const { data, loading } = useGetEateries()
-	const [selectedMarker, setSelectedMarker] = useState<Eatery | null>(null)
-	const [map, setMap] = useState<google.maps.Map | null>(null)
-	const [userPosition, setUserPosition] = useState<
-		google.maps.LatLngLiteral | undefined
-	>(undefined)
-	const [position, setPosition] = useState<google.maps.LatLngLiteral>({
-		lat: 55.5918001,
-		lng: 13.0167039,
-	})
-    
-	const [value, setValue] = useState('Options')
-	const [isChecked, setChecked] = useState(false)
-    const [checkedValues, setCheckedValues] = useState<string[]>([])
-    const [isFilteredData, setFilteredData] = useState<Eatery[] | null>(null)
-
-	// Update the filtered data when data, value, isChecked, or checkedValues change
-    useEffect(() => {
-        const filteredData = useFilterData(data, value, isChecked, checkedValues)
-        setFilteredData(filteredData)
-        console.log('filtered', filteredData)
-    }, [data, value, isChecked, checkedValues])
+	
+    	// get "city=" from URL Search Params
+	const selectedCity = searchParams.get("city")
 
 	const handleCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value
         setValue(selectedValue)
-        setChecked(false) // Reset checkbox state when the category changes
     }
 
-	const clearFilters = () => {
+	const handleClearFilters = () => {
         setValue('Options')// Reset the category selection
-        setChecked(false)// Uncheck all checkboxes
-        setCheckedValues([])// Clear the array of checked values
     }
+	
+	// handle actions for clicking on marker
+	const handleMarkerClick = (restaurant: Eatery) => {
+		setSelectedMarker(restaurant)
+		//pan to the restaurtant's location instead of the centered position of the map
+		map?.panTo(restaurant.location)
+	}
 
+	// handle search
+	const handleSelect = (result: google.maps.GeocoderResult) => {
+		//extract the locality from search result
+		const locality = result.address_components[0].long_name
+
+		// extract the lat & lng from the search result
+		const { lat, lng } = getLatLng(result)
+
+		setPosition({ lat, lng })
+
+		// set input value as city in searchParams
+		setSearchParams({
+			city: locality || "",
+			lat: String(lat),
+			lng: String(lng),
+		})
+	}
+
+	// Update the filtered data when data, value change
+    useEffect(() => {
+        const filteredData = useFilterData(data, value)
+        setFilteredData(filteredData)
+    }, [data, value])
+	
 	//handle map instance on load
 	const onMapLoad = useCallback((map: google.maps.Map) => {
 		setMap(map)
 	}, [])
+	
+	// Map UI options
 	const options = useMemo(
 		() => ({
 			disableDefaultUI: true, // removes fullscreen
@@ -77,6 +108,7 @@ const MainMap = () => {
 		}),
 		[]
 	)
+
 	//load GoogleMapsAPI script
 	const { isLoaded, loadError } = useJsApiLoader({
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
@@ -90,70 +122,34 @@ const MainMap = () => {
 			async (position) => {
 				const { latitude, longitude } = position.coords
 
-				// get city from cords
 				setUserPosition({ lat: latitude, lng: longitude })
-
-				// const locality = async (latitude: number, longitude: number) => {
-
-				// 	try {
-
-				// 		return trueLocality
-
-				// 	} catch (error) {
-				// 		console.log("this is not  what we want: ", error)
-				// 	}
-				// }
-
-				const locality = await getLocality(`${latitude},${longitude}`)
-
-				const localityComponent = locality.results[0].address_components.find(
+				
+				// get city from user coords
+				const locality:google.maps.GeocoderResponse = await getLocality(`${latitude},${longitude}`)
+				
+				const localityComponent:google.maps.GeocoderAddressComponent | undefined= locality.results[0].address_components.find(
 					(component: any) => component.types.includes("postal_town")
 				)
-
+				//update params so that we can see restaurant data on initial load
 				const selectedCity = searchParams.get("city")
 				const selectedLat = searchParams.get("lat")
 				const selectedLng = searchParams.get("lng")
 
 				if(selectedCity == "" && selectedLat == "" && selectedLng == ""){
-					
-					setSearchParams({ city: `${localityComponent.long_name}`, lat: String(latitude), lng: String(longitude) })
-
+					setSearchParams({ city: `${localityComponent?.long_name}`, lat: String(latitude), lng: String(longitude) })
+				} else {
+					return setSearchParams({ city: "", lat: String(latitude), lng: String(longitude) })
 				}
-
-				
-				//Not needed since we center around lat / lng at start anyway? 
-				// map?.panTo({ lat: latitude, lng: longitude })
-				// console.log("why we not panning?")
-
-
-
 			},
 			// on error
-			(error) => {
-				console.log(error.message)
+			(error: GeolocationPositionError) => {
+				alert(error.message)
 			}
 		)
-
-
 	}, [])
-
-
-	// useEffect(() => {
-
-	// 	if (!userPosition) {
-	// 		console.log("im returning, im done")
-	// 		return
-	// 	} 
-	// 		const loc = locality(userPosition?.lat, userPosition?.lng)
-	// 		console.log("get locality inside useEffect? ", loc)
-
-
-	// }), []
-
 
 	//To be able to get the map to pan to correct location after reload
 	useEffect(() => {
-		// const selectedCity = searchParams.get("city")
 		const selectedLat = searchParams.get("lat")
 		const selectedLng = searchParams.get("lng")
 
@@ -173,44 +169,17 @@ const MainMap = () => {
 		}
 	}, [searchParams])
 
-	// show loading spinner
+	// if map has not loaded show loading spinner
 	if (!isLoaded) {
 		return <LoadingSpinner />
 	}
+
+	// if data has not loaded show loading spinner
 	loading && <LoadingSpinner />
-	// on error show error
+	
+	// on map error show error message
 	if (loadError) {
 		return <ErrorAlert error={"There was a problem loading the map"} />
-	}
-	// get "city=" from URL Search Params
-	const selectedCity = searchParams.get("city")
-
-	// handle actions for clicking on marker
-	const handleMarkerClick = (restaurant: Eatery) => {
-		setSelectedMarker(restaurant)
-		//pan to the restaurtant's location instead of the centered position of the map
-		map?.panTo(restaurant.location)
-
-		console.log("how we panning here?", restaurant.location)
-
-	}
-	const handleSelect = (result: google.maps.GeocoderResult) => {
-		//extract the locality from the result
-		const locality = result.address_components[0].long_name
-
-
-		// extract the lat & lng from the result
-		const { lat, lng } = getLatLng(result)
-
-
-		setPosition({ lat, lng })
-
-		// set input value as city in searchParams
-		setSearchParams({
-			city: locality || "",
-			lat: String(lat),
-			lng: String(lng),
-		})
 	}
 
 	return (
@@ -303,7 +272,7 @@ const MainMap = () => {
 					onClose={() => setIsSidebarOpen(false)}
 					value={value}
 					handleCategory={handleCategory}
-					clearFilters={clearFilters}
+					clearFilters={handleClearFilters}
 				></Sidebar>
 			</div>
 		</>

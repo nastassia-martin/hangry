@@ -42,17 +42,14 @@ const UpdateProfile = () => {
 
 			if (data.displayName !== (currentUser.displayName ?? "")) {
 				await setDisplayName(data.displayName)
-				console.log("name", data.displayName)
 			}
 
 			if (data.email !== (currentUser.email ?? "")) {
 				await setEmail(data.email)
-				console.log("email", data.email)
 			}
 
 			if (data.password) {
 				await setPassword(data.password)
-				console.log("password", data.password)
 			}
 
 			if (data.photoFile.length) {
@@ -72,7 +69,7 @@ const UpdateProfile = () => {
 						setLoading(true)
 					},
 					(err) => {
-						console.log(err)
+						alert(err)
 						setErrorMessage("Something went wrong with the upload")
 					},
 					async () => {

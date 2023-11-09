@@ -11,7 +11,6 @@ import UpdateProfile from "./pages/UpdateProfile"
 import AdminUsersList from "./pages/AdminUsersList"
 import RequireAuth from "./components/RequireAuth"
 import RequireAdminAuth from "./components/RequireAdmin"
-// import Sidebar from "./components/Sidebar"
 
 const App = () => {
   return (

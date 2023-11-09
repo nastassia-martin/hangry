@@ -28,8 +28,6 @@ const Login = () => {
         try {
             setLoading(true)
             await login(data.email, data.password)
-            console.log(data.email, data.password)
-            console.log('logged in user', data.email)
             reloadUser()
             toast.success('Welcome back!')
             navigate('/')

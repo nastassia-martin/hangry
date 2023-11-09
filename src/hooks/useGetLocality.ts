@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { getLocality } from '../services/googleAPI'
-// import { GeolocationResponse } from "../types/restaurant.types"
 import { Location } from "../types/restaurant.types"
 
 const useGetLocality = <T = Location>(endpoint: string) => {

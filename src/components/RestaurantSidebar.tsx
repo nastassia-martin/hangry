@@ -1,6 +1,7 @@
 import { Eatery } from "../types/restaurant.types"
 import { ListGroup } from "react-bootstrap";
 import Accordion from 'react-bootstrap/Accordion';
+import { Link } from "react-router-dom";
 
 
 interface IProps {
@@ -23,6 +24,11 @@ const RestaurantSidebar: React.FC<IProps> = ({ data }) => {
                             <ListGroup key={restaurant._id}>
                                 <ListGroup.Item >
                                 {restaurant.address.addressNumber} {restaurant.address.street} {restaurant.address.city} {restaurant.address.postcode}
+                                </ListGroup.Item>
+                                <ListGroup.Item 
+                                    target="_blank"
+                                    as={Link} 
+                                    to={`https://www.google.com/maps?q=${restaurant.address.addressNumber}+${restaurant.address.street}+${restaurant.address.city}`}>Directions
                                 </ListGroup.Item>
                                 {restaurant.restaurangDetails && (
                                     <>

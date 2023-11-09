@@ -28,7 +28,6 @@ const SignUp = () => {
 
             setLoading(true)
             await signup(data.email, data.password, data.displayName)
-            console.log(data.email, data.password)
 
             toast.success('Welcome!')
             navigate('/')
