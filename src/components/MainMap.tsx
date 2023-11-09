@@ -9,6 +9,7 @@ import {
 const libraries: Libraries = ["places"]
 import { getLatLng } from "use-places-autocomplete"
 import { useSearchParams } from "react-router-dom"
+import { useFilterData } from '../hooks/useFilteredData'
 
 import useGetEateries from "../hooks/useGetEateries"
 import { Eatery } from "../types/restaurant.types"
@@ -25,7 +26,6 @@ import { faPerson } from "@fortawesome/free-solid-svg-icons"
 const MainMap = () => {
 	//Sidebar stuff
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
 		lat: "",
@@ -41,6 +41,31 @@ const MainMap = () => {
 		lat: 55.5918001,
 		lng: 13.0167039,
 	})
+    
+	const [value, setValue] = useState('Options')
+	const [isChecked, setChecked] = useState(false)
+    const [checkedValues, setCheckedValues] = useState<string[]>([])
+    const [isFilteredData, setFilteredData] = useState<Eatery[] | null>(null)
+
+	// Update the filtered data when data, value, isChecked, or checkedValues change
+    useEffect(() => {
+        const filteredData = useFilterData(data, value, isChecked, checkedValues)
+        setFilteredData(filteredData)
+        console.log('filtered', filteredData)
+    }, [data, value, isChecked, checkedValues])
+
+	const handleCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedValue = event.target.value
+        setValue(selectedValue)
+        setChecked(false) // Reset checkbox state when the category changes
+    }
+
+	const clearFilters = () => {
+        setValue('Options')// Reset the category selection
+        setChecked(false)// Uncheck all checkboxes
+        setCheckedValues([])// Clear the array of checked values
+    }
+
 	//handle map instance on load
 	const onMapLoad = useCallback((map: google.maps.Map) => {
 		setMap(map)
@@ -57,10 +82,6 @@ const MainMap = () => {
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
 		libraries: libraries,
 	})
-
-
-
-
 
 	useEffect(() => {
 		// run this once to get the users position
@@ -211,7 +232,7 @@ const MainMap = () => {
 					mapContainerClassName="main-map" // container size of where map will be rendered
 					options={options}
 				>
-					<Sidebar data={data} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}></Sidebar>
+					{/* <Sidebar data={data} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}></Sidebar> */}
 					{/*this marker should be the user position */}
 					{userPosition && (
 						<MarkerF
@@ -234,8 +255,8 @@ const MainMap = () => {
 						/>
 					)}
 					{/**render restaurants marker if they match the city that is the searched city */}
-					{data &&
-						data
+					{isFilteredData &&
+						isFilteredData
 							.filter(
 								(restaurant) =>
 									restaurant.address.city === selectedCity &&
@@ -271,8 +292,8 @@ const MainMap = () => {
 				</GoogleMap>
 				<Sidebar
 					data={
-						data &&
-						data.filter(
+						isFilteredData &&
+						isFilteredData.filter(
 							(restaurant) =>
 								restaurant.address.city === selectedCity &&
 								restaurant.adminApproved
@@ -280,6 +301,9 @@ const MainMap = () => {
 					}
 					isOpen={isSidebarOpen}
 					onClose={() => setIsSidebarOpen(false)}
+					value={value}
+					handleCategory={handleCategory}
+					clearFilters={clearFilters}
 				></Sidebar>
 			</div>
 		</>
