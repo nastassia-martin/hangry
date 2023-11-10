@@ -39,10 +39,11 @@ export type Category =
 	| "Kiosk/grill"
 	| "Foodtruck"
 
-type Offering = {
+export type Offering = {
 	lunch: string
 	afterWork: string
 	dinner: string
 	vegetarian: string
 	vegan: string
+	[key: string]: string;
 }

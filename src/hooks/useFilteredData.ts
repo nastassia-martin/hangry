@@ -1,22 +1,50 @@
 // useFilterData.ts
 import { Eatery } from '../types/restaurant.types'
 
+// export const useFilterData = (
+//     data: Eatery[] | null,
+//     value: string,
+// ): Eatery[] | null => {
+//     if (!data) {
+//         return null
+//     }
+
+//     let filteredData = [...data]
+
+//     // Filter by category
+//     if (value !== 'Options') {
+//         filteredData = filteredData.filter((eatery) => eatery.category === value)
+//     }
+
+//     return filteredData
+// }
+
+// export default useFilterData
+
 export const useFilterData = (
     data: Eatery[] | null,
-    value: string,
+    categoryValue: string,
+    offeringValue: { [key: string]: boolean }
 ): Eatery[] | null => {
     if (!data) {
-        return null
+        return null;
     }
 
-    let filteredData = [...data]
+    let filteredData = [...data];
 
     // Filter by category
-    if (value !== 'Options') {
-        filteredData = filteredData.filter((eatery) => eatery.category === value)
+    if (categoryValue !== 'Options') {
+        filteredData = filteredData.filter((eatery) => eatery.category === categoryValue);
     }
 
-    return filteredData
-}
+    // Additional filter by offering
+    Object.keys(offeringValue).forEach(key => {
+        if (offeringValue[key]) {
+            filteredData = filteredData.filter((eatery) => eatery.offering[key]);
+        }
+    });
+
+    return filteredData;
+};
 
 export default useFilterData

@@ -28,7 +28,7 @@ import RestaurantCard from "./RestaurantCard"
 import Sidebar from "./Sidebar"
 
 //TYPES AND SERVICES
-import { Eatery } from "../types/restaurant.types"
+import { Eatery, Offering } from "../types/restaurant.types"
 import { getLocality } from "../services/googleAPI"
 
 const MainMap = () => {
@@ -44,6 +44,14 @@ const MainMap = () => {
 		google.maps.LatLngLiteral | undefined
 	>(undefined)
 	const [value, setValue] = useState('Options')
+
+	const [offeringFilters, setOfferingFilters] = useState({
+		vegan: false,
+		lunch: false,
+		dinner: false,
+		afterWork: false,
+		vegetarian: false
+	});	
 	
 	const [searchParams, setSearchParams] = useSearchParams({
 		city: "",
@@ -60,8 +68,23 @@ const MainMap = () => {
         setValue(selectedValue)
     }
 
+	const handleOfferingChange = (offeringType: keyof Offering, value: boolean) => {
+		setOfferingFilters({
+			...offeringFilters,
+			[offeringType]: value
+		});
+	};
+	
+
 	const handleClearFilters = () => {
         setValue('Options')// Reset the category selection
+		setOfferingFilters({ // reset the offerings too
+			vegan: false,
+			lunch: false,
+			dinner: false,
+			afterWork: false,
+			vegetarian: false
+		});
     }
 	
 	// handle actions for clicking on marker
@@ -90,10 +113,18 @@ const MainMap = () => {
 	}
 
 	// Update the filtered data when data, value change
-    useEffect(() => {
-        const filteredData = useFilterData(data, value)
-        setFilteredData(filteredData)
-    }, [data, value])
+    // useEffect(() => {
+    //     const filteredData = useFilterData(data, value)
+    //     setFilteredData(filteredData)
+	// 	console.log('filter', filteredData)
+    // }, [data, value])
+
+	useEffect(() => {
+		const filteredData = useFilterData(data, value, offeringFilters);
+		setFilteredData(filteredData);
+		console.log('filter', filteredData);
+	}, [data, value, offeringFilters]);
+	
 	
 	//handle map instance on load
 	const onMapLoad = useCallback((map: google.maps.Map) => {
@@ -272,6 +303,8 @@ const MainMap = () => {
 					onClose={() => setIsSidebarOpen(false)}
 					value={value}
 					handleCategory={handleCategory}
+					offeringFilters={offeringFilters}
+					handleOfferingChange={handleOfferingChange}
 					clearFilters={handleClearFilters}
 				></Sidebar>
 			</div>
