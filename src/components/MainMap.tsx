@@ -160,8 +160,6 @@ const MainMap = () => {
 
 				if(selectedCity == "" || selectedLat == "" || selectedLng == ""){
 					setSearchParams({ city: `${localityComponent?.long_name}`, lat: String(latitude), lng: String(longitude) })
-				} else {
-					return setSearchParams({ city: "", lat: String(latitude), lng: String(longitude) })
 				}
 			},
 			// on error
