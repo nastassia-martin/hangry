@@ -4,15 +4,6 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import RestaurantSidebar from './RestaurantSidebar'
 
-// interface IProps {
-//     data: Eatery[] | null
-//     onClose: () => void
-//     isOpen: boolean
-//     value: string
-//     handleCategory: (event: React.ChangeEvent<HTMLSelectElement>) => void
-//     clearFilters: () => void
-// }
-
 interface IProps {
     data: Eatery[] | null
     onClose: () => void
@@ -24,8 +15,6 @@ interface IProps {
     clearFilters: () => void
 }
 
-
-//const Sidebar: React.FC<IProps> = ({ data, onClose, isOpen, value, handleCategory, clearFilters }) => {
 const Sidebar: React.FC<IProps> = ({
         data,
         onClose,
@@ -85,15 +74,14 @@ const Sidebar: React.FC<IProps> = ({
                         </div>
                     </div>
                     {Object.keys(offeringFilters).map((offeringType) => (
-    <div key={offeringType}>
-        <label>{offeringType}:</label>
-        <input
-            type="checkbox"
-            checked={offeringFilters[offeringType]}
-            onChange={(e) => handleOfferingChange(offeringType as keyof Offering, e.target.checked)}
-        />
-    </div>
-))}
+                        <div key={offeringType}>
+                        <label>{offeringType}:</label>
+                        <input
+                        type="checkbox"
+                        checked={offeringFilters[offeringType]}
+                        onChange={(e) => handleOfferingChange(offeringType as keyof Offering, e.target.checked)} />
+                    </div>
+                    ))}
                     {data && 
                         <RestaurantSidebar
                             data={data}

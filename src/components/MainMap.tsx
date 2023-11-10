@@ -112,17 +112,9 @@ const MainMap = () => {
 		})
 	}
 
-	// Update the filtered data when data, value change
-    // useEffect(() => {
-    //     const filteredData = useFilterData(data, value)
-    //     setFilteredData(filteredData)
-	// 	console.log('filter', filteredData)
-    // }, [data, value])
-
 	useEffect(() => {
 		const filteredData = useFilterData(data, value, offeringFilters);
 		setFilteredData(filteredData);
-		console.log('filter', filteredData);
 	}, [data, value, offeringFilters]);
 	
 	
