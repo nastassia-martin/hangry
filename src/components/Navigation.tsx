@@ -16,6 +16,8 @@ import { restaurantsCol } from "../services/firebase"
 import { get } from "../services/googleAPI"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBowlFood } from "@fortawesome/free-solid-svg-icons"
+
+
 const Navigation = () => {
 	const { currentUser, userEmail, userName } = useAuth()
 
@@ -41,21 +43,34 @@ const Navigation = () => {
 	const [formBtnDisabled, setFormBtnDisabled] = useState(false)
 	const addTip = async (data: Eatery) => {
 		setFormBtnDisabled(true)
-		
+
 		const streetAddress = `${data.address.addressNumber}+${data.address.street}+${data.address.city}`
 
 		try {
 			const docRef = doc(restaurantsCol)
-
 			const geoLocation = await get(streetAddress)
+			const cityNameForFilterPurpose = (input: string): string => {
+				const makeLowerCase = input.toLowerCase()
+				console.log("this should be lowercase", makeLowerCase)
+				return makeLowerCase.charAt(0).toUpperCase() + makeLowerCase.slice(1)
+			  }
+			const cityNameWithCapitalLetter = cityNameForFilterPurpose(data.address.city)  
+			console.log("this should be lowercase", cityNameWithCapitalLetter)
+				await setDoc(docRef, {
+					...data,
+					address: {
+						restaurantName: data.address.restaurantName,
+						street: data.address.street,
+						addressNumber: data.address.addressNumber,
+						postcode: data.address.postcode,
+						city: cityNameWithCapitalLetter,
+					},
+					location: geoLocation?.results[0].geometry.location,
+					created_at: serverTimestamp(),
+					updated_at: serverTimestamp(),
+				})
 
-			await setDoc(docRef, {
-				...data,
-				location: geoLocation?.results[0].geometry.location,
-				created_at: serverTimestamp(),
-				updated_at: serverTimestamp(),
-			})
-
+			console.log('')
 			toast.success("Your tip has been sent.")
 		} catch (error) {
 			toast.error("INVALID ADDRESS")

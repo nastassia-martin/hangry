@@ -135,7 +135,7 @@ const MainMap = () => {
 				const selectedLat = searchParams.get("lat")
 				const selectedLng = searchParams.get("lng")
 
-				if(selectedCity == "" && selectedLat == "" && selectedLng == ""){
+				if(selectedCity == "" || selectedLat == "" || selectedLng == ""){
 					setSearchParams({ city: `${localityComponent?.long_name}`, lat: String(latitude), lng: String(longitude) })
 				} else {
 					return setSearchParams({ city: "", lat: String(latitude), lng: String(longitude) })
