@@ -3,6 +3,7 @@ import { Eatery, Offering } from '../types/restaurant.types'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import RestaurantSidebar from './RestaurantSidebar'
+import Form from 'react-bootstrap/Form'
 
 interface IProps {
     data: Eatery[] | null
@@ -73,15 +74,18 @@ const Sidebar: React.FC<IProps> = ({
                             </select>
                         </div>
                     </div>
+                    {<Form>
                     {Object.keys(offeringFilters).map((offeringType) => (
-                        <div key={offeringType}>
-                        <label>{offeringType}:</label>
-                        <input
-                        type="checkbox"
-                        checked={offeringFilters[offeringType]}
-                        onChange={(e) => handleOfferingChange(offeringType as keyof Offering, e.target.checked)} />
-                    </div>
+                        <Form.Group key={offeringType} controlId={`default-checkbox-${offeringType}`}>
+                        <Form.Check 
+                          type="checkbox"
+                          label={offeringType}
+                          checked={offeringFilters[offeringType]}
+                          onChange={(e) => handleOfferingChange(offeringType as keyof Offering, e.target.checked)}
+                          />
+                        </Form.Group>
                     ))}
+                    </Form>}
                     {data && 
                         <RestaurantSidebar
                             data={data}
